@@ -68,6 +68,6 @@ io.on("connection", (socket) => {
 app.use('/api/notification', require('./routes/api/notification'));
 app.use('/api/chat', require('./routes/api/chat'));
 
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
