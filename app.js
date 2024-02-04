@@ -6,18 +6,10 @@ const Message = require("./models/message");
 require('dotenv').config();
 
 var app = express();
-var https = require('https');
-const httpsServer = https.createServer(app, function(req, res) {
-    console.log(res);
-});
+var http = require('http');
+const httpServer = http.createServer(app);
 
-var socketIO = require("socket.io")(httpsServer, {
-    cors: {
-        origin: "https://13.228.225.19:5678",
-        methods: ["GET", "POST"],
-        credentials: true
-    }
-});
+var socketIO = require("socket.io")(httpServer);
 
 var port = process.env.PORT || 3000;
 
@@ -90,6 +82,6 @@ socketIO.on("connection", (socket) => {
 app.use('/api/notification', require('./routes/api/notification'));
 app.use('/api/chat', require('./routes/api/chat'));
 
-app.listen(port, () => {
+httpServer.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
