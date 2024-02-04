@@ -7,7 +7,10 @@ require('dotenv').config();
 
 var app = express();
 var https = require('https');
-const httpsServer = https.createServer(app);
+const httpsServer = https.createServer(app, function(req, res) {
+    console.log(res);
+});
+
 var socketIO = require("socket.io")(httpsServer, {
     cors: {
         origin: "https://13.228.225.19:5678",
@@ -87,6 +90,6 @@ socketIO.on("connection", (socket) => {
 app.use('/api/notification', require('./routes/api/notification'));
 app.use('/api/chat', require('./routes/api/chat'));
 
-httpsServer.listen(port, () => {
+app.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
