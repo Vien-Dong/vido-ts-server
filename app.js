@@ -6,12 +6,14 @@ const Message = require("./models/message");
 require('dotenv').config();
 
 var app = express();
-var https = require('https').Server(app);
-var io = require("socket.io")(https, {
+var https = require('https');
+const httpsServer = https.createServer(app);
+var socketIO = require("socket.io");
+var io = new socketIO.Server(httpsServer, {
     cors: {
         origin: "https://vido-ts-server.onrender.com"
     }
-});
+})
 
 var port = process.env.PORT || 3000;
 
@@ -68,11 +70,22 @@ io.on("connection", (socket) => {
         // socket.emit("groupList", chatgroups);
         socket.emit("foundGroup", chatgroups);
     });
+
+    socket.on("connect_error", (err) => {
+        // the reason of the error, for example "xhr poll error"
+        console.log(err.message);
+
+        // some additional description, for example the status code of the initial HTTP response
+        console.log(err.description);
+
+        // some additional context, for example the XMLHttpRequest object
+        console.log(err.context);
+    });
 })
 
 app.use('/api/notification', require('./routes/api/notification'));
 app.use('/api/chat', require('./routes/api/chat'));
 
-https.listen(port, () => {
+httpsServer.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
