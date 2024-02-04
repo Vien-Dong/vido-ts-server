@@ -9,11 +9,7 @@ var app = express();
 var https = require('https');
 const httpsServer = https.createServer(app);
 var socketIO = require("socket.io");
-var io = new socketIO.Server(httpsServer, {
-    cors: {
-        origin: "https://vido-ts-server.onrender.com"
-    }
-})
+var io = new socketIO.Server(httpsServer)
 
 var port = process.env.PORT || 3000;
 
