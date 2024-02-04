@@ -8,8 +8,13 @@ require('dotenv').config();
 var app = express();
 var https = require('https');
 const httpsServer = https.createServer(app);
-var socketIO = require("socket.io");
-var io = new socketIO.Server(httpsServer)
+var socketIO = require("socket.io")(httpsServer, {
+    cors: {
+        origin: "https://13.228.225.19:5678",
+        methods: ["GET", "POST"],
+        credentials: true
+    }
+});
 
 var port = process.env.PORT || 3000;
 
@@ -25,7 +30,7 @@ mongoose.connect("mongodb+srv://administrator:admin123456@cluster.jh4lmtx.mongod
 
 let chatgroups = [];
 
-io.on("connection", (socket) => {
+socketIO.on("connection", (socket) => {
     console.log(`${socket.id} user is just connected`);
 
     // socket.on("getAllGroups", () => {
