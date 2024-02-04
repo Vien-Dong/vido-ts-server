@@ -1,12 +1,17 @@
 var express = require("express");
 var cors = require('cors');
 var mongoose = require('mongoose');
-var io = require("socket.io-client")("https://vido-ts-server.onrender.com");
 const Message = require("./models/message");
 
 require('dotenv').config();
 
 var app = express();
+var https = require('https').Server(app);
+var io = require("socket.io")(https, {
+    cors: {
+        origin: "https://vido-ts-server.onrender.com"
+    }
+});
 
 var port = process.env.PORT || 3000;
 
@@ -68,6 +73,6 @@ io.on("connection", (socket) => {
 app.use('/api/notification', require('./routes/api/notification'));
 app.use('/api/chat', require('./routes/api/chat'));
 
-app.listen(port, () => {
+https.listen(port, () => {
     console.log(`Server listening on port ${port}`);
 });
