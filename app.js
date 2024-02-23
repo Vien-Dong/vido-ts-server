@@ -7,6 +7,7 @@ require('dotenv').config();
 
 var app = express();
 var http = require('http');
+const path = require("path");
 const httpServer = http.createServer(app);
 
 var socketIO = require("socket.io")(httpServer);
@@ -81,6 +82,10 @@ socketIO.on("connection", (socket) => {
 
 app.use('/api/notification', require('./routes/api/notification'));
 app.use('/api/chat', require('./routes/api/chat'));
+app.use('/api/mobile', require('./routes/api/otp'));
+app.get('/delete-account', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/index.html'));
+});
 
 httpServer.listen(port, () => {
     console.log(`Server listening on port ${port}`);
