@@ -17,6 +17,7 @@ var port = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(express.static('js'));
 
 mongoose.connect("mongodb+srv://administrator:admin123456@cluster.jh4lmtx.mongodb.net/").then(() => {
     console.log("Connected to mongodb");
@@ -83,6 +84,7 @@ socketIO.on("connection", (socket) => {
 app.use('/api/notification', require('./routes/api/notification'));
 app.use('/api/chat', require('./routes/api/chat'));
 app.use('/api/mobile', require('./routes/api/otp'));
+app.use('/api/mail', require("./routes/api/mail"));
 app.get('/delete-account', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/index.html'));
 });

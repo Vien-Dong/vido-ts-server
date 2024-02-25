@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Website</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="./favicon.ico" type="image/x-icon">
+    <title>Xóa tài khoản</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
 </head>
 
 <body>
@@ -133,26 +132,52 @@
         }
     </style>
     <div class="container">
-        <form id="contact" action="" method="post">
+        <form id="contact" action="/api/mail/send-email" method="POST">
             <h3 style="margin-bottom: 1rem;">Yêu cầu xóa tài khoản</h3>
             <h4>Liên hệ với chúng tôi nếu bạn muốn xóa tài khoản ứng dụng "Hướng nghiệp - VIDO Edu"</h4>
             <fieldset>
-                <input placeholder="Email đăng nhập" type="email" tabindex="2" required>
+                <input placeholder="Email đăng nhập" id="email" type="email" name="email" tabindex="2" required>
             </fieldset>
             <fieldset>
-                <input placeholder="Số điện thoại" type="tel" tabindex="3" required>
+                <input placeholder="Số điện thoại" id="phone" type="tel" name="phone" tabindex="3" required>
             </fieldset>
             <fieldset>
-                <textarea placeholder="Lý do bạn muốn xóa tài khoản...." tabindex="5" required></textarea>
+                <textarea id="message" name="message" placeholder="Lý do bạn muốn xóa tài khoản...."
+                    tabindex="5"></textarea>
             </fieldset>
             <h4>Chúng tôi muốn chắc chắn rằng bạn đã hiểu về việc xóa tài khoản của mình. Tài khoản sau khi xóa sẽ không
                 thể khôi phục, chính vì vậy hãy cân nhắc.</h4>
-            <fieldset>
-                <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Gửi yêu cầu</button>
-            </fieldset>
+            <button type="submit">Gửi yêu cầu</button>
         </form>
     </div>
-    <script src="index.js"></script>
+    <script type="text/javascript">
+        document.getElementById("contact").addEventListener("submit", function (event) {
+            event.preventDefault();
+            submit();
+        });
+
+        const submit = () => {
+            fetch('/api/mail/send-email', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: document.getElementById("email").value,
+                    phone: document.getElementById("phone").value,
+                    message: document.getElementById("message").value
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data); // Log phản hồi từ máy chủ
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+                });
+        }
+    </script>
 </body>
 
 </html>
