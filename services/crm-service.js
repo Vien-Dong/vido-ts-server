@@ -8,7 +8,6 @@ const getAccessToken = async () => {
         };
         const response = await axios.get("https://crm.viendong.edu.vn/api/OpenAPI/auth", {
             params: param,
-            timeout: 100000
         });
         return response.data;
     }
