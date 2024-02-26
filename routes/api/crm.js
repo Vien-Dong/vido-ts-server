@@ -39,7 +39,7 @@ router.get('/get-token', async (req, res) => {
         }
     }).then((res) => {
         res.status(200).send(res.data);
-    }).catch((error) => res.status(400).send("Error: ", error));
+    }).catch((error) => res.status(500).send("Error: ", error));
 });
 
 module.exports = router;
