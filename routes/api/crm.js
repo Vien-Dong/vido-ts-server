@@ -28,7 +28,8 @@ router.post('/create-cptarget', async (req, res) => {
         };
         try {
             await axios.post("https://crm.viendong.edu.vn/api/OpenAPI/create?module=CPTarget", { data: data }, {
-                headers: header
+                headers: header,
+                timeout: 100000
             }).then(() => {
                 res.status(200).send({
                     success: true,
