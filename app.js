@@ -85,6 +85,7 @@ app.use('/api/notification', require('./routes/api/notification'));
 app.use('/api/chat', require('./routes/api/chat'));
 app.use('/api/mobile', require('./routes/api/otp'));
 app.use('/api/mail', require("./routes/api/mail"));
+app.use('/api/crm', require("./routes/api/crm"));
 app.get('/delete-account', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/index.html'));
 });
