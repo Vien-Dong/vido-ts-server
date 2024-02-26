@@ -7,24 +7,11 @@ router.post('/create-cptarget', async (req, res) => {
     const data = req.body;
 
     // Hàm đệ quy để lấy access token
-    const getAccessTokenRecursive = async () => {
-        try {
-            const response = await getAccessToken();
-            return response;
-        } catch (error) {
-            console.log(error);
-            return null;
-        }
-    };
+    const response = await getAccessToken();
 
-    let accessTokenResponse;
-    do {
-        accessTokenResponse = await getAccessTokenRecursive();
-    } while (!accessTokenResponse || !accessTokenResponse.access_token);
-
-    if (accessTokenResponse && accessTokenResponse.access_token) {
+    if (response && response.access_token) {
         const header = {
-            "Access-Token": accessTokenResponse.access_token
+            "Access-Token": response.access_token
         };
         try {
             await axios.post("https://crm.viendong.edu.vn/api/OpenAPI/create?module=CPTarget", { data: data }, {
