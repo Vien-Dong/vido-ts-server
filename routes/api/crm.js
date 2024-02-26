@@ -32,9 +32,14 @@ router.post('/create-cptarget', async (req, res) => {
 });
 
 router.get('/get-token', async (req, res) => {
-    await getAccessToken().then((res) => {
+    await axios.get("https://crm.viendong.edu.vn/api/OpenAPI/auth", {
+        params: {
+            username: "giaotran",
+            access_key_md5: "969677b1d7f282346b93c81b26e421f1"
+        }
+    }).then((res) => {
         res.status(200).send(res.data);
-    }).catch((error) => res.status(400).send(error));
+    }).catch((error) => res.status(400).send("Error: ", error));
 });
 
 module.exports = router;
