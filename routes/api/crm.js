@@ -32,7 +32,9 @@ router.post('/create-cptarget', async (req, res) => {
 });
 
 router.get('/get-token', async (req, res) => {
-    res.status(200).send(await getAccessToken());
+    await getAccessToken().then((res) => {
+        res.status(200).send(res.data);
+    }).catch((error) => res.status(400).send(error));
 });
 
 module.exports = router;
