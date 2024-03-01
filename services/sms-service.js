@@ -2,10 +2,10 @@
 // Read more at http://twil.io/secure
 const accountSid = "AC69326f691746aaf871274ee40bc0f65b";
 const authToken = "71e4b6671a8ba3c21e1d20994220384c";
-const verifySid = "VAc458a007a4f24499f9064fa068dbb18b";
+const verifySid = "VA03c4f379e8e44e0c2551e9a29c87bacf";
 const client = require("twilio")(accountSid, authToken);
 
-const sendSMS = async (phone) => {
+const sendOTP = async (phone) => {
     try {
         return await client.verify.v2.services(verifySid)
             .verifications.create({ to: phone, channel: "sms" });
@@ -25,4 +25,13 @@ const verify = async (phone, code) => {
     }
 }
 
-module.exports = { sendSMS, verify };
+const sendSMS = async (phone, message) => {
+    try {
+        return await client.messages.create({ body: message, from: '+19287667631', to: phone });
+    }
+    catch (err) {
+        throw err;
+    }
+}
+
+module.exports = { sendOTP, verify, sendSMS };
