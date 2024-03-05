@@ -1,5 +1,5 @@
 const express = require("express");
-const { getAppDetails, getDateUpdated } = require("../../services/google-service");
+const { getAppDetails, getDateUpdated, checkVersion } = require("../../services/google-service");
 const router = express.Router();
 // const gplay = require("google-play-scraper");
 const { default: axios } = require("axios");
@@ -24,10 +24,10 @@ router.get('/get-app-details', async (req, res) => {
     }
 });
 
-router.get('/get-details/:package', async (req, res) => {
+router.get('/get-details', async (req, res) => {
     try {
-        const package = req.params.package;
-        const result = await getDateUpdated(package);
+        const { package, version } = req.body;
+        const result = await checkVersion(package, version);
         res.status(200).send({
             status: true,
             message: "Lấy thông tin thành công.",

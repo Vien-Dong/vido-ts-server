@@ -5,6 +5,10 @@ const versionSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    version: {
+        type: String,
+        require: true
+    },
     dateUpdated: {
         type: String,
         required: true
