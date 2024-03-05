@@ -24,9 +24,10 @@ router.get('/get-app-details', async (req, res) => {
     }
 });
 
-router.get('/get-details', async (req, res) => {
+router.get('/get-details/:package/:version', async (req, res) => {
     try {
-        const { package, version } = req.body;
+        const package = req.params.package;
+        const version = req.params.version;
         const result = await checkVersion(package, version);
         res.status(200).send({
             status: true,
