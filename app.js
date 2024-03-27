@@ -8,9 +8,8 @@ require('dotenv').config();
 var app = express();
 var http = require('http');
 const path = require("path");
-const httpServer = http.createServer(app);
 
-var socketIO = require("socket.io")(httpServer);
+var socketIO = require("socket.io");
 
 var port = process.env.PORT || 3000;
 
@@ -25,31 +24,34 @@ mongoose.connect("mongodb+srv://administrator:admin123456@cluster.jh4lmtx.mongod
     console.log("Error connecting to mongodb: ", err);
 })
 
-let chatgroups = [];
+app.use('/api/notification', require('./routes/api/notification'));
+app.use('/api/chat', require('./routes/api/chat'));
+app.use('/api/mobile', require('./routes/api/otp'));
+app.use('/api/mail', require("./routes/api/mail"));
+app.use('/api/crm', require("./routes/api/crm"));
+app.use('/api/google', require("./routes/api/google"));
+app.use('/api/student', require("./routes/api/student"));
+app.get('/delete-account', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/index.html'));
+});
+app.get('/lucky-wheel', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/lucky/lucky_wheel.html'));
+});
+app.use(express.static(__dirname + '/pages/lucky'));
+app.use(express.static(path.join(__dirname, 'pages')));
 
-socketIO.on("connection", (socket) => {
-    console.log(`${socket.id} user is just connected`);
+const server = app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+});
 
-    // socket.on("getAllGroups", () => {
-    //     socket.emit("groupList", chatgroups);
-    // });
+const io = socketIO(server, {
+    cors: {
+        origin: "http://localhost:3050",
+        credentials: true,
+    },
+});
 
-    // socket.on("createNewGroup", (currentGroupName) => {
-    //     console.log(currentGroupName);
-    //     chatgroups.unshift({
-    //         id: chatgroups.length + 1,
-    //         currentGroupName,
-    //         messages: [],
-    //     });
-    //     socket.emit("groupList", chatgroups);
-    // });
-
-    socket.on("findGroup", async (id) => {
-        const filteredGroup = await Message.find({ "roomId": id });
-        chatgroups = filteredGroup;
-        socket.emit("foundGroup", filteredGroup);
-    });
-
+io.on("connection", (socket) => {
     socket.on("newChatMessage", (data) => {
         const { roomId, sender, messageType, messageText } = data;
         const obj = {
@@ -80,17 +82,3 @@ socketIO.on("connection", (socket) => {
         console.log(err.context);
     });
 })
-
-app.use('/api/notification', require('./routes/api/notification'));
-app.use('/api/chat', require('./routes/api/chat'));
-app.use('/api/mobile', require('./routes/api/otp'));
-app.use('/api/mail', require("./routes/api/mail"));
-app.use('/api/crm', require("./routes/api/crm"));
-app.use('/api/google', require("./routes/api/google"));
-app.get('/delete-account', function (req, res) {
-    res.sendFile(path.join(__dirname + '/pages/index.html'));
-});
-
-httpServer.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-});

@@ -9,6 +9,7 @@ const getDateUpdated = async (package) => {
         const html = result.data;
         const $ = cheerio.load(html);
         const dateUpdated = $('#yDmH0d > c-wiz.SSPGKf.Czez9d > div > div > div:nth-child(1) > div.tU8Y5c > div.wkMJlb.YWi3ub > div > div.qZmL0 > div:nth-child(1) > c-wiz:nth-child(2) > div > section > div > div.TKjAsc > div > div.xg1aie').text();
+        console.log(dateUpdated);
         const format = moment(new Date(dateUpdated)).format("DD/MM/YYYY");
         return format;
     } catch (error) {
