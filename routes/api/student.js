@@ -1,5 +1,5 @@
 const express = require("express");
-const { createStudent } = require("../../services/student-service");
+const { createStudent, importStudent } = require("../../services/student-service");
 
 const router = express.Router();
 
@@ -16,6 +16,16 @@ router.post("/create", async (req, res) => {
     catch (err) {
         res.status(400).send('Something went wrong!');
         console.log(err);
+    }
+})
+
+router.post("/import", async (req, res) => {
+    try {
+        const result = await importStudent();
+        res.status(200).send(`Tạo thành công ${result} học sinh`);
+    }
+    catch (err) {
+        res.status(500).send(err);
     }
 })
 

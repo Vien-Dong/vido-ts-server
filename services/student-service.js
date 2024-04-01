@@ -1,11 +1,11 @@
 const Student = require("../models/student");
+const XLSX = require("xlsx");
 
-const createStudent = async (mssv, sdt) => {
+const createStudent = async (mssv, sdt_cha_me, sdt_hoc_sinh) => {
     try {
         const student = await Student.findOne({ "mssv": mssv });
-        if(!student)
-        {
-            const newStudent = new Student({mssv, sdt});
+        if (!student) {
+            const newStudent = new Student({ mssv, sdt_cha_me, sdt_hoc_sinh });
             await newStudent.save();
             return 1;
         };
@@ -16,4 +16,30 @@ const createStudent = async (mssv, sdt) => {
     }
 }
 
-module.exports = { createStudent };
+const importStudent = async () => {
+    try {
+        let count = 0;
+        const headers = ["MSSV", "PARENT'S PHONE", "STUDENT'S PHONE"];
+        const workBook = XLSX.readFile("files/ds.xlsx");
+        const sheetName = workBook.SheetNames[0];
+        const data = XLSX.utils.sheet_to_json(workBook.Sheets[sheetName]);
+
+        const processRows = async () => {
+            for (const row of data) {
+                const rowData = {};
+                headers.forEach(header => {
+                    rowData[header] = row[header];
+                });
+                const result = await createStudent(rowData[headers[0]], rowData[headers[1]], rowData[headers[2]]);
+                count += result;
+            }
+        };
+        await processRows();
+        return count;
+    } catch (err) {
+        console.log("Import student: ", err);
+        return 0;
+    }
+}
+
+module.exports = { createStudent, importStudent };

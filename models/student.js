@@ -5,9 +5,11 @@ const studentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    sdt: {
+    sdt_cha_me: {
         type: String,
-        required: true
+    },
+    sdt_hoc_sinh: {
+        type: String,
     }
 })
 

@@ -9,16 +9,39 @@ const authToken = "71e4b6671a8ba3c21e1d20994220384c";
 const verifySid = "VA03c4f379e8e44e0c2551e9a29c87bacf";
 const apiKey = "FB76CB90F33014EA7D75D9283C5409";
 const secretKey = "52D3A169C65F98553D5EF95B9AD95B";
+const accessToken = "ietDWAbPCVg22JvkVQFZUFutqUlCgcUU";
 const client = require("twilio")(accountSid, authToken);
+const otpGenerator = require('otp-generator')
 
 const sendOTP = async (phone) => {
     try {
-        return await client.verify.v2.services(verifySid)
-            .verifications.create({ to: phone, channel: "sms" });
+        var auth = Buffer.from(accessToken + ':x').toString('base64');
+        var otpCode = generateOTP();
+        const params = {
+            "access-token": accessToken,
+            "sender": "6df626e2f56d11f2",
+            "type": 5,
+            "to": phone,
+            "content": `Ma xac thuc cua ban la: ${otpCode}`,
+        };
+        const result = await axios.post("https://api.speedsms.vn/index.php/sms/send", null, {
+            headers: {
+                "Authorization": `Basic ${auth}`,
+                "Content-Type": "application/json"
+            },
+            params
+        });
+        return { data: result.data, code: otpCode };
     }
     catch (err) {
         throw err;
     }
+}
+
+const generateOTP = () => {
+    const digits = 6;
+    const otp = otpGenerator.generate(digits, { digits: true, upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
+    return otp;
 }
 
 const verify = async (phone, code) => {
@@ -135,11 +158,11 @@ const send = async (cls, attendanceClass, type, sender) => {
             });
             const promises = studentsToBeUpdated.map(async e => {
                 const student = await Student.findOne({ "mssv": e?.mshv });
-                if (student) {
+                if (student && student.sdt_cha_me) {
                     const result = await axios.post("http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_post_json/", {
                         "ApiKey": apiKey,
                         "Content": `${removeVietnameseAccent(e?.name)} abcasd`,
-                        "Phone": student.sdt,
+                        "Phone": student.sdt_cha_me,
                         "SecretKey": secretKey,
                         "SmsType": type,
                         "Brandname": sender,
@@ -176,11 +199,11 @@ const send = async (cls, attendanceClass, type, sender) => {
         else {
             const promises = attendanceClass.map(async e => {
                 const student = await Student.findOne({ "mssv": e?.mshv });
-                if (student) {
+                if (student && student.sdt_cha_me) {
                     const result = await axios.post("http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_post_json/", {
                         "ApiKey": apiKey,
                         "Content": `${removeVietnameseAccent(e?.name)} abcasd`,
-                        "Phone": student.sdt,
+                        "Phone": student.sdt_cha_me,
                         "SecretKey": secretKey,
                         "SmsType": type,
                         "Brandname": sender,
@@ -259,7 +282,7 @@ const sendSMSTest = async (data) => {
         return await axios.post("http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_post_json/", {
             "ApiKey": apiKey,
             "Content": `Giao la ma dat lai mat khau Baotrixemay cua ban`,
-            "Phone": data.sdt,
+            "Phone": data.sdt_cha_me,
             "SecretKey": secretKey,
             "SmsType": "2",
             "Brandname": "Baotrixemay",
@@ -290,4 +313,4 @@ const registerTemplate = async (data) => {
     }
 }
 
-module.exports = { sendOTP, verify, sendSMS, getStatusSMS, registerTemplate, sendSMS2, sendSMSTest };
+module.exports = { sendOTP, verify, sendSMS, getStatusSMS, registerTemplate, sendSMS2, sendSMSTest, generateOTP };
