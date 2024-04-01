@@ -22,7 +22,7 @@ const sendOTP = async (phone) => {
             "sender": "6df626e2f56d11f2",
             "type": 5,
             "to": phone,
-            "content": `Ma xac thuc cua ban la: ${otpCode}`,
+            "content": `Ma xac thuc ung dung Huong nghiep VIDO Edu cua ban la: ${otpCode}`,
         };
         const result = await axios.post("https://api.speedsms.vn/index.php/sms/send", null, {
             headers: {
