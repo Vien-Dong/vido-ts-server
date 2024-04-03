@@ -3,7 +3,7 @@ const { database } = require("../config/firebase");
 
 const getCareers = async() => {
     try {
-        const careerCol = collection(database, "users");
+        const careerCol = collection(database, "careers");
         const data = await getDocs(careerCol);
         const careers = data.docs.map(doc => doc.data());
         return careers;
