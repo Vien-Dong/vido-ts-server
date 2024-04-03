@@ -31,6 +31,7 @@ app.use('/api/mail', require("./routes/api/mail"));
 app.use('/api/crm', require("./routes/api/crm"));
 app.use('/api/google', require("./routes/api/google"));
 app.use('/api/student', require("./routes/api/student"));
+app.use('/api/career', require("./routes/api/career"));
 app.get('/delete-account', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/index.html'));
 });
