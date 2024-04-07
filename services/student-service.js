@@ -1,3 +1,4 @@
+const ResultExam = require("../models/result");
 const Student = require("../models/student");
 const XLSX = require("xlsx");
 
@@ -42,4 +43,25 @@ const importStudent = async () => {
     }
 }
 
-module.exports = { createStudent, importStudent };
+const createResult = async (data) => {
+    try {
+        const newResult = new ResultExam(data);
+        await newResult.save();
+        return true;
+    } catch (err) {
+        console.log("Create result: ", err);
+        return false;
+    }
+}
+
+const getResult = async (examID, userID) => {
+    try {
+        const result = await ResultExam.findOne({ examID, userID });
+        return result;
+    }
+    catch (err) {
+        return null;
+    }
+}
+
+module.exports = { createStudent, importStudent, createResult, getResult };
