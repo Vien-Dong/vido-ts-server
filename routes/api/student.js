@@ -40,9 +40,10 @@ router.post("/create-result", async (req, res) => {
     }
 })
 
-router.get("/result", async (req, res) => {
+router.get("/result/:userID/:examID", async (req, res) => {
     try {
-        const { examID, userID } = req.body;
+        const examID = req.params.examID;
+        const userID = req.params.userID;
         const result = await getResult(examID, userID);
         res.status(200).send({
             success: true,
