@@ -33,13 +33,18 @@ app.use('/api/google', require("./routes/api/google"));
 app.use('/api/student', require("./routes/api/student"));
 app.use('/api/career', require("./routes/api/career"));
 app.use('/api/zalo', require("./routes/api/zalo"));
+app.use('/api/subject', require("./routes/api/subject"));
 app.get('/delete-account', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/index.html'));
 });
 app.get('/lucky-wheel', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/lucky/lucky_wheel.html'));
 });
+app.get('/exam', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/exam/exam.html'));
+});
 app.use(express.static(__dirname + '/pages/lucky'));
+app.use(express.static(__dirname + '/pages/exam'));
 app.use(express.static(path.join(__dirname, 'pages')));
 
 const server = app.listen(port, () => {
