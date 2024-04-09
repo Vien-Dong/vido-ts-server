@@ -30,9 +30,30 @@ function renderQuestion(question) {
     return div;
 }
 
+function renderLiteratureQuestion() {
+    const div = document.createElement('div');
+    div.classList.add('col-md-12');
+
+    div.innerHTML = `
+        <div class="form-group">
+            <label class="mb-1" for="question-literature">Điền link pdf vào đây</label>
+            <input type="text" name="question-literature" id="question-literature" placeholder="Nhập link" autocomplete="off" class="form-control shadow-sm bg-white rounded mb-2" required>
+            <span class="text-danger">Lưu ý: link phải có đuôi là .pdf tương đương với đường dẫn khi search trên google sẽ tự động tải file pdf về hoặc hỏi có muốn tải không.</span>
+        </div>
+        `
+    return div;
+}
+
 function renderQuestions() {
+    const selectedValue = document.getElementById("subject");
+    if (!selectedValue.value) { alert("Bạn phải chọn môn học trước!"); return; }
     const questionsContainer = document.getElementById('questions-container');
     questionsContainer.innerHTML = ''; // Clear previous questions
+
+    if (parseInt(selectedValue.value) === 1) {
+        questionsContainer.append(renderLiteratureQuestion());
+        return;
+    }
 
     // Render new questions
     const checkboxes = document.querySelectorAll('input[name="numQuestions"]');
@@ -47,6 +68,10 @@ function renderQuestions() {
     });
 }
 
+function isPdfUrl(url) {
+    return url.toLowerCase().endsWith('.pdf');
+}
+
 // Add event listener to all checkboxes
 const checkboxes = document.querySelectorAll('input[name="numQuestions"]');
 checkboxes.forEach(async function (checkbox) {
@@ -58,15 +83,44 @@ getDataButton.addEventListener('click', async function () {
     let selectedValue = 0;
     const questions = [];
     const questionInputs = document.querySelectorAll('[id^="question-"]');
+    const questionLink = document.getElementById("question-literature");
+    const title = document.getElementById("titleQuestion").value;
+    const timeToDo = document.getElementById("timeToDo").value;
+    const subjectID = document.getElementById("subject").value;
+
+    if(questionLink)
+    {
+        if(!isPdfUrl(questionLink.value))
+        {
+            alert("Định dạng không đúng.");
+            return;
+        }
+        const exam = {
+            id: generateUUID(),
+            subjectID: parseInt(subjectID),
+            title,
+            timeToDo: parseInt(timeToDo),
+            total: parseInt(selectedValue),
+            exam: [questionLink.value]
+        }
+    
+        await axios.post('/api/subject/create-exam', exam)
+            .then(data => {
+                alert('Tạo thành công')
+                console.log(data); // Log phản hồi từ máy chủ
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+            });
+        return;
+    }
 
     checkboxes.forEach(function (checkbox) {
         if (checkbox.checked) {
             selectedValue = checkbox.value;
         }
     });
-    const title = document.getElementById("titleQuestion").value;
-    const timeToDo = document.getElementById("timeToDo").value;
-    const subjectID = document.getElementById("subject").value;
 
     questionInputs.forEach(function (input, index) {
         const questionText = input.value;
