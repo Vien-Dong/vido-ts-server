@@ -46,24 +46,30 @@ function renderLiteratureQuestion() {
 
 function renderEnglishQuestion(priority) {
     const div = document.createElement('div');
-    div.classList.add('col-md-12');
+    div.classList.add(`col-md-12`, `path-${priority}`);
 
     div.innerHTML = `
         <div class="row">
             <div class="col-md-6 form-group">
-                <label class="mb-1" for="path-english-${priority}"><b>Tiêu đề phần I</b></label>
+                <label class="mb-1" for="path-english-${priority}"><b>Tiêu đề phần ${convertToRoman(priority)}</b></label>
                 <input type="text" name="path-english-${priority}" id="path-english-${priority}" placeholder="Nhập tiêu đề" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
             </div>
             <div class="col-md-6 form-group">
             <label class="mb-1 d-flex justify-content-between" for="number-english-${priority}">
-                <b>Số lượng câu phần I</b>
+                <b>Số lượng câu phần ${convertToRoman(priority)}</b>
                 <div>
-                    <input type="radio" id="isSpeech-${priority}" value="1" name="isSpeech-${priority}"
+                    <input type="checkbox" id="isSpeech-${priority}" value="1" name="isSpeech-${priority}"
                         class="custom-control-input" style="width: 16px; height: 16px">
                     <label class="custom-control-label" for="isSpeech-${priority}">Có đoạn văn</label>
                 </div>
             </label>
                 <input type="number" name="number-english-${priority}" id="number-english-${priority}" placeholder="Nhập số câu" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
+            </div>
+        </div>
+        <div class="row mt-2" id="speech-container-${priority}" style="display: none;">
+            <div class="col-md-12 form-group">
+                <label for="speech-english-${priority}" class="mb-1">Nhập đoạn văn</label>
+                <textarea name="speech-english-${priority}" id="speech-english-${priority}" rows="3" class="form-control shadow-sm bg-white rounded"></textarea>
             </div>
         </div>
         <div class="row" id="questions-container-${priority}"></div>
@@ -74,6 +80,16 @@ function renderEnglishQuestion(priority) {
         renderChildQuestions(parseInt(this.value), div, priority);
     });
 
+    const isSpeechCheckbox = div.querySelector(`#isSpeech-${priority}`);
+    isSpeechCheckbox.addEventListener('change', function () {
+        const speechContainer = document.getElementById(`speech-container-${priority}`);
+        if (this.checked) {
+            speechContainer.style.display = 'block';
+        } else {
+            speechContainer.style.display = 'none';
+        }
+    });
+
     const addButton = div.querySelector(`#add-${priority}`);
     addButton.addEventListener('click', function () {
         const questionsContainer = document.getElementById('questions-container');
@@ -81,36 +97,14 @@ function renderEnglishQuestion(priority) {
         addButton.remove();
     });
 
-    const checkbox = div.querySelector(`input[name="isSpeech-${priority}"]`);
-    checkbox.addEventListener('change', function () {
-        if (this.checked) {
-            const questionsContainer = document.getElementById(`questions-container-${priority}`);
-            console.log(renderChildQuestions(0, div, priority, true));
-            questionsContainer.append(renderChildQuestions(0, div, priority, true));
-        }
-    })
-
     return div;
 }
 
-function renderChildQuestions(numQuestions, parentDiv, priority, isSpeech) {
+function renderChildQuestions(numQuestions, parentDiv, priority) {
     const questionsContainer = parentDiv.querySelector(`#questions-container-${priority}`);
     questionsContainer.innerHTML = ''; // Clear previous inputs
 
-    if (isSpeech) {
-        const questionDiv = document.createElement('div');
-        questionDiv.classList.add('col-md-12');
-        questionDiv.innerHTML = `
-            <div class="form-group">
-                <label class="mb-1" for="question-english-speech-${priority}">Đoạn văn</label>
-                <input type="text" name="question-english-speech-${priority}" id="question-english-speech-${priority}" placeholder="Nhập đoạn văn" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
-            </div>
-        `;
-        questionsContainer.appendChild(questionDiv);
-    }
-
-    if(numQuestions > 0)
-    {
+    if (numQuestions > 0) {
         for (let i = 1; i <= numQuestions; i++) {
             const questionDiv = document.createElement('div');
             questionDiv.classList.add('col-md-6');
@@ -118,6 +112,23 @@ function renderChildQuestions(numQuestions, parentDiv, priority, isSpeech) {
                 <div class="form-group">
                     <label class="mb-1" for="question-english-${i}">Câu hỏi ${i}</label>
                     <input type="text" name="question-english-${i}" id="question-english-${i}" placeholder="Nhập câu hỏi" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-6 mb-3">
+                        <input type="text" name="answer-A-${i}" id="answer-A-${i}" placeholder="Đáp án A" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" name="answer-B-${i}" id="answer-B-${i}" placeholder="Đáp án B" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" name="answer-C-${i}" id="answer-C-${i}" placeholder="Đáp án C" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" name="answer-D-${i}" id="answer-D-${i}" placeholder="Đáp án D" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" name="correct-answer-${i}" id="correct-answer-${i}" placeholder="Đáp án đúng" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
                 </div>
             `;
             questionsContainer.appendChild(questionDiv);
@@ -199,6 +210,12 @@ getDataButton.addEventListener('click', async function () {
         return;
     }
 
+    if(parseInt(subjectID) === 2)
+    {
+        await englishData();
+        return;
+    }
+
     checkboxes.forEach(function (checkbox) {
         if (checkbox.checked) {
             selectedValue = checkbox.value;
@@ -246,6 +263,79 @@ getDataButton.addEventListener('click', async function () {
         });
 });
 
+async function englishData() {
+    let selectedValue = 0;
+    let questionIndex = 0;
+    const paths = document.querySelectorAll('[id^="path-"]');
+    const questions = [];
+    const title = document.getElementById("titleQuestion").value;
+    const timeToDo = document.getElementById("timeToDo").value;
+    const subjectID = document.getElementById("subject").value;
+    checkboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            selectedValue = checkbox.value;
+        }
+    });
+    for (let i = 1; i <= paths.length; i++) {
+        const titlePath = document.getElementById(`path-english-${i}`).value;
+        const numQuestions = document.getElementById(`number-english-${i}`).value;
+        const speech = document.getElementById(`speech-english-${i}`).value;
+        const questionChilds = [];
+
+        for (let j = 1; j <= numQuestions; j++) {
+            const questionTextChild = document.getElementById(`question-english-${j}`).value;
+            const optionA = document.getElementById(`answer-A-${j}`).value;
+            const optionB = document.getElementById(`answer-B-${j}`).value;
+            const optionC = document.getElementById(`answer-C-${j}`).value;
+            const optionD = document.getElementById(`answer-D-${j}`).value;
+            const correctAnswer = document.getElementById(`correct-answer-${j}`).value;
+
+            const questionObject = {
+                no: questionIndex + j,
+                questionText: questionTextChild,
+                optionA: { key: "A", text: optionA },
+                optionB: { key: "B", text: optionB },
+                optionC: { key: "C", text: optionC },
+                optionD: { key: "D", text: optionD },
+                correctAnswer: correctAnswer
+            };
+
+            questionChilds.push(questionObject);
+        }
+        questionIndex += parseInt(numQuestions);
+
+        const question = {
+            path: convertToRoman(i),
+            title: titlePath,
+            questions: {
+                speech,
+                questionChilds
+            },
+            child: speech && speech !== "" ? true : false,
+            type: speech && speech !== "" ? "speech" : null
+        };
+        questions.push(question);
+    }
+
+    const exam = {
+        id: generateUUID(),
+        subjectID: parseInt(subjectID),
+        title,
+        timeToDo: parseInt(timeToDo),
+        total: parseInt(selectedValue),
+        exam: questions
+    };
+    await axios.post('/api/subject/create-exam', exam)
+        .then(data => {
+            alert('Tạo thành công')
+            console.log(data); // Log phản hồi từ máy chủ
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+        });
+}
+
 function generateUUID() { // Public Domain/MIT
     var d = new Date().getTime();//Timestamp
     var d2 = ((typeof performance !== 'undefined') && performance.now && (performance.now() * 1000)) || 0;//Time in microseconds since page-load or 0 if unsupported
@@ -262,3 +352,31 @@ function generateUUID() { // Public Domain/MIT
     });
 }
 
+function convertToRoman(num) {
+    const romanNumerals = {
+        M: 1000,
+        CM: 900,
+        D: 500,
+        CD: 400,
+        C: 100,
+        XC: 90,
+        L: 50,
+        XL: 40,
+        X: 10,
+        IX: 9,
+        V: 5,
+        IV: 4,
+        I: 1
+    };
+
+    let result = '';
+
+    for (let key in romanNumerals) {
+        while (num >= romanNumerals[key]) {
+            result += key;
+            num -= romanNumerals[key];
+        }
+    }
+
+    return result;
+}
