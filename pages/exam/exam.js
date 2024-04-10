@@ -44,6 +44,87 @@ function renderLiteratureQuestion() {
     return div;
 }
 
+function renderEnglishQuestion(priority) {
+    const div = document.createElement('div');
+    div.classList.add('col-md-12');
+
+    div.innerHTML = `
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <label class="mb-1" for="path-english-${priority}"><b>Tiêu đề phần I</b></label>
+                <input type="text" name="path-english-${priority}" id="path-english-${priority}" placeholder="Nhập tiêu đề" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
+            </div>
+            <div class="col-md-6 form-group">
+            <label class="mb-1 d-flex justify-content-between" for="number-english-${priority}">
+                <b>Số lượng câu phần I</b>
+                <div>
+                    <input type="radio" id="isSpeech-${priority}" value="1" name="isSpeech-${priority}"
+                        class="custom-control-input" style="width: 16px; height: 16px">
+                    <label class="custom-control-label" for="isSpeech-${priority}">Có đoạn văn</label>
+                </div>
+            </label>
+                <input type="number" name="number-english-${priority}" id="number-english-${priority}" placeholder="Nhập số câu" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
+            </div>
+        </div>
+        <div class="row" id="questions-container-${priority}"></div>
+        <button type="button" id="add-${priority}" class="btn btn-primary btn-block">Thêm phần câu hỏi</button>
+        `
+    const numberInput = div.querySelector(`#number-english-${priority}`);
+    numberInput.addEventListener('input', function () {
+        renderChildQuestions(parseInt(this.value), div, priority);
+    });
+
+    const addButton = div.querySelector(`#add-${priority}`);
+    addButton.addEventListener('click', function () {
+        const questionsContainer = document.getElementById('questions-container');
+        questionsContainer.append(renderEnglishQuestion(priority + 1));
+        addButton.remove();
+    });
+
+    const checkbox = div.querySelector(`input[name="isSpeech-${priority}"]`);
+    checkbox.addEventListener('change', function () {
+        if (this.checked) {
+            const questionsContainer = document.getElementById(`questions-container-${priority}`);
+            console.log(renderChildQuestions(0, div, priority, true));
+            questionsContainer.append(renderChildQuestions(0, div, priority, true));
+        }
+    })
+
+    return div;
+}
+
+function renderChildQuestions(numQuestions, parentDiv, priority, isSpeech) {
+    const questionsContainer = parentDiv.querySelector(`#questions-container-${priority}`);
+    questionsContainer.innerHTML = ''; // Clear previous inputs
+
+    if (isSpeech) {
+        const questionDiv = document.createElement('div');
+        questionDiv.classList.add('col-md-12');
+        questionDiv.innerHTML = `
+            <div class="form-group">
+                <label class="mb-1" for="question-english-speech-${priority}">Đoạn văn</label>
+                <input type="text" name="question-english-speech-${priority}" id="question-english-speech-${priority}" placeholder="Nhập đoạn văn" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
+            </div>
+        `;
+        questionsContainer.appendChild(questionDiv);
+    }
+
+    if(numQuestions > 0)
+    {
+        for (let i = 1; i <= numQuestions; i++) {
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('col-md-6');
+            questionDiv.innerHTML = `
+                <div class="form-group">
+                    <label class="mb-1" for="question-english-${i}">Câu hỏi ${i}</label>
+                    <input type="text" name="question-english-${i}" id="question-english-${i}" placeholder="Nhập câu hỏi" autocomplete="off" class="form-control shadow-sm bg-white rounded" required>
+                </div>
+            `;
+            questionsContainer.appendChild(questionDiv);
+        }
+    }
+}
+
 function renderQuestions() {
     const selectedValue = document.getElementById("subject");
     if (!selectedValue.value) { alert("Bạn phải chọn môn học trước!"); return; }
@@ -52,6 +133,10 @@ function renderQuestions() {
 
     if (parseInt(selectedValue.value) === 1) {
         questionsContainer.append(renderLiteratureQuestion());
+        return;
+    }
+    else if (parseInt(selectedValue.value) === 2) {
+        questionsContainer.append(renderEnglishQuestion(1));
         return;
     }
 
@@ -88,10 +173,8 @@ getDataButton.addEventListener('click', async function () {
     const timeToDo = document.getElementById("timeToDo").value;
     const subjectID = document.getElementById("subject").value;
 
-    if(questionLink)
-    {
-        if(!isPdfUrl(questionLink.value))
-        {
+    if (questionLink) {
+        if (!isPdfUrl(questionLink.value)) {
             alert("Định dạng không đúng.");
             return;
         }
@@ -103,7 +186,7 @@ getDataButton.addEventListener('click', async function () {
             total: parseInt(selectedValue),
             exam: [questionLink.value]
         }
-    
+
         await axios.post('/api/subject/create-exam', exam)
             .then(data => {
                 alert('Tạo thành công')
@@ -178,3 +261,4 @@ function generateUUID() { // Public Domain/MIT
         return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
 }
+

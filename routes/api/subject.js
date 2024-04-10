@@ -1,6 +1,6 @@
 const express = require("express");
 const { getSubjects, createSubject } = require("../../services/subject-service");
-const { getExamsBySubject, createExam } = require("../../services/exam-service");
+const { getExamsBySubject, createExam, getAllExams } = require("../../services/exam-service");
 
 const router = express.Router();
 
@@ -43,6 +43,23 @@ router.get("/exams/:subjectID", async (req, res) => {
     try {
         const subjectID = req.params?.subjectID;
         const result = await getExamsBySubject(subjectID);
+        res.status(200).send({
+            status: true,
+            message: "Lấy danh sách đề thi",
+            payload: result
+        })
+    }
+    catch (err) {
+        res.status(500).send({
+            success: false,
+            message: "Something went wrong!",
+        })
+    }
+})
+
+router.get("/exams", async (req, res) => {
+    try {
+        const result = await getAllExams();
         res.status(200).send({
             status: true,
             message: "Lấy danh sách đề thi",

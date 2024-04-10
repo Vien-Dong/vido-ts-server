@@ -12,6 +12,18 @@ const getExamsBySubject = async (subjectID) => {
     }
 }
 
+const getAllExams = async () => {
+    try {
+        return await Exam.find();
+    }
+    catch (err) {
+        res.status(500).send({
+            success: false,
+            message: "Something went wrong!",
+        })
+    }
+}
+
 const createExam = async (exam) => {
     try {
         const newExam = new Exam(exam);
@@ -25,4 +37,4 @@ const createExam = async (exam) => {
     }
 }
 
-module.exports = { getExamsBySubject, createExam };
+module.exports = { getExamsBySubject, createExam, getAllExams };
