@@ -281,6 +281,7 @@ async function englishData() {
         const numQuestions = document.getElementById(`number-english-${i}`).value;
         const speech = document.getElementById(`speech-english-${i}`).value;
         const questionChilds = [];
+        let question = null;
 
         for (let j = 1; j <= numQuestions; j++) {
             const questionTextChild = document.getElementById(`question-english-${j}`).value;
@@ -304,16 +305,30 @@ async function englishData() {
         }
         questionIndex += parseInt(numQuestions);
 
-        const question = {
-            path: convertToRoman(i),
-            title: titlePath,
-            questions: {
-                speech,
-                questionChilds
-            },
-            child: speech && speech !== "" ? true : false,
-            type: speech && speech !== "" ? "speech" : null
-        };
+        if(speech !== "")
+        {
+            question = {
+                path: convertToRoman(i),
+                title: titlePath,
+                child: true,
+                type: "speech",
+                questions: [
+                    {
+                        speech,
+                        questionChilds
+                    }
+                ]
+            };
+        }
+        else {
+            question = {
+                path: convertToRoman(i),
+                title: titlePath,
+                child: false,
+                questions: questionChilds
+            };
+        }
+        
         questions.push(question);
     }
 
