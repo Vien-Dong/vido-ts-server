@@ -216,6 +216,8 @@ getDataButton.addEventListener('click', async function () {
         return;
     }
 
+    console.log("not english");
+
     checkboxes.forEach(function (checkbox) {
         if (checkbox.checked) {
             selectedValue = checkbox.value;
@@ -277,6 +279,7 @@ async function englishData() {
         }
     });
     for (let i = 1; i <= paths.length; i++) {
+        const container = document.getElementById(`questions-container-${i}`);
         const titlePath = document.getElementById(`path-english-${i}`).value;
         const numQuestions = document.getElementById(`number-english-${i}`).value;
         const speech = document.getElementById(`speech-english-${i}`).value;
@@ -284,12 +287,12 @@ async function englishData() {
         let question = null;
 
         for (let j = 1; j <= numQuestions; j++) {
-            const questionTextChild = document.getElementById(`question-english-${j}`).value;
-            const optionA = document.getElementById(`answer-A-${j}`).value;
-            const optionB = document.getElementById(`answer-B-${j}`).value;
-            const optionC = document.getElementById(`answer-C-${j}`).value;
-            const optionD = document.getElementById(`answer-D-${j}`).value;
-            const correctAnswer = document.getElementById(`correct-answer-${j}`).value;
+            const questionTextChild = container.querySelector(`#question-english-${j}`).value;
+            const optionA = container.querySelector(`#answer-A-${j}`).value;
+            const optionB = container.querySelector(`#answer-B-${j}`).value;
+            const optionC = container.querySelector(`#answer-C-${j}`).value;
+            const optionD = container.querySelector(`#answer-D-${j}`).value;
+            const correctAnswer = container.querySelector(`#correct-answer-${j}`).value;
 
             const questionObject = {
                 no: questionIndex + j,
