@@ -1,6 +1,6 @@
 const express = require("express");
 const SendOtp = require('sendotp');
-const { verify, sendOTP, sendSMS, getStatusSMS, getTemplate, registerTemplate, sendSMS2, sendSMSTest, generateOTP } = require("../../services/sms-service");
+const { verify, sendOTP, sendSMS, getStatusSMS, getTemplate, registerTemplate, sendSMS2, sendSMSTest, generateOTP, sendOTPV2, getResultNumber } = require("../../services/sms-service");
 const router = express.Router();
 const sendOtp = new SendOtp("416729AR68krNrLeW65d6cda3P1");
 
@@ -26,6 +26,22 @@ router.post("/sendOTP", async (req, res) => {
         res.status(200).send({
             status: true,
             message: "Gửi mã xác thực thành công.",
+            payload: result
+        });
+    }
+    catch (err) {
+        res.status(400).send('Something went wrong!');
+        console.log(err);
+    }
+})
+
+router.post("/sendOTPV2", async (req, res) => {
+    try {
+        const { phone, content } = req.body;
+        const result = await sendOTPV2(phone, content);
+        res.status(200).send({
+            status: true,
+            message: getResultNumber(result.data) === 1 ? "Gửi mã xác thực thành công." : "Gửi thất bại, hãy thử lại sau.",
             payload: result
         });
     }

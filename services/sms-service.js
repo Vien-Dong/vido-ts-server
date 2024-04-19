@@ -38,6 +38,60 @@ const sendOTP = async (phone) => {
     }
 }
 
+const sendOTPV2 = async (phone) => {
+    try {
+        var otpCode = generateOTP();
+        var xmlStr = `
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:impl="http://impl.bulkSms.ws/">
+                <soapenv:Header/>
+                <soapenv:Body>
+                    <impl:wsCpMt>
+                        <!--Optional:-->
+                        <User>smsbrand_viendong</User>
+                        <!--Optional:-->
+                        <Password>Viendong#12</Password>
+                        <!--Optional:-->
+                        <CPCode>CDVIENDONG</CPCode>
+                        <!--Optional:-->
+                        <RequestID>1</RequestID>
+                        <!--Optional:-->
+                        <UserID>${phone}</UserID>
+                        <!--Optional:-->
+                        <ReceiverID>${phone}</ReceiverID>
+                        <!--Optional:-->
+                        <ServiceID>CDVienDong</ServiceID>
+                        <!--Optional:-->
+                        <CommandCode>bulksms</CommandCode>
+                        <!--Optional:-->
+                        <Content>${`Ma xac thuc ung dung Huong nghiep VIDO Edu cua ban la: ${otpCode}`}</Content>
+                        <!--Optional:-->
+                        <ContentType>0</ContentType>
+                    </impl:wsCpMt>
+                </soapenv:Body>
+            </soapenv:Envelope>
+        `
+        const result = await axios.post(
+            'https://ams.tinnhanthuonghieu.vn:8998/bulkapi?wsdl',
+            xmlStr,
+            {
+                headers: {
+                    "Content-Type": "text/xml"
+                }
+            }
+        );
+        return { data: result.data, code: otpCode };
+    } catch (err) {
+        throw err;
+    }
+}
+
+const getResultNumber = (xmlString) => {
+    let startIndex = xmlString.indexOf('<result>') + '<result>'.length;
+    let endIndex = xmlString.indexOf('</result>', startIndex);
+    let resultValue = xmlString.substring(startIndex, endIndex);
+    return Number(resultValue) || 0;
+}
+
 const generateOTP = () => {
     const digits = 6;
     const otp = otpGenerator.generate(digits, { digits: true, upperCaseAlphabets: false, specialChars: false, lowerCaseAlphabets: false });
@@ -237,24 +291,9 @@ const send = async (cls, attendanceClass, type, sender) => {
 }
 
 const sendSMS2 = async (data) => {
+    const serviceURL = "http://ams.tinnhanthuonghieu.vn:8009/bulkapi?wsdl";
     try {
-        return await axios.post("http://ams.tinnhanthuonghieu.vn:8009/bulkapi?wsdl", {
-            "User": "smsbrand_viendong",
-            "Password": "123456aA@",
-            "CPCode": "CDVIENDONG_20240102_2912806",
-            "RequestID": 1,
-            "UserID": data.phone,
-            "ReceiverID": data.phone,
-            "ServiceID": data.sender,
-            "CommandCode": "bulksms",
-            "Content": data.message,
-            "ContentType": data.contentType
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'charset': 'utf-8'
-            }
-        });
+
     }
     catch (err) {
         throw err;
@@ -313,4 +352,4 @@ const registerTemplate = async (data) => {
     }
 }
 
-module.exports = { sendOTP, verify, sendSMS, getStatusSMS, registerTemplate, sendSMS2, sendSMSTest, generateOTP };
+module.exports = { sendOTP, verify, sendSMS, getStatusSMS, registerTemplate, sendSMS2, sendSMSTest, generateOTP, sendOTPV2, getResultNumber };
