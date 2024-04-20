@@ -120,9 +120,9 @@ const sendSMS = async (data) => {
             });
             const filteredAttendance = data.classData.filter(student => student.hiendienyn === true);
             if (classExists) {
-                await send(classExists, filteredAttendance, data.type, data.sender).then((res) => {
-                    count = res;
-                })
+                await send(classExists, filteredAttendance).then((res) => {
+                    count = res || 0;
+                }).catch((error) => console.log("Send sms: ", error));
                 return {
                     success: true,
                     message: `Đã gửi sms đến ${count} phụ huynh.`,
@@ -132,16 +132,15 @@ const sendSMS = async (data) => {
             }
             else {
                 const classes = data.classData.length > 0 ? data.classData.map(function (e) {
-                    return { mssv: e?.mshv, ten: e?.name, hiendien: e?.hiendienyn, smsSent: e?.hiendienyn };
+                    return { mssv: e?.mshv, ten: e?.name, hiendien: false, smsSent: false };
                 }) : [];
                 const newClass = new Class({
                     classID: data.subject?.lopid,
                     students: classes,
                     date: data.subject?.ngay
                 });
-                await send(null, filteredAttendance, data.type, data.sender).then(async (res) => {
+                await send(newClass, filteredAttendance).then(async (res) => {
                     count = res || 0;
-                    await newClass.save();
                 }).catch((error) => console.log("Send sms: ", error));
                 return {
                     success: true,
@@ -197,92 +196,97 @@ function removeVietnameseAccent(str) {
     return result;
 }
 
-const send = async (cls, attendanceClass, type, sender) => {
+const sendMessage = async (phone, message) => {
+    var xmlStr = `
+            <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:impl="http://impl.bulkSms.ws/">
+                <soapenv:Header/>
+                <soapenv:Body>
+                    <impl:wsCpMt>
+                        <!--Optional:-->
+                        <User>smsbrand_viendong</User>
+                        <!--Optional:-->
+                        <Password>Viendong#12</Password>
+                        <!--Optional:-->
+                        <CPCode>CDVIENDONG</CPCode>
+                        <!--Optional:-->
+                        <RequestID>1</RequestID>
+                        <!--Optional:-->
+                        <UserID>${phone}</UserID>
+                        <!--Optional:-->
+                        <ReceiverID>${phone}</ReceiverID>
+                        <!--Optional:-->
+                        <ServiceID>CDVienDong</ServiceID>
+                        <!--Optional:-->
+                        <CommandCode>bulksms</CommandCode>
+                        <!--Optional:-->
+                        <Content>${message}</Content>
+                        <!--Optional:-->
+                        <ContentType>0</ContentType>
+                    </impl:wsCpMt>
+                </soapenv:Body>
+            </soapenv:Envelope>
+        `
+    const result = await axios.post(
+        'https://ams.tinnhanthuonghieu.vn:8998/bulkapi?wsdl',
+        xmlStr,
+        {
+            headers: {
+                "Content-Type": "text/xml"
+            }
+        }
+    );
+
+    if (getResultNumber(result.data) === 1) {
+        return true;
+    }
+    else {
+        await new Promise(resolve => setTimeout(resolve, 10000));
+        return false;
+    }
+}
+
+const send = async (cls, attendanceClass) => {
     let count = 0;
     let sentList = [];
+    const now = new Date();
     try {
-        if (cls) {
-            if (cls?.students.length <= 0 && attendanceClass.length <= 0) return 0;
-            const studentsToBeUpdated = [];
-            attendanceClass.forEach(attendedStudent => {
-                const savedStudent = cls?.students.find(saved => saved.mssv === attendedStudent.mshv);
-                if (savedStudent && savedStudent.hiendien !== attendedStudent.hiendienyn) {
-                    studentsToBeUpdated.push(attendedStudent);
-                };
-            });
-            const promises = studentsToBeUpdated.map(async e => {
-                const student = await Student.findOne({ "mssv": e?.mshv });
-                if (student && student.sdt_cha_me) {
-                    const result = await axios.post("http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_post_json/", {
-                        "ApiKey": apiKey,
-                        "Content": `${removeVietnameseAccent(e?.name)} abcasd`,
-                        "Phone": student.sdt_cha_me,
-                        "SecretKey": secretKey,
-                        "SmsType": type,
-                        "Brandname": sender,
-                        "Sandbox": "1"
-                    }, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    });
-                    if (result && result.data) {
-                        // const status = await getStatusSMS(result.data?.SMSID);
-                        // if (status && status.data) {
-                        //     sentList.push({
-                        //         mssv: student.mssv,
-                        //         success: status.data.SendSuccess || 0,
-                        //         failed: status.data.SendFailed || 0
-                        //     });
-                        // }
-                        // else count++;
-                        count++;
+        if (cls?.students.length <= 0 && attendanceClass.length <= 0) return 0;
+        const studentsToBeUpdated = [];
+        attendanceClass.forEach(attendedStudent => {
+            const savedStudent = cls?.students.find(saved => saved.mssv === attendedStudent.mshv);
+            if (savedStudent && savedStudent.hiendien !== attendedStudent.hiendienyn) {
+                studentsToBeUpdated.push(attendedStudent);
+            };
+        });
+        const promises = studentsToBeUpdated.map(async e => {
+            const student = await Student.findOne({ "mssv": e?.mshv });
+            if (student && student.sdt_cha_me) {
+                let success = await sendMessage(student.sdt_cha_me, `Ban ${removeVietnameseAccent(e?.name)} da diem danh vao hoc luc ${moment(now).format("hh:mm A, DD/MM/YYYY")}`);
+                let k = 0;
+                while (!success && k < 3) {
+                    success = await sendMessage(student.sdt_cha_me, `Ban ${removeVietnameseAccent(e?.name)} da diem danh vao hoc luc ${moment(now).format("hh:mm A, DD/MM/YYYY")}`);
+                    k++;
+                }
+                if (success) {
+                    count++;
+                    const index = cls.students.findIndex(student => student.mssv === e?.mshv);
+                    if(index !== -1)
+                    {
+                        cls.students[index].hiendien = true;
+                        cls.students[index].smsSent = true;
                     }
                 }
-                // else {
-                //     sentList.push({
-                //         mssv: e?.mshv,
-                //         success: 0,
-                //         failed: 0
-                //     });
-                // }
-            });
-            await Promise.all(promises);
-            await mapAttendance(cls, attendanceClass);
-        }
-        else {
-            const promises = attendanceClass.map(async e => {
-                const student = await Student.findOne({ "mssv": e?.mshv });
-                if (student && student.sdt_cha_me) {
-                    const result = await axios.post("http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_post_json/", {
-                        "ApiKey": apiKey,
-                        "Content": `${removeVietnameseAccent(e?.name)} abcasd`,
-                        "Phone": student.sdt_cha_me,
-                        "SecretKey": secretKey,
-                        "SmsType": type,
-                        "Brandname": sender,
-                        "Sandbox": "1"
-                    }, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                        }
-                    });
-                    if (result && result.data) {
-                        // const status = await getStatusSMS(result.data?.SMSID);
-                        // if (status && status.data) {
-                        //     sentList.push({
-                        //         mssv: student.mssv,
-                        //         success: status.data.SendSuccess || 0,
-                        //         failed: status.data.SendFailed || 0
-                        //     });
-                        // }
-                        // else count++;
-                        count++;
+                else {
+                    const index = cls.students.findIndex(student => student.mssv === e?.mshv);
+                    if(index !== -1)
+                    {
+                        cls.students[index].hiendien = true;
                     }
                 }
-            });
-            await Promise.all(promises);
-        }
+            }
+        });
+        await Promise.all(promises);
+        await cls.save();
         return count;
     }
     catch (err) {
