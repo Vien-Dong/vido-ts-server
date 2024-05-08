@@ -29,14 +29,14 @@ body {
 .pb_slant-white:after {
     content: "";
     position: absolute;
-    bottom: -130px;
+    bottom: -110px;
     left: -50px;
-    height: 200px;
+    height: 180px;
     width: 130%;
     background-color: #f2f4f9;
-    -webkit-transform: rotate(-4deg);
-    -ms-transform: rotate(-4deg);
-    transform: rotate(-4deg);
+    -webkit-transform: rotate(-3deg);
+    -ms-transform: rotate(-3deg);
+    transform: rotate(-3deg);
     z-index: 2;
 }
 

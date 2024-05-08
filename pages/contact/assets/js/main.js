@@ -29,6 +29,18 @@ const careers = [
     { value: "Ngành khác", label: "Ngành khác" }
 ];
 
+document.addEventListener("DOMContentLoaded", function () {
+    var studentCheckbox1 = document.getElementById("student-1");
+    var parentCheckbox1 = document.getElementById("parent-1");
+    var studentCheckbox2 = document.getElementById("student-2");
+    var parentCheckbox2 = document.getElementById("parent-2");
+
+    studentCheckbox1.checked = false;
+    parentCheckbox1.checked = false;
+    studentCheckbox2.checked = false;
+    parentCheckbox2.checked = false;
+});
+
 careers.forEach(career => {
     const option1 = document.createElement('option');
     option1.value = career.value;
@@ -191,6 +203,35 @@ carousel.addEventListener("touchmove", dragging);
 document.addEventListener("mouseup", dragStop);
 carousel.addEventListener("touchend", dragStop);
 
+var studentCheckbox1 = document.getElementById("student-1");
+var parentCheckbox1 = document.getElementById("parent-1");
+var studentCheckbox2 = document.getElementById("student-2");
+var parentCheckbox2 = document.getElementById("parent-2");
+
+studentCheckbox1.addEventListener("click", (e) => {
+    if (parentCheckbox1.checked) {
+        parentCheckbox1.checked = false; // Uncheck parent checkbox
+    }
+});
+
+parentCheckbox1.addEventListener("click", (e) => {
+    if (studentCheckbox1.checked) {
+        studentCheckbox1.checked = false; // Uncheck student checkbox
+    }
+});
+
+studentCheckbox2.addEventListener("click", (e) => {
+    if (parentCheckbox2.checked) {
+        parentCheckbox2.checked = false; // Uncheck parent checkbox
+    }
+});
+
+parentCheckbox2.addEventListener("click", (e) => {
+    if (studentCheckbox2.checked) {
+        studentCheckbox2.checked = false; // Uncheck student checkbox
+    }
+});
+
 document.getElementById("form-1").addEventListener("submit", async (e) => {
     e.preventDefault();
     var fullname = document.getElementById("fullname-1").value;
@@ -207,6 +248,7 @@ document.getElementById("form-1").addEventListener("submit", async (e) => {
             birthday: moment(birthday).format("DD-MM-YYYY"),
             training_industry_1: career,
             consulting_content: content,
+            cptarget_consulting_content: studentCheckbox1.checked ? "student" : parentCheckbox1.checked ? "parent" : null,
             cptarget_source: "website",
             date_added: moment(new Date()).format("YYYY/MM/DD"),
             assigned_user_id: "Users:52"
@@ -246,6 +288,7 @@ document.getElementById("form-2").addEventListener("submit", async (e) => {
             birthday: moment(birthday).format("DD-MM-YYYY"),
             training_industry_1: career,
             consulting_content: content,
+            cptarget_consulting_content: studentCheckbox2.checked ? "student" : parentCheckbox2.checked ? "parent" : null,
             cptarget_source: "website",
             date_added: moment(new Date()).format("YYYY/MM/DD"),
             assigned_user_id: "Users:52"

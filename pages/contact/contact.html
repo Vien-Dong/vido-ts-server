@@ -56,24 +56,54 @@
                         <h2 class="mb-4 mt-0 text-center">Đăng ký tư vấn</h2>
                         <div class="form-group">
                             <input type="text" id="fullname-1" class="form-control pb_height-50 reverse"
-                                placeholder="Họ và tên">
+                                placeholder="Họ và tên" oninvalid="this.setCustomValidity('Hãy nhập họ tên')"
+                                oninput="setCustomValidity('')" required>
                         </div>
                         <div class="form-group">
                             <input type="text" id="phone-1" class="form-control pb_height-50 reverse"
-                                placeholder="Số điện thoại">
+                                placeholder="Số điện thoại" oninvalid="this.setCustomValidity('Hãy nhập số điện thoại')"
+                                oninput="setCustomValidity('')" required>
                         </div>
                         <div class="form-group">
-                            <select id="career-1" class="form-control pb_height-50 reverse" style="appearance: none;">
-                                <option selected hidden>Chọn ngành tư vấn</option>
+                            <select id="career-1" class="form-control pb_height-50 reverse" style="appearance: none;"
+                                oninvalid="this.setCustomValidity('Hãy chọn ngành')" oninput="setCustomValidity('')"
+                                required>
+                                <option hidden value="">Chọn ngành tư vấn</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="date" id="birthday-1" class="form-control pb_height-50 reverse"
-                                placeholder="Ngày sinh">
+                            <input type="text" id="birthday-1" class="form-control pb_height-50 reverse"
+                                placeholder="Ngày sinh" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                oninput="setCustomValidity('')" oninvalid="this.setCustomValidity('Hãy chọn ngày sinh')"
+                                required>
+                        </div>
+                        <div class="form-group d-flex align-items-center" style="gap: 10px">
+                            <h6 class="m-0">Bạn là: </h6>
+                            <div class="d-flex" style="flex: 1; gap: 20px">
+                                <label for="student-1" class="checkbox has-label m-0">
+                                    <div>
+                                        <input type="checkbox" checked name="student-1" id="student-1" />
+                                        <span class="check-icon"></span>
+                                    </div>
+                                    <div>
+                                        <h6 class="m-0">Học sinh</h6>
+                                    </div>
+                                </label>
+                                <label for="parent-1" class="checkbox has-label m-0">
+                                    <div>
+                                        <input type="checkbox" checked name="parent-1" id="parent-1" />
+                                        <span class="check-icon"></span>
+                                    </div>
+                                    <div>
+                                        <h6 class="m-0">Phụ huynh</h6>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <textarea rows="4" id="content-1" class="form-control reverse"
-                                placeholder="Nội dung tư vấn"></textarea>
+                            <textarea rows="4" id="content-1" class="form-control reverse" placeholder="Nội dung tư vấn"
+                                oninvalid="this.setCustomValidity('Hãy nhập nội dung')" oninput="setCustomValidity('')"
+                                required></textarea>
                         </div>
                         <div class="form-group">
                             <input type="submit" id="submit-1"
@@ -455,24 +485,53 @@
                         <h2 class="mb-4 mt-0 text-center">Đăng ký tư vấn</h2>
                         <div class="form-group">
                             <input type="text" id="fullname-2" class="form-control pb_height-50 reverse"
-                                placeholder="Họ và tên">
+                                placeholder="Họ và tên" required oninvalid="this.setCustomValidity('Hãy nhập nội dung')"
+                                oninput="setCustomValidity('')">
                         </div>
                         <div class="form-group">
                             <input type="text" id="phone-2" class="form-control pb_height-50 reverse"
-                                placeholder="Số điện thoại">
+                                placeholder="Số điện thoại" required
+                                oninvalid="this.setCustomValidity('Hãy nhập nội dung')" oninput="setCustomValidity('')">
                         </div>
                         <div class="form-group">
                             <select id="career-2" class="form-control pb_height-50 reverse" style="appearance: none;">
-                                <option selected hidden>Chọn ngành tư vấn</option>
+                                <option hidden value="" required oninvalid="this.setCustomValidity('Hãy nhập nội dung')"
+                                    oninput="setCustomValidity('')">Chọn ngành tư vấn</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="date" id="birthday-2" class="form-control pb_height-50 reverse"
-                                placeholder="Ngày sinh">
+                            <input type="text" id="birthday-2" class="form-control pb_height-50 reverse"
+                                placeholder="Ngày sinh" onfocus="(this.type='date')" onblur="(this.type='text')"
+                                required oninvalid="this.setCustomValidity('Hãy nhập nội dung')"
+                                oninput="setCustomValidity('')">
+                        </div>
+                        <div class="form-group d-flex align-items-center" style="gap: 10px">
+                            <h6 class="m-0">Bạn là: </h6>
+                            <div class="d-flex" style="flex: 1; gap: 20px">
+                                <label for="student-2" class="checkbox has-label m-0">
+                                    <div>
+                                        <input type="checkbox" checked name="student-2" id="student-2" />
+                                        <span class="check-icon"></span>
+                                    </div>
+                                    <div>
+                                        <h6 class="m-0">Học sinh</h6>
+                                    </div>
+                                </label>
+                                <label for="parent-2" class="checkbox has-label m-0">
+                                    <div>
+                                        <input type="checkbox" checked name="parent-2" id="parent-2" />
+                                        <span class="check-icon"></span>
+                                    </div>
+                                    <div>
+                                        <h6 class="m-0">Phụ huynh</h6>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                         <div class="form-group">
-                            <textarea rows="4" id="content-2" class="form-control reverse"
-                                placeholder="Nội dung tư vấn"></textarea>
+                            <textarea rows="4" id="content-2" class="form-control reverse" placeholder="Nội dung tư vấn"
+                                required oninvalid="this.setCustomValidity('Hãy nhập nội dung')"
+                                oninput="setCustomValidity('')"></textarea>
                         </div>
                         <div class="form-group">
                             <input type="submit" id="submit-2"
