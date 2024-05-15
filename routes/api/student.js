@@ -1,7 +1,22 @@
 const express = require("express");
-const { createStudent, importStudent, createResult, getResult } = require("../../services/student-service");
+const { createStudent, importStudent, createResult, getResult, getStudents } = require("../../services/student-service");
 
 const router = express.Router();
+
+router.get("/get", async (req, res) => {
+    try {   
+        const result = await getStudents();
+        res.status(200).send({
+            status: true,
+            message: "Lấy danh sách học sinh thành công!",
+            payload: result
+        });
+    }
+    catch (err) {
+        res.status(400).send('Something went wrong!');
+        console.log(err);
+    }
+})
 
 router.post("/create", async (req, res) => {
     try {

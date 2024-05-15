@@ -31,6 +31,7 @@ app.use('/api/mail', require("./routes/api/mail"));
 app.use('/api/crm', require("./routes/api/crm"));
 app.use('/api/google', require("./routes/api/google"));
 app.use('/api/student', require("./routes/api/student"));
+app.use('/api/class', require("./routes/api/class"));
 app.use('/api/career', require("./routes/api/career"));
 app.use('/api/zalo', require("./routes/api/zalo"));
 app.use('/api/subject', require("./routes/api/subject"));
@@ -47,6 +48,7 @@ app.get('/exam', function (req, res) {
 app.get('/template', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/contact/contact.html'));
 });
+app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/lucky'));
 app.use(express.static(__dirname + '/pages/exam'));
 app.use(express.static(__dirname + '/pages/contact'));

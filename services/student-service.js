@@ -17,6 +17,15 @@ const createStudent = async (mssv, sdt_cha_me, sdt_hoc_sinh) => {
     }
 }
 
+const getStudents = async () => {
+    try {
+        return await Student.find();
+    } catch (err) {
+        console.log("Get students: ", err);
+        return 0;
+    }
+}
+
 const importStudent = async () => {
     try {
         let count = 0;
@@ -64,4 +73,4 @@ const getResult = async (examID, userID) => {
     }
 }
 
-module.exports = { createStudent, importStudent, createResult, getResult };
+module.exports = { createStudent, importStudent, createResult, getResult, getStudents };

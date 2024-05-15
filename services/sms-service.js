@@ -11,7 +11,14 @@ const apiKey = "FB76CB90F33014EA7D75D9283C5409";
 const secretKey = "52D3A169C65F98553D5EF95B9AD95B";
 const accessToken = "ietDWAbPCVg22JvkVQFZUFutqUlCgcUU";
 const client = require("twilio")(accountSid, authToken);
-const otpGenerator = require('otp-generator')
+const otpGenerator = require('otp-generator');
+
+const replaceFirstChar = (inputStr) => {
+    if (inputStr.charAt(0) === '0') {
+        return '84' + inputStr.slice(1);
+    }
+    return inputStr;
+}
 
 const sendOTP = async (phone) => {
     try {
@@ -167,6 +174,68 @@ const sendSMS = async (data) => {
     }
 }
 
+const resendSMS = async (data) => {
+    let count = 0;
+    try {
+        if (data && typeof data === "object") {
+            const classExists = await Class.findOne({
+                $and: [
+                    { "classID": data?.classID },
+                    { "date": data?.date }
+                ]
+            });
+            if (classExists) {
+                const studentsToSend = classExists.students.filter(e => e.hiendien && !e.smsSent);
+                if (studentsToSend.length > 0) {
+                    const promises = studentsToSend.map(async e => {
+                        const student = await Student.findOne({ "mssv": e?.mssv });
+                        if (student && student.sdt_cha_me) {
+                            let success = await sendMessage(replaceFirstChar(student.sdt_cha_me), `Ban ${removeVietnameseAccent(e?.ten)} da diem danh ngay ${moment(data.date).format("DD/MM/YYYY")}`);
+                            let k = 0;
+                            while (!success && k < 3) {
+                                success = await sendMessage(replaceFirstChar(student.sdt_cha_me), `Ban ${removeVietnameseAccent(e?.ten)} da diem danh ngay ${moment(data.date).format("DD/MM/YYYY")}`);
+                                k++;
+                            }
+                            if (success) {
+                                count++;
+                                e.smsSent = true;
+                            }
+                        }
+                    });
+                    await Promise.all(promises);
+                    await Class.updateOne({ classID: classExists.classID, date: classExists.date }, { $set: { students: classExists.students } });
+                    return {
+                        success: true,
+                        message: `Đã gửi sms đến ${count} phụ huynh.`,
+                        phoneSent: count,
+                        status: 200
+                    };
+                }
+                return {
+                    success: true,
+                    message: `Đã gửi sms đến 0 phụ huynh.`,
+                    phoneSent: 0,
+                    status: 200
+                };
+            }
+            return {
+                success: true,
+                message: `Lớp không tồn tại.`,
+                phoneSent: 0,
+                status: 404
+            };
+        };
+    }
+    catch (err) {
+        return {
+            success: false,
+            message: "Lỗi hệ thống.",
+            phoneSent: 0,
+            status: 400
+        };
+    }
+}
+
 const mapAttendance = async (classExists, attendanceList) => {
     for (const savedStudent of classExists.students) {
         // Tìm sinh viên tương ứng trong danh sách điểm danh
@@ -235,6 +304,7 @@ const sendMessage = async (phone, message) => {
             }
         }
     );
+    console.log(result);
 
     if (getResultNumber(result.data) === 1) {
         return true;
@@ -261,25 +331,23 @@ const send = async (cls, attendanceClass) => {
         const promises = studentsToBeUpdated.map(async e => {
             const student = await Student.findOne({ "mssv": e?.mshv });
             if (student && student.sdt_cha_me) {
-                let success = await sendMessage(student.sdt_cha_me, `Ban ${removeVietnameseAccent(e?.name)} da diem danh vao hoc luc ${moment(now).format("hh:mm A, DD/MM/YYYY")}`);
+                let success = await sendMessage(student.sdt_cha_me, `Ban ${removeVietnameseAccent(e?.name)} da diem danh hom nay ngay ${moment(now).format("DD/MM/YYYY")}`);
                 let k = 0;
                 while (!success && k < 3) {
-                    success = await sendMessage(student.sdt_cha_me, `Ban ${removeVietnameseAccent(e?.name)} da diem danh vao hoc luc ${moment(now).format("hh:mm A, DD/MM/YYYY")}`);
+                    success = await sendMessage(student.sdt_cha_me, `Ban ${removeVietnameseAccent(e?.name)} da diem danh hom nay ngay ${moment(now).format("DD/MM/YYYY")}`);
                     k++;
                 }
                 if (success) {
                     count++;
                     const index = cls.students.findIndex(student => student.mssv === e?.mshv);
-                    if(index !== -1)
-                    {
+                    if (index !== -1) {
                         cls.students[index].hiendien = true;
                         cls.students[index].smsSent = true;
                     }
                 }
                 else {
                     const index = cls.students.findIndex(student => student.mssv === e?.mshv);
-                    if(index !== -1)
-                    {
+                    if (index !== -1) {
                         cls.students[index].hiendien = true;
                     }
                 }
@@ -356,4 +424,4 @@ const registerTemplate = async (data) => {
     }
 }
 
-module.exports = { sendOTP, verify, sendSMS, getStatusSMS, registerTemplate, sendSMS2, sendSMSTest, generateOTP, sendOTPV2, getResultNumber };
+module.exports = { sendOTP, verify, sendSMS, getStatusSMS, registerTemplate, sendSMS2, sendSMSTest, generateOTP, sendOTPV2, getResultNumber, resendSMS };
