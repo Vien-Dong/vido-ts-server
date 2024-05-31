@@ -116,6 +116,25 @@ function replaceContent(data) {
             containerElement.appendChild(trandRightSingleElement);
         });
     }
+
+    if (data && data.bottomNews && data.bottomNews.length > 0) {
+        var container = document.getElementById('trend-bottom-container');
+        data.bottomNews.forEach(function (item, index) {
+            const col = document.createElement('div');
+            col.className = 'col-12 col-md-6';
+            col.innerHTML = `
+                <div class="trend-bottom-img">
+                    <img class="w-100" src="${item.img}" alt="">
+                    <div class="trend-bottom-cap">
+                    <h6 class="link-container">
+                        <a href="${item.url}" title="${item.title}">${item.title}</a>
+                    </h6>
+                    </div>
+                </div>
+                `;
+            container.appendChild(col);
+        });
+    }
 }
 
 $(document).ready(function ($) {

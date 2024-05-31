@@ -186,6 +186,7 @@ const resendSMS = async (data) => {
             });
             if (classExists) {
                 const studentsToSend = classExists.students.filter(e => e.hiendien && !e.smsSent);
+                console.log(studentsToSend);
                 if (studentsToSend.length > 0) {
                     const promises = studentsToSend.map(async e => {
                         const student = await Student.findOne({ "mssv": e?.mssv });
