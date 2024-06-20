@@ -24,7 +24,7 @@ const examSchema = new mongoose.Schema({
     exam: {
         type: Array,
     }
-})
+});
 
 const Exam = mongoose.model("Exam", examSchema);
 module.exports = Exam;

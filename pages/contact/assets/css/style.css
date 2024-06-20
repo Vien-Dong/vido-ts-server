@@ -297,11 +297,6 @@
     font-family: "Montserrat", Arial, sans-serif;
 }
 
-.pb_feature-v1.pb_feature-circle,
-.pb_feature-v2.pb_feature-circle {
-    /* circle with background color */
-}
-
 .pb_feature-v1.pb_feature-circle .pb_icon,
 .pb_feature-v2.pb_feature-circle .pb_icon {
     line-height: 0;
@@ -969,7 +964,6 @@ textarea {
 
 .pb_select-wrap:before {
     font-family: 'Ionicons';
-    speak: none;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;

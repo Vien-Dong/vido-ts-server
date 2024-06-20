@@ -1,5 +1,6 @@
 const { collection, getDocs } = require("firebase/firestore");
 const { database } = require("../config/firebase");
+const CareerQuest = require("../models/career");
 
 const getCareers = async() => {
     try {
@@ -13,4 +14,23 @@ const getCareers = async() => {
     }
 }
 
-module.exports = { getCareers }; 
+const getQuestions = async () => {
+    try {
+        return await CareerQuest.find();
+    }
+    catch (err) {
+        return err;
+    }
+}
+
+const createQuestions = async (data) => {
+    try {
+        const careerQuest = new CareerQuest(data);
+        return await careerQuest.save();
+    }
+    catch (err) {
+        return err;
+    }
+}
+
+module.exports = { getCareers, createQuestions, getQuestions }; 
