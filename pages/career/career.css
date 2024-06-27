@@ -1,0 +1,144 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    font: 16px 'Source Sans Pro', sans-serif;
+    border: none;
+    box-sizing: border-box;
+  }
+  
+  #quiz {
+    position: relative;
+    width: calc(100% - 100px);
+  }
+  
+  #quiz h1 {
+    color: #FAFAFA;
+    font-weight: 600;
+    font-size: 36px;
+    text-transform: uppercase;
+    text-align: left;
+    line-height: 44px;
+  }
+  
+  #quiz button {
+    float: left;
+    margin: 8px 0px 0px 8px;
+    padding: 4px 8px;
+    background: #9ACFCC;
+    color: #00403C;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  #quiz button:hover {
+    background: #36a39c;
+    color: #FFF;
+  }
+  
+  #quiz button:disabled {
+    opacity: 0.5;
+    background: #9ACFCC;
+    color: #00403C;
+    cursor: default;
+  }
+  
+  #question {
+    padding: 20px;
+    background: #FAFAFA;
+    text-align: center;
+  }
+  
+  #question h2 {
+    margin-bottom: 16px;
+    font-weight: 600;
+    font-size: 20px;
+  }
+  
+  #question input[type=radio] {
+    display: none;
+  }
+  
+  #question label {
+    display: inline-block;
+    margin: 4px;
+    padding: 8px;
+    background: #FAE3BB;
+    color: #4C3000;
+    width: calc(50% - 8px);
+    min-width: 50px;
+    cursor: pointer;
+  }
+  
+  #question label:hover {
+    background: #EBBB67;
+  }
+  
+  #question input[type=radio]:checked + label {
+    background: #CB8306;
+    color: #FAFAFA;
+  }
+  
+  #quiz-results {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 44px;
+    left: 0px;
+    background: white;
+    width: 100%;
+    padding-block: 2rem;
+  }
+  
+  #quiz-results-message {
+    display: block;
+    color: #00403C;
+    font-weight: bold;
+  }
+  
+  #quiz-results-score {
+    display: block;
+    color: #31706c;
+  }
+  
+  #quiz-results-score b {
+    color: #00403C;
+    font-weight: 600;
+    font-size: inherit;
+  }
+  
+  #quiz-retry-button {
+  
+    float: left;
+    margin: 8px 0px 0px 8px;
+    padding: 4px 15px;
+    background: #9ACFCC;
+    color: #00403C;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .loader {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-left-color: #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin: auto;
+    padding-top: 3rem
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* CSS to hide the loader initially */
+.loader-container.hidden,
+.question-container.hidden {
+    display: none;
+}

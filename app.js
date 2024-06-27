@@ -48,10 +48,14 @@ app.get('/exam', function (req, res) {
 app.get('/template', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/contact/contact.html'));
 });
+app.get('/orientation', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/career/career.html'));
+});
 app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/lucky'));
 app.use(express.static(__dirname + '/pages/exam'));
 app.use(express.static(__dirname + '/pages/contact'));
+app.use(express.static(__dirname + '/pages/career'));
 app.use(express.static(path.join(__dirname, 'pages')));
 
 const server = app.listen(port, () => {
