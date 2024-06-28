@@ -159,7 +159,7 @@ Quiz.prototype.render = function (container) {
                 break;
             }
         }
-        document.getElementById('submit-button').disabled = !all_questions_answered;
+        // document.getElementById('submit-button').disabled = !all_questions_answered;
     }
 
     // Render the first question
@@ -222,6 +222,9 @@ Quiz.prototype.render = function (container) {
             document.getElementById('weekness').innerHTML = main_career.weekness.split('\n').map(function (sentence) {
                 return '&emsp;&emsp;' + sentence.trim(); // Dùng &emsp; để thêm gạch đầu dòng
             }).join('<br>');
+            document.getElementById('url').innerHTML = `
+                <a href=${main_career.url}>Tại đây</a>
+            `
 
             document.getElementById('quiz-retry-button').addEventListener('click', function () {
                 window.location.reload();
@@ -238,7 +241,7 @@ Quiz.prototype.render = function (container) {
                 break;
             }
         }
-        document.getElementById('submit-button').disabled = !all_questions_answered;
+        // document.getElementById('submit-button').disabled = !all_questions_answered;
     });
 }
 
