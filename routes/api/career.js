@@ -1,5 +1,5 @@
 const express = require("express");
-const { getCareers, createQuestions, getQuestions } = require("../../services/career-service");
+const { getCareers, createQuestions, getQuestions, createResult, getResults } = require("../../services/career-service");
 const router = express.Router();
 
 router.get("/get", async (req, res) => {
@@ -56,6 +56,42 @@ router.post("/postQuestion", async (req, res) => {
             message: "Something went wrong!",
         });
         console.log(err);
+    }
+});
+
+router.post("/postResult", async (req, res) => {
+    try {
+        const body = req.body;
+        const result = await createResult(body);
+        res.status(200).send({
+            status: true,
+            message: "Nhập kết quả thành công.",
+            payload: result
+        });
+    }
+    catch (err) {
+        res.status(200).send({
+            status: false,
+            message: "Something went wrong!",
+        });
+        console.log(err);
+    }
+});
+
+router.get("/getResult", async (req, res) => {
+    try {
+        const result = await getResults();
+        res.status(200).send({
+            status: true,
+            message: "Lấy danh sách kết quả thành công.",
+            payload: result
+        });
+    }
+    catch (err) {
+        res.status(200).send({
+            status: false,
+            message: "Something went wrong!",
+        });
     }
 });
 

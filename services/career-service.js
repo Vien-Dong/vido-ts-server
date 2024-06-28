@@ -1,6 +1,7 @@
 const { collection, getDocs } = require("firebase/firestore");
 const { database } = require("../config/firebase");
 const CareerQuest = require("../models/career");
+const OrientationResult = require("../models/orientation_result");
 
 const getCareers = async() => {
     try {
@@ -33,4 +34,23 @@ const createQuestions = async (data) => {
     }
 }
 
-module.exports = { getCareers, createQuestions, getQuestions }; 
+const createResult = async (data) => {
+    try {
+        const orientationResult = new OrientationResult(data);
+        return await orientationResult.save();
+    }
+    catch (err) {
+        throw Error("Lỗi khi tạo kết quả");
+    }
+}
+
+const getResults = async () => {
+    try {
+        return await OrientationResult.find();
+    }
+    catch (err) {
+        return err;
+    }
+}
+
+module.exports = { getCareers, createQuestions, getQuestions, createResult, getResults }; 

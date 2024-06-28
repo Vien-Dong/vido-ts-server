@@ -13,7 +13,26 @@
 </head>
 
 <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
-    <div id="quiz" class="container w-100 p-5">
+    <div class="container w-100 p-5" id="info-form">
+        <h2 class="text-center font-weight-bold">Điền thông tin</h2>
+        <form class="form d-flex flex-column gap-4" id="myForm">
+            <div class="form-input">
+                <input type="number" placeholder="Nhập mã số sinh viên" id="student-code">
+                <label for="student-code">Nhập mã số sinh viên</label>
+            </div>
+            <div class="form-input">
+                <input type="text" placeholder="Nhập tên" id="name">
+                <label for="name">Nhập tên</label>
+            </div>
+            <div class="form-input relative">
+                <input type="text" placeholder="Chọn ngày sinh" id="birthday">
+                <label for="birthday">Chọn ngày sinh</label>
+            </div>
+
+            <button type="button" id="btnSubmit" class="btn bg-success text-white py-2" style="margin-inline: 25rem;">Xác nhận</button>
+        </form>
+    </div>
+    <div id="quiz" class="container w-100 p-5 hidden">
         <div class="p-5">
             <h1 id="quiz-name" class="text-center text-primary"></h1>
 

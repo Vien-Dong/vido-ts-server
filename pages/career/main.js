@@ -159,7 +159,7 @@ Quiz.prototype.render = function (container) {
                 break;
             }
         }
-        // document.getElementById('submit-button').disabled = !all_questions_answered;
+        document.getElementById('submit-button').disabled = !all_questions_answered;
     }
 
     // Render the first question
@@ -186,10 +186,11 @@ Quiz.prototype.render = function (container) {
     document.getElementById('submit-button').addEventListener('click', function () {
         var loader = document.getElementById('loader-container');
         var questionC = document.getElementById('question-container');
+
         loader.classList.remove('hidden');
         questionC.classList.add('hidden');
 
-        setTimeout(() => {
+        setTimeout(async () => {
             loader.classList.add('hidden');
 
             if (answers.length <= 0) {
@@ -198,6 +199,20 @@ Quiz.prototype.render = function (container) {
             }
 
             const result = calculatePoint(answers);
+            const body = {
+                studentCode,
+                name,
+                birthday,
+                result: calculateScore(answers)
+            };
+
+            const isSuccess = await postData(body)
+
+            if (!isSuccess) {
+                alert("Lỗi hệ thống");
+                return;
+            }
+
             const main_career = careers.find(x => x.type === result.highestTypes);
             questionC.classList.remove('hidden');
 
@@ -241,9 +256,43 @@ Quiz.prototype.render = function (container) {
                 break;
             }
         }
-        // document.getElementById('submit-button').disabled = !all_questions_answered;
+        document.getElementById('submit-button').disabled = !all_questions_answered;
     });
 }
+
+function calculateScore(answers) {
+    let grouped = {};
+
+    answers.forEach(item => {
+        let { type, value } = item;
+
+        let score = 0;
+        switch (value) {
+            case 'yes':
+                score = 2;
+                break;
+            case 'notyet':
+                score = 1;
+                break;
+            case 'no':
+                score = 0;
+                break;
+            default:
+                score = 0;
+        }
+
+        if (grouped[type]) {
+            grouped[type].score += score;
+        } else {
+            grouped[type] = { type, score };
+        }
+    });
+
+    let result = Object.values(grouped);
+
+    return result;
+}
+
 
 function calculatePoint(answers) {
     let scores = {};
@@ -369,7 +418,96 @@ async function onLoadData() {
     return response;
 }
 
+async function postData(data) {
+    const response = await fetch('/api/career/postResult', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            // Kiểm tra nếu response không thành công (không thành công khi status không nằm trong khoảng 200-299)
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // Trả về response dưới dạng JSON
+            return response.json();
+        })
+        .then(data => {
+            if (data) {
+                return data.status;
+            }
+            return false;
+        })
+        .catch(error => {
+            // Xử lý lỗi nếu có
+            console.error('Fetch error:', error);
+        });
+    return response;
+}
+
+function isOver13YearsOld(birthdayStr) {
+    let birthday = new Date(birthdayStr);
+
+    if (isNaN(birthday.getTime())) {
+        throw new Error('Ngày sinh không hợp lệ.');
+    }
+
+    let today = new Date();
+
+    let age = today.getFullYear() - birthday.getFullYear();
+
+    let monthDiff = today.getMonth() - birthday.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthday.getDate())) {
+        age--;
+    }
+
+    return age >= 13;
+}
+
+let studentCode = '';
+let name = '';
+let birthday = '';
+
 document.addEventListener('DOMContentLoaded', async function () {
+    document.getElementById('btnSubmit').addEventListener('click', function (event) {
+
+        studentCode = document.getElementById('student-code').value.trim();
+        name = document.getElementById('name').value.trim();
+        birthday = document.getElementById('birthday').value.trim();
+
+        // Kiểm tra các giá trị
+        if (!studentCode || studentCode === "" || !name || name === "" || !birthday || birthday === "") {
+            alert('Vui lòng nhập đầy đủ thông tin.');
+            event.preventDefault(); // Ngăn chặn form được submit
+            return;
+        }
+
+        if (!isOver13YearsOld(birthday)) {
+            alert('Bạn không được nhỏ hơn 13 tuổi.');
+            event.preventDefault(); // Ngăn chặn form được submit
+            return;
+        }
+
+        document.getElementById("info-form").classList.add("hidden");
+        document.getElementById('quiz').classList.remove("hidden");
+
+    });
+
+    document.getElementById('birthday').addEventListener('click', function () {
+        this.type = 'date';
+        setTimeout(() => {
+            this.showPicker();
+        }, 0);
+    });
+
+    document.getElementById('birthday').addEventListener('blur', function () {
+        if (this.value === '') {
+            this.type = 'text';
+        }
+    });
+
     const datas = await onLoadData();
 
     // Create an instance of the Quiz object
