@@ -1,5 +1,5 @@
 const express = require("express");
-const { getCareers, createQuestions, getQuestions, createResult, getResults } = require("../../services/career-service");
+const { getCareers, createQuestions, getQuestions, createResult, getResults, exportExcel } = require("../../services/career-service");
 const router = express.Router();
 
 router.get("/get", async (req, res) => {
@@ -84,6 +84,23 @@ router.get("/getResult", async (req, res) => {
         res.status(200).send({
             status: true,
             message: "Lấy danh sách kết quả thành công.",
+            payload: result
+        });
+    }
+    catch (err) {
+        res.status(200).send({
+            status: false,
+            message: "Something went wrong!",
+        });
+    }
+});
+
+router.get("/exportResult", async (req, res) => {
+    try {
+        const result = await exportExcel();
+        res.status(200).send({
+            status: true,
+            message: "Xuất file thành công.",
             payload: result
         });
     }

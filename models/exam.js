@@ -23,6 +23,9 @@ const examSchema = new mongoose.Schema({
     },
     exam: {
         type: Array,
+    },
+    answer: {
+        type: String
     }
 });
 
