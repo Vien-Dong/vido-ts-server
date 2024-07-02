@@ -1,5 +1,6 @@
 const express = require("express");
 const nodemailer = require("nodemailer");
+const { sendMail } = require("../../services/mail-service");
 const router = express.Router();
 
 router.post('/send-email', (req, res) => {
@@ -32,6 +33,14 @@ router.post('/send-email', (req, res) => {
             res.send('Email đã được gửi đi thành công!');
         }
     });
+});
+
+router.post('/send-email-v2', (req, res) => {
+    const { recipient, subject, msg } = req.body;
+    const result = sendMail(recipient, subject, msg);
+
+    console.log(result);
+    res.send(200);
 });
 
 module.exports = router;

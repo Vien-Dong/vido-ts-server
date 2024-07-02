@@ -12,6 +12,7 @@ const secretKey = "52D3A169C65F98553D5EF95B9AD95B";
 const accessToken = "ietDWAbPCVg22JvkVQFZUFutqUlCgcUU";
 const client = require("twilio")(accountSid, authToken);
 const otpGenerator = require('otp-generator');
+const { sendMail } = require("./mail-service");
 
 const replaceFirstChar = (inputStr) => {
     if (inputStr.charAt(0) === '0') {
@@ -129,6 +130,7 @@ const sendSMS = async (data) => {
             if (classExists) {
                 await send(classExists, filteredAttendance).then((res) => {
                     count = res || 0;
+                    sendMail("leminhquang@viendong.edu.vn", "Thông báo điểm danh", `Thông tin điểm danh ngày ${data.subject?.ngay}: số sms đã được gửi đến phụ huynh - ${res} sms, tổng số sinh viên: ${filteredAttendance.length} học sinh.`);
                 }).catch((error) => console.log("Send sms: ", error));
                 return {
                     success: true,
@@ -148,6 +150,7 @@ const sendSMS = async (data) => {
                 });
                 await send(newClass, filteredAttendance).then(async (res) => {
                     count = res || 0;
+                    sendMail("leminhquang@viendong.edu.vn", "Thông báo điểm danh", `Thông tin điểm danh ngày ${data.subject?.ngay}: số sms đã được gửi đến phụ huynh - ${res} sms, tổng số sinh viên: ${filteredAttendance.length} học sinh.`);
                 }).catch((error) => console.log("Send sms: ", error));
                 return {
                     success: true,
@@ -157,6 +160,7 @@ const sendSMS = async (data) => {
                 };
             }
         }
+        sendMail("leminhquang@viendong.edu.vn", "Thông báo điểm danh", `Thông tin điểm danh ngày ${data.subject?.ngay}. Không có số điện thoại nào. Mã lỗi: ${404}`);
         return {
             success: false,
             message: "Không có số điện thoại nào.",
@@ -165,6 +169,7 @@ const sendSMS = async (data) => {
         };
     }
     catch (err) {
+        sendMail("leminhquang@viendong.edu.vn", "Thông báo điểm danh", `Thông tin điểm danh ngày ${data.subject?.ngay}. Mã lỗi: ${500}`);
         return {
             success: false,
             message: "Lỗi hệ thống.",
