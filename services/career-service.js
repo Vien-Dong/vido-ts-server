@@ -150,10 +150,10 @@ const exportExcel = async () => {
             item.result.forEach(result => {
                 if (result.score > maxScore) {
                     maxScore = result.score;
-                    bestIndustry = columns.find(x => x.type === result.type).label;
+                    bestIndustry = columns.find(x => x.type === result.type)?.label;
                 } else if (result.score === maxScore) {
                     if (Math.random() < 0.5) {
-                        bestIndustry = columns.find(x => x.type === result.type).label;
+                        bestIndustry = columns.find(x => x.type === result.type)?.label;
                     }
                 }
             });
@@ -161,9 +161,10 @@ const exportExcel = async () => {
             worksheet.cell(rowIndex + 2, industriesColumn).string(bestIndustry);
         });
 
-        workbook.write(`Data-${moment(new Date()).format("DD-MM-YYYY-HH-mm-ss")}.xlsx`);
+        workbook.write(`Data.xlsx`);
     }
     catch (err) {
+        console.log(err);
         throw Error("Lỗi hệ thống");
     }
 }
