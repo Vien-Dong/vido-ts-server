@@ -36,6 +36,7 @@ app.use('/api/career', require("./routes/api/career"));
 app.use('/api/zalo', require("./routes/api/zalo"));
 app.use('/api/subject', require("./routes/api/subject"));
 app.use('/api/website', require("./routes/api/website"));
+app.use('/api/book', require("./routes/api/book"));
 app.get('/delete-account', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/index.html'));
 });
