@@ -27,6 +27,7 @@ function renderBooks(books) {
         bookItem.className = "col-md-2";
 
         bookItem.innerHTML = `
+        <div title="${book.BookName}">
             <figure>
                 <a href="book-detail.html"><img src="https://thuvien.phongmayviendong.id.vn/images/default/image.png" alt="${book.BookName}"></a>
                 <figcaption>
