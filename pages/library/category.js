@@ -1,7 +1,7 @@
 const categoryMenu = document.querySelector("#category-menu");
 
 function fetchCategory() {
-    const accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS10aHV2aWVuLnZpZW5kb25nLmVkdS52bi9hcGkvYXV0aC9sb2dpbiIsImlhdCI6MTczMTQzNjcyMiwiZXhwIjoxNzMxNDM3NjIyLCJuYmYiOjE3MzE0MzY3MjIsImp0aSI6IkdybHBTS2IySlE0N25aNGciLCJzdWIiOiIxMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.w3e9ThJbury-8YJNO1bOktDDXZcFUr9aapXKSRxemWk";
+    const accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS10aHV2aWVuLnZpZW5kb25nLmVkdS52bi9hcGkvYXV0aC9sb2dpbiIsImlhdCI6MTczMTQ1ODk3MCwiZXhwIjoxNzMxNDU5ODcwLCJuYmYiOjE3MzE0NTg5NzAsImp0aSI6IjV2ejZuRHk0b2kxUlp2aGsiLCJzdWIiOiIxMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.nJ8_t3onm3gWvOVWHTNHV2ImI1sjIEoDiFIm6A4fFFk";
 
     axios.get("https://api-thuvien.viendong.edu.vn/api/category/", {
         headers: {
@@ -18,7 +18,7 @@ function fetchCategory() {
 }
 
 function renderCategory(categories) {
-    categoryMenu.innerHTML = ""; // Xóa nội dung cũ của menu
+    categoryMenu.innerHTML = ""; 
 
     categories.forEach(category => {
         const categoryItem = document.createElement("li");

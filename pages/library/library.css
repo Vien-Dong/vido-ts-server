@@ -269,13 +269,14 @@ address { font-style: italic; }
 }
 .logo {
     float: left;
-    width: 100%;
+    width: 75%;
     padding: 0px 0px 0px;
 }
 /* Navigation */
 a.menu-link {
     color: #2e2e2e;
     display: none;
+    margin-left: 100px;
 }
 .menu-link span {
   border-bottom: solid 3px #2e2e2e;
@@ -3641,4 +3642,3 @@ blockquote:before {
     display: block;
     max-width: 150px; 
 }
-

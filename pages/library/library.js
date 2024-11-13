@@ -23,6 +23,7 @@ function renderBooks(books) {
         bookItem.className = "col-md-2"; 
 
         bookItem.innerHTML = `
+        <div title="${book.BookName}">
             <figure>
                 <a href="book-detail.html"><img src="https://thuvien.phongmayviendong.id.vn/images/default/image.png" alt="${book.BookName}"></a>
                 <figcaption>
@@ -31,15 +32,15 @@ function renderBooks(books) {
                     <a href="#" class="icon ereaders-reload" title="Reload"></a>
                 </figcaption>
             </figure>
-            <div class="ereaders-book-grid-text overflow-hidden">
-                <div class="d-flex flex-row justify-content-between">
-                    <h2 class="text-truncate">${book.BookName}</h2>
+            <div class="ereaders-book-grid-text overflow-hidden" >
+                <div class="d-flex flex-row justify-content-between" >
+                    <h2 class="text-truncate" >${book.BookName}</h2>
                     <span class="text-muted">${book.Category}</span>
                 </div>
                 <small class="mt-3 d-block text-secondary">${book.PublisherName}</small>
                 <a href="${book.Attachments[0]}" class="ereaders-simple-btn ereaders-bgcolor mt-2">Đọc Sách</a>
             </div>
-
+        </div>
         `;
         
         container.appendChild(bookItem); 
