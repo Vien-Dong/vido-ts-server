@@ -44,7 +44,7 @@ function renderBooks(books) {
                 ${book.Attachments && book.Attachments.length > 0 ?
                 '<a class="ereaders-simple-btn ereaders-bgcolor mt-2" style="cursor: pointer;">Đọc Sách</a>'
                 :
-                '<a class="ereaders-simple-btn ereaders-bgcolor mt-2" style="cursor: pointer;">Mượn tại thư viện</a>'
+                '<a class="ereaders-simple-btn ereaders-disabled mt-2" style="cursor: pointer;">Mượn tại thư viện</a>'
                 }
             </div>
         `;
@@ -56,7 +56,7 @@ function renderBooks(books) {
             // Kiểm tra nếu `Attachments` có dữ liệu
             if (!book.Attachments || book.Attachments.length === 0) {
                 event.preventDefault(); // Ngăn không mở modal
-                alert("Sách này không có file đính kèm để đọc.");
+                alert("Sách này không có file đính kèm để đọc, hãy mượn ở thư viện.");
             } else {
                 // Gọi hàm để hiển thị PDF trong modal hoặc xử lý mở modal
                 showPdf(book.Attachments[0], book.BookName);
@@ -68,7 +68,7 @@ function renderBooks(books) {
             // Kiểm tra nếu `Attachments` có dữ liệu
             if (!book.Attachments || book.Attachments.length === 0) {
                 event.preventDefault(); // Ngăn không mở modal
-                alert("Sách này không có file đính kèm để đọc.");
+                alert("Sách này không có file đính kèm để đọc, hãy mượn ở thư viện.");
             } else {
                 // Gọi hàm để hiển thị PDF trong modal hoặc xử lý mở modal
                 showPdf(book.Attachments[0], book.BookName);
