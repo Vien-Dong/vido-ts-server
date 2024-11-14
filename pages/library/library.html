@@ -37,46 +37,6 @@
                   ><img src="images/logo.png" alt=""
                 /></a>
               </aside>
-              <aside class="col-md-9">
-                <!--// Navigation \\-->
-                <a href="#menu" class="menu-link active"><span></span></a>
-                <nav
-                  id="menu"
-                  class="menu navbar navbar-default"
-                  style="width: 100%"
-                >
-                  <ul
-                    class="level-1 navbar-nav d-flex flex-row align-items-center"
-                    style="width: 100%"
-                  >
-                    <li><a href="/library">Trang chủ</a></li>
-                    <li class="active">
-                      <a href="#">Thư viện</a
-                      ><span class="has-subnav"
-                        ><i class="fa fa-angle-down"></i
-                      ></span>
-                      <ul class="sub-menu level-2">
-                        <li>
-                          <a href="#">Thể loại</a
-                          ><span class="has-subnav"
-                            ><i class="fa fa-angle-down"></i
-                          ></span>
-                          <ul class="sub-menu" id="category-menu">
-                            <!-- Các mục sẽ được thêm vào đây bằng JavaScript -->
-                          </ul>
-                        </li>
-                        <li>
-                          <a href="/library">Tất cả sách</a
-                          ><span class="has-subnav"
-                            ><i class="fa fa-angle-down"></i
-                          ></span>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </nav>
-                <!--// Navigation \\-->
-              </aside>
             </div>
           </div>
         </div>
@@ -120,6 +80,19 @@
 
         <div class="ereaders-main-section">
           <div class="container">
+            <div class="row flex-row gap-3 pb-5">
+              <div class="select">
+                <select id="select-category">
+                  <option class="category-btn" value="All">Tất cả</option>
+                </select>
+              </div>
+              <input
+                placeholder="Tìm kiếm..."
+                class="input-style"
+                type="text"
+                id="search-input"
+              />
+            </div>
             <!--// Pagination \\-->
             <div class="ereaders-pagination hidden">
               <ul class="page-numbers">
@@ -150,21 +123,6 @@
               </ul>
             </div>
             <!--// Pagination \\-->
-
-            <h1 class="text-center">Danh mục</h1>
-            <div
-              id="category-loading"
-              class="row justify-content-center align-items-center"
-            >
-              <dotlottie-player
-                src="./animations/loading.json"
-                speed="1"
-                style="width: 20%; height: 20%"
-                loop
-                autoplay
-              ></dotlottie-player>
-            </div>
-            <div id="category-container" class="hidden"></div>
 
             <h1 class="text-center" style="padding-bottom: 3rem">Tài liệu</h1>
             <div

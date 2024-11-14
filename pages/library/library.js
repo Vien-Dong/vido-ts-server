@@ -2,6 +2,7 @@ const bookList = document.querySelector(".ereaders-book-grid ul");
 
 let allBooks = []; // Biến toàn cục để lưu danh sách sách
 let currentCategory = null; // Biến để lưu trữ category đang chọn
+let currentSearch = '';
 
 function fetchBooks(page = 1) {
     loading.classList.remove("hidden");
@@ -47,8 +48,8 @@ function renderBooks(books) {
                     <div class="d-flex flex-row justify-content-between">
                         <h2 class="text-truncate" title="${book.BookName}">${book.BookName}</h2>
                     </div>
-                    <span class="text-muted">${book.Category}</span>
-                    <small class="mt-3 d-block text-secondary">${book.PublisherName}</small>
+                    <span class="text-muted">${book.Category || ''}</span>
+                    <small class="mt-3 d-block text-secondary">${book.PublisherName || ''}</small>
                     ${book.Attachments && book.Attachments.length > 0 ?
                     '<a class="ereaders-simple-btn ereaders-bgcolor mt-2" style="cursor: pointer;">Đọc Sách</a>'
                     :
@@ -158,10 +159,35 @@ function updatePageClass() {
 //     });
 // });
 
+let debounceTimeout;
+
+function handleInputChange(event) {
+    const inputValue = event.target.value;
+
+    // Xóa bỏ timeout trước đó (nếu có) để không gọi hàm filter nhiều lần
+    clearTimeout(debounceTimeout);
+
+    // Đặt timeout mới
+    debounceTimeout = setTimeout(() => {
+        filterBySearch(inputValue); // Gọi hàm filter sau 500ms hoặc 1s
+    }, 500); // 500ms hoặc đổi thành 1000 để chờ 1 giây
+}
+
+const inputElement = document.getElementById('search-input');
+inputElement.addEventListener('input', handleInputChange);
+
+function filterBySearch(text) {
+    currentSearch = text; // Cập nhật category hiện tại
+    const filteredBooks = currentSearch === ''
+        ? allBooks
+        : allBooks.filter(book => book.BookName.toLowerCase().includes(text.toLowerCase())); // Lọc sách theo category
+    
+    renderBooks(filteredBooks); // Render lại sách theo category đã chọn
+}
 
 function filterByCategory(category) {
     currentCategory = category; // Cập nhật category hiện tại
-    const filteredBooks = category === 'all'
+    const filteredBooks = category === 'All'
         ? allBooks
         : allBooks.filter(book => book.Category === category); // Lọc sách theo category
     

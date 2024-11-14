@@ -1,8 +1,7 @@
-const categoryMenu = document.querySelector("#category-container");
+const categoryMenu = document.querySelector("#select-category");
 
 function fetchCategory() {
     const accessToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2FwaS10aHV2aWVuLnZpZW5kb25nLmVkdS52bi9hcGkvYXV0aC9sb2dpbiIsImlhdCI6MTczMTQ1ODk3MCwiZXhwIjoxNzMxNDU5ODcwLCJuYmYiOjE3MzE0NTg5NzAsImp0aSI6IjV2ejZuRHk0b2kxUlp2aGsiLCJzdWIiOiIxMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.nJ8_t3onm3gWvOVWHTNHV2ImI1sjIEoDiFIm6A4fFFk";
-    categoryLoading.classList.remove("hidden");
 
     axios.get("https://api-thuvien.viendong.edu.vn/api/category/", {
         headers: {
@@ -10,14 +9,11 @@ function fetchCategory() {
         }
     })
         .then(response => {
-            categoryLoading.classList.add("hidden");
-            afterCategoryLoading.classList.remove("hidden");
             const categories = response.data.data;
             renderCategory(categories);
         })
         .catch(error => {
             console.error("Lỗi khi lấy dữ liệu danh mục:", error);
-            categoryLoading.classList.add("hidden");
         });
 }
 
@@ -52,22 +48,21 @@ function isReadableForWhite(color) {
 }
 
 function renderCategory(categories) {
-    categoryMenu.innerHTML = ""; 
-
     categories.forEach(category => {
-        const categoryItem = document.createElement("a");
+        const categoryItem = document.createElement("option");
         categoryItem.className = "category-btn";
-        categoryItem.style = `background: ${getRandomReadableColor()}`
-        categoryItem.onclick = () => filterByCategory(category.CategoryName);
-
-        categoryItem.innerHTML = category.CategoryName;
+        categoryItem.value = category.CategoryName;
+        categoryItem.innerText = category.CategoryName;
 
         categoryMenu.appendChild(categoryItem);
     });
 }
 
-const categoryLoading = document.getElementById("category-loading");
-const afterCategoryLoading = document.getElementById("category-container");
+categoryMenu.addEventListener('change', (event) => {
+    const selectedValue = event.target.value;
+
+    filterByCategory(selectedValue);
+});
 
 document.addEventListener("DOMContentLoaded", () => {
     fetchCategory();
