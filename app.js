@@ -58,6 +58,9 @@ app.get('/orientation', function (req, res) {
 app.get('/library', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/library/library.html'));
 });
+app.get('/library/detail', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/library/detail.html'));
+});
 app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/lucky'));
 app.use(express.static(__dirname + '/pages/exam'));

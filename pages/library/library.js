@@ -29,7 +29,7 @@ function renderBooks(books) {
         bookItem.innerHTML = `
         <div title="${book.BookName}">
             <figure>
-                <a href="book-detail.html"><img src="https://thuvien.phongmayviendong.id.vn/images/default/image.png" alt="${book.BookName}"></a>
+                <a href="detail.html?BookId=${book.BookId}"><img src="https://thuvien.phongmayviendong.id.vn/images/default/image.png" alt="${book.BookId}"></a>
                 <figcaption>
                     <a href="#" class="icon ereaders-heart" title="Yêu thích"></a>
                     <a class="icon ereaders-reload read-btn" title="Xem" id="readButton" style="cursor: pointer;"></a>

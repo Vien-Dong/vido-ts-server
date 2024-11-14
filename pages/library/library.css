@@ -4266,3 +4266,10 @@ blockquote:before {
   padding-inline: 10px;
   cursor: pointer;
 }
+
+.metadataFieldLabel,
+.metadataFieldValue {
+  font-size: 16px;
+  text-align: left;
+}
+
