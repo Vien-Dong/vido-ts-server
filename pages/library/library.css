@@ -4274,3 +4274,16 @@ blockquote:before {
   text-align: left;
 }
 
+#books-container {
+  transition: all 0.5s ease;
+}
+
+#books-container li {
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+#books-container li.hidden-item {
+  transform: scale(0.5);
+  opacity: 0;
+  pointer-events: none;
+}

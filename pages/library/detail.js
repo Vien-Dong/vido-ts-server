@@ -37,13 +37,31 @@ function renderBookDetail(book) {
         book.Attachments.forEach(attachment => {
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td class="metadataFieldValue"><a href="${attachment}" target="_blank">${attachment}</a></td>
+                <td class="metadataFieldValue"><a href="${attachment}">${attachment}</a></td>
                 <td class="metadataFieldValue">Adobe PDF</td>
-                <td class="metadataFieldValue"><a class="btn btn-primary" href="${attachment}" target="_blank">View/Open</a></td>
+                <td class="metadataFieldValue"><a class="btn open-btn btn-primary">Mở</a></td>
             `;
+
+            const readButtonByClass = row.querySelector(".open-btn");
+
+            readButtonByClass.addEventListener("click", (event) => {
+                // Gọi hàm để hiển thị PDF trong modal hoặc xử lý mở modal
+                showPdf(attachment, book.BookName);
+                $("#modal").modal("show");
+            });
+
             fileTable.appendChild(row);
         });
     } else {
         fileTable.innerHTML = "<tr><td colspan='5'>Không có tệp đính kèm</td></tr>";
     }
+}
+
+function showPdf(url, name) {
+    const pdfContainer = document.getElementById("frame");
+    const fileName = document.getElementById("filename")
+
+    pdfContainer.src = url;
+    fileName.innerText = name;
+
 }

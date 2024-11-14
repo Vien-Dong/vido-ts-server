@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html lang="vi">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chi tiết Sách</title>
     <link rel="icon" type="image/x-icon" href="images/favicon.png" />
     <link rel="stylesheet" href="./library.css" />
@@ -25,126 +24,195 @@
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <div class="ereaders-main-wrapper">
-        <header id="ereaders-header" class="ereaders-header-one">
-            <div class="ereaders-main-header">
-                <div class="container">
-                    <div class="row">
-                        <aside class="col-md-3">
-                            <a href="/library" class="logo"><img src="images/logo.png" alt="" /></a>
-                        </aside>
-                        <aside class="col-md-9">
-                            <!--// Navigation \\-->
-                            <a href="#menu" class="menu-link active"><span></span></a>
-                            <nav id="menu" class="menu navbar navbar-default" style="width: 100%">
-                                <ul class="level-1 navbar-nav d-flex flex-row align-items-center" style="width: 100%">
-                                    <li><a href="/library">Trang chủ</a></li>
-                                    <li class="active">
-                                        <a href="#">Thư viện</a><span class="has-subnav"><i
-                                                class="fa fa-angle-down"></i></span>
-                                        <ul class="sub-menu level-2">
-                                            <li>
-                                                <a href="#">Thể loại</a><span class="has-subnav"><i
-                                                        class="fa fa-angle-down"></i></span>
-                                                <ul class="sub-menu" id="category-menu">
-                                                    <!-- Các mục sẽ được thêm vào đây bằng JavaScript -->
-                                                </ul>
-                                            </li>
-                                            <li>
-                                                <a href="/library">Tất cả sách</a><span class="has-subnav"><i
-                                                        class="fa fa-angle-down"></i></span>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </nav>
-                            <!--// Navigation \\-->
-                        </aside>
-                    </div>
-                </div>
+      <header id="ereaders-header" class="ereaders-header-one">
+        <div class="ereaders-main-header">
+          <div class="container">
+            <div class="row">
+              <aside class="col-md-3">
+                <a href="/library" class="logo"
+                  ><img src="images/logo.png" alt=""
+                /></a>
+              </aside>
+              <aside class="col-md-9">
+                <!--// Navigation \\-->
+                <a href="#menu" class="menu-link active"><span></span></a>
+                <nav
+                  id="menu"
+                  class="menu navbar navbar-default"
+                  style="width: 100%"
+                >
+                  <ul
+                    class="level-1 navbar-nav d-flex flex-row align-items-center"
+                    style="width: 100%"
+                  >
+                    <li><a href="/library">Trang chủ</a></li>
+                    <li class="active">
+                      <a href="#">Thư viện</a
+                      ><span class="has-subnav"
+                        ><i class="fa fa-angle-down"></i
+                      ></span>
+                      <ul class="sub-menu level-2">
+                        <li>
+                          <a href="#">Thể loại</a
+                          ><span class="has-subnav"
+                            ><i class="fa fa-angle-down"></i
+                          ></span>
+                          <ul class="sub-menu" id="category-menu">
+                            <!-- Các mục sẽ được thêm vào đây bằng JavaScript -->
+                          </ul>
+                        </li>
+                        <li>
+                          <a href="/library">Tất cả sách</a
+                          ><span class="has-subnav"
+                            ><i class="fa fa-angle-down"></i
+                          ></span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </nav>
+                <!--// Navigation \\-->
+              </aside>
             </div>
-        </header>
-        <div class="ereaders-subheader">
-            <div class="ereaders-subheader-text">
-                <span class="ereaders-subheader-transparent"></span>
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h1>Tất cả sách</h1>
-                            <p>
-                                Danh sách tất cả sách của thư viện trường cao đẳng Viễn Đông.
-                            </p>
-                        </div>
-                    </div>
-                </div>
+          </div>
+        </div>
+      </header>
+      <div class="ereaders-subheader">
+        <div class="ereaders-subheader-text">
+          <span class="ereaders-subheader-transparent"></span>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>Chi tiết sách</h1>
+                <p>
+                  Danh sách tất cả sách của thư viện trường cao đẳng Viễn Đông.
+                </p>
+              </div>
             </div>
+          </div>
+        </div>
 
-            <div class="ereaders-breadcrumb">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <ul>
-                                <li><a href="/library">Trang chủ</a></li>
-                                <li class="active">Tất cả sách</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+        <div class="ereaders-breadcrumb">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <ul>
+                  <li><a href="/library">Trang chủ</a></li>
+                  <li class="active">Chi tiết sách</li>
+                </ul>
+              </div>
             </div>
+          </div>
         </div>
-        <div class="ereaders-main-content">
-            <main id="content" role="main">
-                <br>
-                <div class="container">
-                    <div class="metadataFieldLabel dc_identifier_uri_label" style="margin-bottom: 24px;">Please use this identifier to cite or link to this item:
-                        <span id="metadataFieldValue_dc_identifier_uri" style="background-color: #f9f2f4; color: #c7254e; padding: 2px 4px"></span>
-                    </div>
-                    <table class="table itemDisplayTable">
-                        <tbody>
-                            <tr>
-                                <td class="metadataFieldLabel dc_title_label">BookName:&nbsp;</td>
-                                <td class="metadataFieldValue dc_title"></td>
-                            </tr>
-                            <tr>
-                                <td class="metadataFieldLabel dc_contributor_label">Authors:&nbsp;</td>
-                                <td class="metadataFieldValue dc_contributor"></td>
-                            </tr>
-                            <tr>
-                                <td class="metadataFieldLabel dc_subject_label">Category:&nbsp;</td>
-                                <td class="metadataFieldValue dc_subject"></td>
-                            </tr>
-                            <tr>
-                                <td class="metadataFieldLabel dc_date_issued_label">Publish Year:&nbsp;</td>
-                                <td class="metadataFieldValue dc_date_issued"></td>
-                            </tr>
-                            <tr>
-                                <td class="metadataFieldLabel dc_publisher_label">Publisher Name:&nbsp;</td>
-                                <td class="metadataFieldValue dc_publisher"></td>
-                            </tr>
-                        </tbody>
-                    </table><br>
-                    <div class="panel panel-info">
-                        <div class="panel-heading metadataFieldLabel">Files in This Item:</div>
-                        <table class="table panel-body">
-                            <thead>
-                                <tr>
-                                    <th class="metadataFieldValue">File</th>
-                                    <th class="metadataFieldValue">Format</th>
-                                    <th class="metadataFieldValue">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="fileTableBody">
-                                <!-- Files will be populated here by JavaScript -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </main>
-        </div>
+      </div>
+      <div class="ereaders-main-content">
+        <main id="content" role="main">
+          <br />
+          <div class="container">
+            <div
+              class="metadataFieldLabel dc_identifier_uri_label"
+              style="margin-bottom: 24px"
+            >
+              Please use this identifier to cite or link to this item:
+              <span
+                id="metadataFieldValue_dc_identifier_uri"
+                style="
+                  background-color: #f9f2f4;
+                  color: #c7254e;
+                  padding: 2px 4px;
+                "
+              ></span>
+            </div>
+            <table class="table itemDisplayTable">
+              <tbody>
+                <tr>
+                  <td class="metadataFieldLabel dc_title_label">
+                    BookName:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_title"></td>
+                </tr>
+                <tr>
+                  <td class="metadataFieldLabel dc_contributor_label">
+                    Authors:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_contributor"></td>
+                </tr>
+                <tr>
+                  <td class="metadataFieldLabel dc_subject_label">
+                    Category:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_subject"></td>
+                </tr>
+                <tr>
+                  <td class="metadataFieldLabel dc_date_issued_label">
+                    Publish Year:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_date_issued"></td>
+                </tr>
+                <tr>
+                  <td class="metadataFieldLabel dc_publisher_label">
+                    Publisher Name:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_publisher"></td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
+            <div class="panel panel-info">
+              <div class="panel-heading metadataFieldLabel">
+                Files in This Item:
+              </div>
+              <table class="table panel-body">
+                <thead>
+                  <tr>
+                    <th class="metadataFieldValue">File</th>
+                    <th class="metadataFieldValue">Format</th>
+                    <th class="metadataFieldValue">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="fileTableBody">
+                  <!-- Files will be populated here by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="modal">
+      <div
+        class="modal-dialog"
+        style="max-width: 80% !important"
+        role="document"
+      >
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Xem tài liệu</h4>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            Tên tài liệu: <a name="filename" id="filename"></a>
+            <iframe src="" width="100%" height="500px" id="frame"></iframe>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" id="dismiss">
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="text/javascript" src="detail.js"></script>
     <script type="text/javascript" src="library.js"></script>
@@ -167,6 +235,5 @@
       src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
       type="module"
     ></script>
-</body>
-
+  </body>
 </html>

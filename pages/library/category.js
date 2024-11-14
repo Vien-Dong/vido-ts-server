@@ -58,6 +58,7 @@ function renderCategory(categories) {
         const categoryItem = document.createElement("a");
         categoryItem.className = "category-btn";
         categoryItem.style = `background: ${getRandomReadableColor()}`
+        categoryItem.onclick = () => filterByCategory(category.CategoryName);
 
         categoryItem.innerHTML = category.CategoryName;
 

@@ -1,13 +1,15 @@
 const bookList = document.querySelector(".ereaders-book-grid ul");
 
+let allBooks = []; // Biến toàn cục để lưu danh sách sách
+let currentCategory = null; // Biến để lưu trữ category đang chọn
+
 function fetchBooks(page = 1) {
     loading.classList.remove("hidden");
     renderBooks([]);
-    axios.get("https://api-thuvien.viendong.edu.vn/api/book/getBiblio", {
-        params: { page: page }
-    })
+    axios.get("https://api-thuvien.viendong.edu.vn/api/book/getBiblio")
         .then(response => {
             const books = response.data.data;
+            allBooks = response.data.data;
             renderBooks(books);
             loading.classList.add("hidden");
             afterLoading.classList.remove("hidden");
@@ -21,63 +23,75 @@ function fetchBooks(page = 1) {
 function renderBooks(books) {
     const container = document.getElementById("books-container");
     container.innerHTML = "";
+    const existingItems = container.querySelectorAll(".item");
+    existingItems.forEach(item => item.classList.add("hidden-item"));
 
-    books.forEach(book => {
-        const bookItem = document.createElement("li");
-        bookItem.className = "col-md-2";
+    setTimeout(() => {
+        container.innerHTML = '';
 
-        bookItem.innerHTML = `
-        <div title="${book.BookName}">
-            <figure>
-                <a href="detail.html?BookId=${book.BookId}"><img src="https://thuvien.phongmayviendong.id.vn/images/default/image.png" alt="${book.BookId}"></a>
-                <figcaption>
-                    <a href="#" class="icon ereaders-heart" title="Yêu thích"></a>
-                    <a class="icon ereaders-reload read-btn" title="Xem" id="readButton" style="cursor: pointer;"></a>
-                </figcaption>
-            </figure>
-            <div class="ereaders-book-grid-text overflow-hidden">
-                <div class="d-flex flex-row justify-content-between">
-                    <h2 class="text-truncate" title="${book.BookName}">${book.BookName}</h2>
-                </div>
-                <span class="text-muted">${book.Category}</span>
-                <small class="mt-3 d-block text-secondary">${book.PublisherName}</small>
-                ${book.Attachments && book.Attachments.length > 0 ?
-                '<a class="ereaders-simple-btn ereaders-bgcolor mt-2" style="cursor: pointer;">Đọc Sách</a>'
-                :
-                '<a class="ereaders-simple-btn ereaders-disabled mt-2" style="cursor: pointer;">Mượn tại thư viện</a>'
+        books.forEach(book => {
+            const bookItem = document.createElement("li");
+            bookItem.className = "col-md-2 item";
+            bookItem.setAttribute('data-category', book.Category);
+    
+            bookItem.innerHTML = `
+            <div title="${book.BookName}">
+                <figure>
+                    <a href="detail.html?BookId=${book.BookId}"><img src="https://thuvien.phongmayviendong.id.vn/images/default/image.png" alt="${book.BookId}"></a>
+                    <figcaption>
+                        <a href="#" class="icon ereaders-heart" title="Yêu thích"></a>
+                        <a class="icon ereaders-reload read-btn" title="Xem" id="readButton" style="cursor: pointer;"></a>
+                    </figcaption>
+                </figure>
+                <div class="ereaders-book-grid-text overflow-hidden">
+                    <div class="d-flex flex-row justify-content-between">
+                        <h2 class="text-truncate" title="${book.BookName}">${book.BookName}</h2>
+                    </div>
+                    <span class="text-muted">${book.Category}</span>
+                    <small class="mt-3 d-block text-secondary">${book.PublisherName}</small>
+                    ${book.Attachments && book.Attachments.length > 0 ?
+                    '<a class="ereaders-simple-btn ereaders-bgcolor mt-2" style="cursor: pointer;">Đọc Sách</a>'
+                    :
+                    '<a class="ereaders-simple-btn ereaders-disabled mt-2" style="cursor: pointer;">Mượn tại thư viện</a>'
                 }
-            </div>
-        `;
+                </div>
+            `;
 
-        const readButtonByClass = bookItem.querySelector(".ereaders-simple-btn", ".read-btn");
-        const readButtonById = bookItem.querySelector("#readButton");
-
-        readButtonByClass.addEventListener("click", (event) => {
-            // Kiểm tra nếu `Attachments` có dữ liệu
-            if (!book.Attachments || book.Attachments.length === 0) {
-                event.preventDefault(); // Ngăn không mở modal
-                alert("Sách này không có file đính kèm để đọc, hãy mượn ở thư viện.");
-            } else {
-                // Gọi hàm để hiển thị PDF trong modal hoặc xử lý mở modal
-                showPdf(book.Attachments[0], book.BookName);
-                $("#modal").modal("show");
-            }
+            bookItem.classList.add("hidden-item");
+            setTimeout(() => {
+                bookItem.classList.remove("hidden-item");
+            }, 50);
+    
+            const readButtonByClass = bookItem.querySelector(".ereaders-simple-btn", ".read-btn");
+            const readButtonById = bookItem.querySelector("#readButton");
+    
+            readButtonByClass.addEventListener("click", (event) => {
+                // Kiểm tra nếu `Attachments` có dữ liệu
+                if (!book.Attachments || book.Attachments.length === 0) {
+                    event.preventDefault(); // Ngăn không mở modal
+                    alert("Sách này không có file đính kèm để đọc, hãy mượn ở thư viện.");
+                } else {
+                    // Gọi hàm để hiển thị PDF trong modal hoặc xử lý mở modal
+                    showPdf(book.Attachments[0], book.BookName);
+                    $("#modal").modal("show");
+                }
+            });
+    
+            readButtonById.addEventListener("click", (event) => {
+                // Kiểm tra nếu `Attachments` có dữ liệu
+                if (!book.Attachments || book.Attachments.length === 0) {
+                    event.preventDefault(); // Ngăn không mở modal
+                    alert("Sách này không có file đính kèm để đọc, hãy mượn ở thư viện.");
+                } else {
+                    // Gọi hàm để hiển thị PDF trong modal hoặc xử lý mở modal
+                    showPdf(book.Attachments[0], book.BookName);
+                    $("#modal").modal("show");
+                }
+            });
+    
+            container.appendChild(bookItem);
         });
-
-        readButtonById.addEventListener("click", (event) => {
-            // Kiểm tra nếu `Attachments` có dữ liệu
-            if (!book.Attachments || book.Attachments.length === 0) {
-                event.preventDefault(); // Ngăn không mở modal
-                alert("Sách này không có file đính kèm để đọc, hãy mượn ở thư viện.");
-            } else {
-                // Gọi hàm để hiển thị PDF trong modal hoặc xử lý mở modal
-                showPdf(book.Attachments[0], book.BookName);
-                $("#modal").modal("show");
-            }
-        });
-
-        container.appendChild(bookItem);
-    });
+    })
 }
 
 const loading = document.getElementById("loading");
@@ -124,25 +138,35 @@ function updatePageClass() {
 }
 
 // Gắn sự kiện click cho các nút "Previous" và "Next"
-prevButton.addEventListener("click", () => {
-    if (currentPage > 1) {
-        updatePage(currentPage - 1); // Giảm trang
-    }
-});
+// prevButton.addEventListener("click", () => {
+//     if (currentPage > 1) {
+//         updatePage(currentPage - 1); // Giảm trang
+//     }
+// });
 
-nextButton.addEventListener("click", () => {
-    updatePage(currentPage + 1); // Tăng trang
-});
+// nextButton.addEventListener("click", () => {
+//     updatePage(currentPage + 1); // Tăng trang
+// });
 
 // Gắn sự kiện click cho các liên kết trang
-pageLinks.forEach(pageLink => {
-    pageLink.addEventListener("click", (e) => {
-        const pageNumber = parseInt(e.target.textContent);
-        if (!isNaN(pageNumber)) {
-            updatePage(pageNumber); // Chuyển tới trang đã chọn
-        }
-    });
-});
+// pageLinks.forEach(pageLink => {
+//     pageLink.addEventListener("click", (e) => {
+//         const pageNumber = parseInt(e.target.textContent);
+//         if (!isNaN(pageNumber)) {
+//             updatePage(pageNumber); // Chuyển tới trang đã chọn
+//         }
+//     });
+// });
+
+
+function filterByCategory(category) {
+    currentCategory = category; // Cập nhật category hiện tại
+    const filteredBooks = category === 'all'
+        ? allBooks
+        : allBooks.filter(book => book.Category === category); // Lọc sách theo category
+    
+    renderBooks(filteredBooks); // Render lại sách theo category đã chọn
+}
 
 // Khởi tạo trang đầu tiên khi tải trang\
 document.addEventListener("DOMContentLoaded", () => {
