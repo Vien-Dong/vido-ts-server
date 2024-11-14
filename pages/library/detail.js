@@ -23,17 +23,16 @@ function fetchBookDetail(bookId) {
 }
 
 function renderBookDetail(book) {
-    document.querySelector(".dc_title").innerText = book.BookName || "N/A";
-    document.querySelector(".dc_contributor").innerText = book.Authors ? book.Authors.join(", ") : "N/A";
-    document.querySelector(".dc_subject").innerText = book.Category || "N/A";
-    document.querySelector(".dc_date_issued").innerText = book.PublishYear || "N/A";
-    document.querySelector(".dc_publisher").innerText = book.PublisherName || "N/A";
+    document.querySelector(".dc_title").innerText = book.BookName || "Không Có";
+    document.querySelector(".dc_contributor").innerText = book.Authors ? book.Authors.join(", ") : "Không Có";
+    document.querySelector(".dc_subject").innerText = book.Category || "Không Có";
+    document.querySelector(".dc_date_issued").innerText = book.PublishYear || "Không Có";
+    document.querySelector(".dc_publisher").innerText = book.PublisherName || "Không Có";
     document.querySelector("#metadataFieldValue_dc_identifier_uri").innerText = `https://vido-ts-server-v1.vercel.app/detail.html?BookId=${book.BookId}`;
 
     const fileTable = document.querySelector("#fileTableBody");
     fileTable.innerHTML = "";
 
-    // Check if there are attachments and populate them
     if (book.Attachments && book.Attachments.length > 0) {
         book.Attachments.forEach(attachment => {
             const row = document.createElement("tr");
