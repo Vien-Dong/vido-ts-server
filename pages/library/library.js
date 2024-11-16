@@ -6,6 +6,7 @@ let currentSearch = '';
 
 function fetchBooks(page = 1) {
     loading.classList.remove("hidden");
+    dataCount.innerText = "- đang tải...";
     renderBooks([]);
     axios.get("https://api-thuvien.viendong.edu.vn/api/book/getBiblio")
         .then(response => {
@@ -13,11 +14,13 @@ function fetchBooks(page = 1) {
             allBooks = response.data.data;
             renderBooks(books);
             loading.classList.add("hidden");
+            dataCount.innerText = `- Tổng cộng: ${allBooks.length || 0}`;
             afterLoading.classList.remove("hidden");
         })
         .catch(error => {
             console.error("Lỗi khi lấy dữ liệu sách:", error);
             loading.classList.add("hidden");
+            dataCount.innerText = '';
         });
 }
 
@@ -115,6 +118,7 @@ document.getElementById("dismiss").addEventListener("click", function () {
 const prevButton = document.querySelector(".previous.page-numbers");
 const nextButton = document.querySelector(".next.page-numbers");
 const pageLinks = document.querySelectorAll(".page-numbers");
+const dataCount = document.getElementById("data-count");
 
 let currentPage = 1; // Giả sử hiện tại đang ở trang 1
 
