@@ -28,7 +28,7 @@ function renderBookDetail(book) {
     document.querySelector(".dc_subject").innerText = book.Category || "Không Có";
     document.querySelector(".dc_date_issued").innerText = book.PublishYear || "Không Có";
     document.querySelector(".dc_publisher").innerText = book.PublisherName || "Không Có";
-    document.querySelector(".dc_location").innerText = book.Items[0].Location || "Không Có";
+    document.querySelector(".dc_location").innerText = book.Items?.[0]?.Location || "Không Có";
     document.querySelector("#metadataFieldValue_dc_identifier_uri").innerText = `https://vido-ts-server-v1.vercel.app/detail.html?BookId=${book.BookId}`;
 
     const fileTable = document.querySelector("#fileTableBody");
@@ -36,9 +36,10 @@ function renderBookDetail(book) {
 
     if (book.Attachments && book.Attachments.length > 0) {
         book.Attachments.forEach(attachment => {
+            console.log(book.Attachments)
             const row = document.createElement("tr");
             row.innerHTML = `
-                <td class="metadataFieldValue"><a href="${attachment}">${attachment}</a></td>
+                <td class="metadataFieldValue"><a href="${book.Attachments}">${book.Attachments}</a></td>
                 <td class="metadataFieldValue">Adobe PDF</td>
                 <td class="metadataFieldValue"><a class="btn open-btn btn-primary">Mở</a></td>
             `;
