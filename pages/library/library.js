@@ -1,8 +1,11 @@
 const bookList = document.querySelector(".ereaders-book-grid ul");
 
 let allBooks = []; // Biến toàn cục để lưu danh sách sách
+let currentBooks = []; // Biến lưu trữ danh sách sách hiện tại, khởi tạo bằng allBooks
 let currentCategory = null; // Biến để lưu trữ category đang chọn
 let currentSearch = '';
+let displayedCount = 0;
+const batchSize = 50;
 
 function fetchBooks(page = 1) {
     loading.classList.remove("hidden");
@@ -12,7 +15,10 @@ function fetchBooks(page = 1) {
         .then(response => {
             const books = response.data.data;
             allBooks = response.data.data;
-            renderBooks(books);
+            currentBooks = allBooks;
+            // renderBooks(books);
+            displayedCount = 0;
+            loadMoreBooks();
             loading.classList.add("hidden");
             dataCount.innerText = `- Tổng cộng: ${allBooks.length || 0}`;
             afterLoading.classList.remove("hidden");
@@ -24,15 +30,22 @@ function fetchBooks(page = 1) {
         });
 }
 
-function renderBooks(books) {
+function loadMoreBooks() {
+    const nextBatch = currentBooks.slice(displayedCount, displayedCount + batchSize);
+    if (nextBatch.length === 0) return; // Không còn sách để load
+
+    renderBooks(nextBatch, true); // `true` để nối thêm vào danh sách
+    displayedCount += nextBatch.length;
+}
+
+function renderBooks(books, append = false) {
     const container = document.getElementById("books-container");
-    container.innerHTML = "";
-    const existingItems = container.querySelectorAll(".item");
-    existingItems.forEach(item => item.classList.add("hidden-item"));
+
+    if (!append) {
+        container.innerHTML = "";
+    }
 
     setTimeout(() => {
-        container.innerHTML = '';
-
         books.forEach(book => {
             const bookItem = document.createElement("li");
             bookItem.className = "col-md-2 item";
@@ -181,24 +194,51 @@ const inputElement = document.getElementById('search-input');
 inputElement.addEventListener('input', handleInputChange);
 
 function filterBySearch(text) {
+    const container = document.getElementById("books-container");
+    const existingItems = container.querySelectorAll(".item");
+    existingItems.forEach(item => item.classList.add("hidden-item"));
     currentSearch = text; // Cập nhật category hiện tại
-    const filteredBooks = currentSearch === ''
+    currentBooks = currentSearch === ''
         ? allBooks
         : allBooks.filter(book => book.BookName.toLowerCase().includes(text.toLowerCase())); // Lọc sách theo category
     
-    renderBooks(filteredBooks); // Render lại sách theo category đã chọn
+    renderBooks(currentBooks.slice(0, 50), false); // Render lại sách theo category đã chọn
 }
 
 function filterByCategory(category) {
+    const container = document.getElementById("books-container");
+    const existingItems = container.querySelectorAll(".item");
+    existingItems.forEach(item => item.classList.add("hidden-item"));
     currentCategory = category; // Cập nhật category hiện tại
-    const filteredBooks = category === 'All'
+    currentBooks = category === 'All'
         ? allBooks
         : allBooks.filter(book => book.Category === category); // Lọc sách theo category
     
-    renderBooks(filteredBooks); // Render lại sách theo category đã chọn
+    displayedBooksCount = 0; // Reset số lượng sách đã hiển thị khi tìm kiếm
+    renderBooks(currentBooks.slice(0, 50), false); // Render lại sách theo category đã chọn
 }
 
 // Khởi tạo trang đầu tiên khi tải trang\
 document.addEventListener("DOMContentLoaded", () => {
     updatePage(currentPage);
+});
+
+let isLoading = false; // Kiểm soát trạng thái đang tải
+
+document.addEventListener('scroll', () => {
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const pageHeight = document.documentElement.scrollHeight;
+
+    // Chỉ tải thêm dữ liệu khi cuộn đến gần hết trang
+    if (scrollPosition >= pageHeight - 100 && !isLoading && displayedCount < currentBooks.length) { // Thêm điều kiện để đợi gần hết trang
+        isLoading = true; // Ngăn tải nhiều lần
+
+        // Gọi hàm để tải thêm dữ liệu
+        loadMoreBooks();
+
+        // Reset trạng thái sau khi tải xong
+        setTimeout(() => {
+            isLoading = false;
+        }, 1000); // Điều chỉnh thời gian nếu cần
+    }
 });
