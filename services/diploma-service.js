@@ -18,7 +18,7 @@ const createDiploma = async (subject, studentID, number, name, dateOfBirth, gend
 
 const importDiploma = async () => {
     try {
-        let count = 0;
+        let count = 0; 
         const headers = ["SUBJECT", "STUDENTID", "NUMBER", "NAME", "DATEOFBIRTH", 
             "GENDER", "RATING", "GDN", "NUMBERINBOOK"];
         const workBook = XLSX.readFile("files/DS_van_bang.xlsx");
@@ -46,7 +46,8 @@ const importDiploma = async () => {
 
 const getDiplomas = async (number) => {
     try {
-        const result = await Diploma.findOne({ number });
+        const res = number.replace(/_/g, ' ');
+        const result = await Diploma.findOne({ number: res });
         return result;
     }
     catch (err) {
