@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.get("/get", async (req, res) => {
     try {
-        const { numberInBook } = req.query;
+        const { number } = req.query;
 
-        const result = await getDiplomas(numberInBook);
+        const result = await getDiplomas(number);
         res.status(200).send({
             status: true,
             message: "Lấy danh sách văn bằng thành công",

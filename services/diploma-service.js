@@ -44,9 +44,9 @@ const importDiploma = async () => {
     }
 }
 
-const getDiplomas = async (numberInBook) => {
+const getDiplomas = async (number) => {
     try {
-        const result = await Diploma.findOne({ numberInBook });
+        const result = await Diploma.findOne({ number });
         return result;
     }
     catch (err) {
