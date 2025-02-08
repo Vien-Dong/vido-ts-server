@@ -4347,3 +4347,24 @@ blockquote:before {
   display: none;
 }
 
+.ereaders-book-grid-text {
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.ereaders-book-grid-text h2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Giới hạn hiển thị 2 dòng */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ereaders-simple-btn {
+  min-height: 36px; /* Đảm bảo nút có chiều cao cố định */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

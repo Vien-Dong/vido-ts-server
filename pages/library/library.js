@@ -60,7 +60,7 @@ function renderBooks(books, append = false) {
                         <a class="icon ereaders-reload read-btn" title="Xem" id="readButton" style="cursor: pointer;"></a>
                     </figcaption>
                 </figure>
-                <div class="ereaders-book-grid-text overflow-hidden">
+                <div class="ereaders-book-grid-text overflow-hidden" style="height: 130px;">
                     <div class="d-flex flex-row justify-content-between">
                         <h2 class="text-truncate" title="${book.BookName}">${book.BookName}</h2>
                     </div>
