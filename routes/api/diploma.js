@@ -24,7 +24,7 @@ router.post("/create", async (req, res) => {
     try {
         const data = req.body;
         const result = await createDiploma(data.subject, data.studentID, data.number, data.name, 
-            data.dateOfBirth, data.gender, data.rating, data.GDN, data.numberInBook);
+            data.dateOfBirth, data.gender, data.rating, data.GDN, data.gradutateDate, data.numberInBook);
         res.status(200).send({
             status: true,
             message: "Tạo thành công!",

@@ -23,9 +23,11 @@ const diplomaSchema = new mongoose.Schema({
     },
     gender: {
         type: String,
-        required: true
     },
     rating: {
+        type: String,
+    },
+    gradutateDate: {
         type: String,
         required: true
     },
