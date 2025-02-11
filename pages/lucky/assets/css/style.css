@@ -20,6 +20,10 @@ body {
   align-items: center;
   background-color: lightgray;
   font-family: "Open sans", sans-serif;
+  background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1c9d7f43-9d16-4a40-888e-20b10c7f7df5/dhp7947-821fcb9e-585d-49e1-a8a7-f291df974dda.jpg/v1/fill/w_1280,h_720,q_75,strp/madagascar___beach_background__5_by_martaveusproductions_dhp7947-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzIwIiwicGF0aCI6IlwvZlwvMWM5ZDdmNDMtOWQxNi00YTQwLTg4OGUtMjBiMTBjN2Y3ZGY1XC9kaHA3OTQ3LTgyMWZjYjllLTU4NWQtNDllMS1hOGE3LWYyOTFkZjk3NGRkYS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.uZpwmMZNN3vUMX5Cw2ZEaRPtlOrnNXHG_FnqW5Q-5KM");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 .wheel {
@@ -61,7 +65,7 @@ body {
   transform: translateX(-50%) rotate(45deg);
 }
 .wheel__sec:nth-child(3) {
-  border-top-color:rgb(50, 190, 71);
+  border-top-color: rgb(50, 190, 71);
   transform: translateX(-50%) rotate(90deg);
 }
 .wheel__sec:nth-child(4) {
@@ -125,7 +129,7 @@ body {
 .wheel__button {
   width: 60px;
   height: 60px;
-  background-color: lightgray;
+  background-color: whitesmoke;
   border: none;
   border-radius: 50%;
   display: flex;
@@ -140,7 +144,7 @@ body {
   color: #27ae60;
 }
 .wheel__button:active {
-  border: solid 3px rgba(0, 0, 0, 0.1);
+  border: solid 3px rgba(0, 0, 0, 0.8);
   font-size: 15px;
 }
 
@@ -178,7 +182,8 @@ body {
   text-align: center;
 }
 
-.congratulation {
+.congratulation,
+.information {
   position: fixed;
   top: 0;
   left: 0;
@@ -187,7 +192,8 @@ body {
   background: rgba(0, 0, 0, 0.2);
   display: none;
 }
-.congratulation__container {
+.congratulation__container,
+.information__container {
   width: 40vw;
   padding: 30px;
   background-color: #fff;
@@ -195,8 +201,11 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  border-radius: 10px;
 }
-.congratulation__close {
+
+.congratulation__close,
+.information__close {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -204,16 +213,134 @@ body {
   cursor: pointer;
   transition: all 0.5s;
 }
-.congratulation__close:hover {
+
+.congratulation__close:hover,
+.information__close:hover {
   transform: rotate(360deg);
 }
+
 .congratulation__emotion {
   color: #f39c12;
   text-align: center;
   margin: 0 0 20px 0;
 }
+
+.congratulation__emotion svg {
+  width: 3vw;
+  height: 3vw;
+}
+
 .congratulation__note {
   text-align: center;
+}
+
+.information__container .form {
+  display: block;
+}
+
+.information__container .form-title {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  font-weight: 600;
+  text-align: left;
+  color: #000;
+  margin-block: 0.5rem;
+}
+
+.information__container .input-container {
+  position: relative;
+}
+
+.information__container .input-container input,
+.information__container .form button {
+  outline: none;
+  border: 1px solid #e5e7eb;
+  margin: 8px 0;
+}
+
+.information__container .input-container input {
+  background-color: #fff;
+  padding: 1rem;
+  padding-right: 3rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  width: 100%;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.information__container .submit {
+  display: block;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  background-color: #ff5722;
+  color: #ffffff;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  width: 100%;
+  border-radius: 0.5rem;
+  text-transform: uppercase;
+}
+
+.uia {
+  width: 10vw;
+  height: 10vw;
+  position: absolute;
+}
+
+.uia.v1 {
+  top: 10%;
+  left: 10%;
+}
+
+.uia.v2 {
+  top: 10%;
+  right: 10%;
+}
+
+.uia.v3 {
+  bottom: 10%;
+  left: 10%;
+}
+
+.uia.v4 {
+  bottom: 10%;
+  right: 10%;
+}
+
+.uia.v5 {
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+}
+
+.uia.v6 {
+  top: 50%;
+  right: 10%;
+  transform: translateY(-50%);
+}
+
+.uia.v7 {
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: none;
+}
+
+.uia.v8 {
+  top: 50%;
+  left: 10%;
+  transform: translateY(-50%);
+}
+
+.uia img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 /* Use a media query to add a breakpoint at 767px: */
@@ -222,7 +349,7 @@ body {
     width: 84vw;
     height: 84vw;
   }
-  
+
   .wheel__sec {
     border-width: 41vw 17.5vw 0;
   }
@@ -254,7 +381,26 @@ body {
     height: 6vw;
   }
 
-  .congratulation__container {
-    width: 80vw;
+  .congratulation__container,
+  .information__container {
+    width: 90%;
+  }
+
+  .congratulation__emotion svg {
+    width: 8vw;
+    height: 8vw;
+  }
+
+  .uia {
+    width: 20vw;
+    height: 20vw;
+  }
+
+  .uia.v5, .uia.v7 {
+    display: block;
+  }
+
+  .uia.v6, .uia.v8 {
+    display: none;
   }
 }

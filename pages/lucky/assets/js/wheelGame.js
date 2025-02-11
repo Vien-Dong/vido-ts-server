@@ -1,7 +1,39 @@
 $(document).ready(function () {
-    var value = 0;
     var countClicked = 0;
     var clicked = false;
+    var information = null;
+
+    let value = 0; // Lưu tổng số độ quay để luôn tăng
+
+    function spinWheel() {
+        let extraSpin = 360 * 5; // Quay ít nhất 5 vòng trước khi dừng
+        let probability = Math.random();
+        let finalAngle;
+
+        if (probability <= 0.9) {
+            // 90% vào "Chúc bạn may mắn lần sau" (337.5° - 22.5°)
+            finalAngle = Math.random() < 0.5 ? (Math.random() * 22.5) : (337.5 + Math.random() * 22.5);
+        } else {
+            // 10% còn lại chia đều cho các góc khác
+            let otherAngles = [67.5, 112.5, 157.5, 202.5, 247.5, 292.5];
+            finalAngle = otherAngles[Math.floor(Math.random() * otherAngles.length)];
+        }
+
+        value += extraSpin + finalAngle;
+
+        $(".wheel__inner").css({
+            "transition": "transform 8s cubic-bezier(0.1, 1, 0.3, 1)",
+            "transform": `rotate(${value}deg)`
+        });
+
+        console.log(value % 360);
+
+        setTimeout(() => {
+            let position = value % 360;
+            getPosition(position);
+        }, 8000);
+    }
+
     function getPosition(position) {
         if (position > 337.5 || position <= 22.5) {
             $('.congratulation__note').text("CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU");
@@ -31,16 +63,7 @@ $(document).ready(function () {
             countClicked++;
         }
         else {
-            let random = Math.floor((Math.random() * 720) + 1440);
-            value += random;
-            $(".wheel__inner").css({
-                "transition": "cubic-bezier(0.19, 1, 0.22, 1) 7s", // Quay lâu hơn
-                "transform": `rotate(${value}deg)`
-            });
-            setTimeout(() => {
-                //Chia lấy dư cho 360 để lấy lượng quay không hoàn thành một vòng 360deg
-                getPosition(value % 360);
-            }, 7000);
+            spinWheel();
         }
         clicked = true;
     })
@@ -48,6 +71,14 @@ $(document).ready(function () {
         $('.congratulation').fadeOut();
     })
     $('.congratulation').click(function (event) {
+        if (event.target != this)
+            return;
+        $(this).fadeOut();
+    })
+    $('.information__close').click(function () {
+        $('.information').fadeOut();
+    })
+    $('.information').click(function (event) {
         if (event.target != this)
             return;
         $(this).fadeOut();
