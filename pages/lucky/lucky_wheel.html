@@ -1,23 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lucky color wheel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./lucky_wheel.css" />
-</head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@600&display=swap"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  </head>
 
-<body>
-    <div id="wheelOfFortune">
-        <canvas id="wheel" width="300" height="300"></canvas>
-        <div id="spin">SPIN</div>
+  <body>
+    <div class="wheel">
+      <div class="wheel__inner">
+        <div class="wheel__sec">
+          <img src="./assets/images/failed.webp" alt="" />
+        </div>
+        <div class="wheel__sec">
+          <img src="./assets/images/iphone16.webp" alt="" />
+        </div>
+        <div class="wheel__sec">
+          <img src="./assets/images/steamdeck.png" alt="" />
+        </div>
+        <div class="wheel__sec">
+          <img src="./assets/images/bb3.png" alt="" />
+        </div>
+        <div class="wheel__sec">
+          <img src="./assets/images/apple-watch.png" alt="" />
+        </div>
+        <div class="wheel__sec">
+          <img src="./assets/images/corset.png" alt="" />
+        </div>
+        <div class="wheel__sec">
+          <img src="./assets/images/infinity-gauntlet.png" alt="" />
+        </div>
+        <div class="wheel__sec">
+          <img src="./assets/images/treasure.png" alt="" />
+        </div>
+      </div>
+      <div class="wheel__arrow">
+        <button class="wheel__button">QUAY</button>
+      </div>
     </div>
-    <script src="./lucky_wheel.js"></script>
-</body>
+    <div class="popup">
+      <div class="popup__container">
+        <div class="popup__emotion">
+          <i class="fas fa-meh"></i>
+        </div>
+        <p class="popup__note"></p>
+      </div>
+    </div>
+    <div class="congratulation">
+      <div class="congratulation__container">
+        <div class="congratulation__close">
+          <i class="fas fa-times"></i>
+        </div>
+        <div class="congratulation__emotion">
+          <i class="fas fa-smile"></i>
+        </div>
+        <p class="congratulation__note">CHÚC MỪNG BẠN ĐÃ TRÚNG 1 NHÀ LẦU</p>
+      </div>
+    </div>
 
+    <script src="./assets/js/wheelGame.js"></script>
+  </body>
 </html>
