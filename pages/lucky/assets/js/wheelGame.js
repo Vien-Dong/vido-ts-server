@@ -29,15 +29,6 @@ $(document).ready(function () {
     $('.wheel__button').click(function () {
         if (clicked == true) {
             countClicked++;
-            if (countClicked <= 2) {
-                $('.popup__note').text("NGỪNG PHÁ ĐI MEN!");
-            }
-            else if (countClicked <= 4)
-                $('.popup__note').text("LÌ QUÁ NGHEN!");
-            else
-                $('.popup__note').text("BÓ TAY, RÁNG PHÁ BANH NÚT NHA!");
-            if (!$('.popup').hasClass('active'))
-                $('.popup').addClass('active');
         }
         else {
             let random = Math.floor((Math.random() * 720) + 1440);
