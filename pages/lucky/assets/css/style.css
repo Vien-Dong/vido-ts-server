@@ -31,7 +31,8 @@ body {
   height: 468px;
   border-radius: 50%;
   border: solid 9px #fff;
-  box-shadow: 0 6px 13.5px 0 rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 13.5px 0 rgba(0, 0, 0, 0.1), 0 0 20px rgba(255, 255, 255, 0.5);
+  background: radial-gradient(circle, #ffcc00, #ff9900);
   position: relative;
 }
 .wheel__inner {
@@ -127,6 +128,7 @@ body {
   transition: 0.3s;
   font-weight: 600;
   font-size: 18px;
+  overflow: hidden;
 }
 .wheel__button:hover {
   color: #27ae60;
@@ -136,9 +138,8 @@ body {
   font-size: 15px;
 }
 
-.wheel__button svg {
-  width: 2vw;
-  height: 2vw;
+.wheel__button img {
+  width: 100%;
 }
 
 .popup {
@@ -342,6 +343,22 @@ body {
   animation: rotation 1s linear infinite;
 }
 
+.dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  background: #F44336;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #F44336;
+  animation: blink 0.2s infinite alternate;
+}
+
+/* Hiệu ứng nhấp nháy */
+@keyframes blink {
+  0% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0.3; transform: scale(1.2); }
+}
+
 @keyframes rotation {
   0% {
     transform: rotate(0deg);
@@ -391,11 +408,6 @@ body {
     left: 50%;
     top: -18px;
     transform: translateX(-50%);
-  }
-
-  .wheel__button svg {
-    width: 6vw;
-    height: 6vw;
   }
 
   .wheel__arrow::after {
