@@ -27,16 +27,16 @@ body {
 }
 
 .wheel {
-  width: 30vw;
-  height: 30vw;
+  width: 468px;
+  height: 468px;
   border-radius: 50%;
-  border: solid 6px #fff;
-  box-shadow: 0 4px 9px 0 rgba(0, 0, 0, 0.1);
+  border: solid 9px #fff;
+  box-shadow: 0 6px 13.5px 0 rgba(0, 0, 0, 0.1);
   position: relative;
 }
 .wheel__inner {
-  width: 100%;
-  height: 100%;
+  width: 450px;
+  height: 450px;
   border-radius: 50%;
   position: relative;
   overflow: hidden;
@@ -46,54 +46,44 @@ body {
 .wheel__sec {
   position: absolute;
   top: 0;
-  left: 50%;
+  left: 93px;
   width: 0;
   height: 0;
   border: solid;
-  border-width: 15vw 6.25vw 0;
+  border-width: 225px 132px 0;
   border-color: transparent;
   transform-origin: 50% 100%;
-  transform: translateX(-50%);
 }
 
 .wheel__sec:nth-child(1) {
   border-top-color: #16a085;
-  transform: translateX(-50%) rotate(0deg);
 }
 .wheel__sec:nth-child(2) {
   border-top-color: #2980b9;
-  transform: translateX(-50%) rotate(45deg);
+  transform: rotate(60deg);
 }
 .wheel__sec:nth-child(3) {
-  border-top-color: rgb(50, 190, 71);
-  transform: translateX(-50%) rotate(90deg);
+  border-top-color: #34495e;
+  transform: rotate(120deg);
 }
 .wheel__sec:nth-child(4) {
   border-top-color: #f39c12;
-  transform: translateX(-50%) rotate(135deg);
+  transform: rotate(180deg);
 }
 .wheel__sec:nth-child(5) {
   border-top-color: #d35400;
-  transform: translateX(-50%) rotate(180deg);
+  transform: rotate(240deg);
 }
 .wheel__sec:nth-child(6) {
   border-top-color: #c0392b;
-  transform: translateX(-50%) rotate(225deg);
-}
-.wheel__sec:nth-child(7) {
-  border-top-color: rgb(237, 200, 200);
-  transform: translateX(-50%) rotate(270deg);
-}
-.wheel__sec:nth-child(8) {
-  border-top-color: rgb(98, 92, 136);
-  transform: translateX(-50%) rotate(315deg);
+  transform: rotate(300deg);
 }
 
 .wheel__sec img {
   position: absolute;
   width: 3.5vw;
   height: auto;
-  bottom: 10vw;
+  bottom: 9vw;
   transform: translateX(-50%) rotate(0deg);
 }
 
@@ -101,8 +91,8 @@ body {
   margin: 70px 0 0 70px;
 }
 .wheel__arrow {
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
   background: #fff;
   position: absolute;
   top: 50%;
@@ -124,17 +114,15 @@ body {
   border-color: transparent;
   border-bottom-color: #fff;
   top: -15px;
-  left: 25px;
+  left: 50%;
+  transform: translateX(-50%);
 }
 .wheel__button {
-  width: 60px;
-  height: 60px;
-  background-color: whitesmoke;
+  width: 50px;
+  height: 50px;
+  background-color: lightgray;
   border: none;
   border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   cursor: pointer;
   transition: 0.3s;
   font-weight: 600;
@@ -144,13 +132,13 @@ body {
   color: #27ae60;
 }
 .wheel__button:active {
-  border: solid 3px rgba(0, 0, 0, 0.8);
+  border: solid 3px rgba(0, 0, 0, 0.1);
   font-size: 15px;
 }
 
 .wheel__button svg {
-  width: 2.5vw;
-  height: 2.5vw;
+  width: 2vw;
+  height: 2vw;
 }
 
 .popup {
@@ -343,20 +331,49 @@ body {
   object-fit: cover;
 }
 
+.loader {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #fff;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: none;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 /* Use a media query to add a breakpoint at 767px: */
 @media screen and (max-width: 767px) {
   .wheel {
-    width: 84vw;
-    height: 84vw;
+    width: calc(468px * 80 / 100);
+    height: calc(468px * 80 / 100);
+    border: solid calc(9px * 80 / 100) #fff;
+    box-shadow: 0 calc(6px * 80 / 100) calc(13.5px * 80 / 100) 0
+      rgba(0, 0, 0, 0.1);
+  }
+
+  .wheel__inner {
+    width: calc(450px * 80 / 100);
+    height: calc(450px * 80 / 100);
   }
 
   .wheel__sec {
-    border-width: 41vw 17.5vw 0;
+    left: calc(93px * 80 / 100);
+    border-width: calc(225px * 80 / 100) calc(132px * 80 / 100) 0;
   }
 
   .wheel__sec img {
-    width: 10vw;
-    bottom: 28vw;
+    width: 12vw;
+    bottom: 26vw;
   }
 
   .wheel__arrow {
@@ -381,6 +398,11 @@ body {
     height: 6vw;
   }
 
+  .wheel__arrow::after {
+    border-width: 0 calc(10px * 80 / 100) calc(20px * 80 / 100);
+    top: calc(-15px * 80 / 100);
+  }
+
   .congratulation__container,
   .information__container {
     width: 90%;
@@ -396,11 +418,13 @@ body {
     height: 20vw;
   }
 
-  .uia.v5, .uia.v7 {
+  .uia.v5,
+  .uia.v7 {
     display: block;
   }
 
-  .uia.v6, .uia.v8 {
+  .uia.v6,
+  .uia.v8 {
     display: none;
   }
 }

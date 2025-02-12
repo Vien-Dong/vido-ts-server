@@ -15,11 +15,44 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
     <link rel="stylesheet" href="./assets/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/notify.css" />
     <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
     <script src="./assets/js/audio.js"></script>
   </head>
 
   <body>
+    <div id="notify"></div>
+
+    <div class="mute-button">
+      <svg
+        fill="#ffffff"
+        width="24px"
+        height="24px"
+        viewBox="0 0 1920 1920"
+        xmlns="http://www.w3.org/2000/svg"
+        id="audio-play"
+      >
+        <path
+          d="M1129.432 113v1694.148H936.638l-451.773-451.773h-315.45C76.01 1355.375 0 1279.365 0 1185.96V734.187c0-93.404 76.01-169.414 169.415-169.414h315.45L936.638 113h192.794Zm-112.943 112.943h-33.093l-418.68 418.68v630.901l418.68 418.68h33.093V225.944Zm655.488 135.114C1831.904 521.097 1920 733.77 1920 960.107c0 226.226-88.096 438.898-248.023 598.938l-79.851-79.85c138.694-138.695 214.93-323.018 214.93-519.087 0-196.183-76.236-380.506-214.93-519.2Zm-239.112 239.745c95.663 97.018 148.294 224.644 148.294 359.272s-52.631 262.254-148.294 359.272l-80.529-79.286c74.769-75.785 115.88-175.175 115.88-279.986 0-104.811-41.111-204.201-115.88-279.986Zm-981.092 76.914H169.415c-31.06 0-56.472 25.3-56.472 56.471v451.773c0 31.172 25.412 56.472 56.472 56.472h282.358V677.716Z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      <svg
+        width="24px"
+        height="24px"
+        viewBox="0 0 16 16"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="#ffffff"
+        id="audio-mute"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M1.5 5h2.79l3.86-3.83.85.35v13l-.85.33L4.29 11H1.5l-.5-.5v-5l.5-.5zm3.35 5.17L8 13.31V2.73L4.85 5.85 4.5 6H2v4h2.5l.35.17zm9.381-4.108l.707.707L13.207 8.5l1.731 1.732-.707.707L12.5 9.207l-1.732 1.732-.707-.707L11.793 8.5 10.06 6.77l.707-.707 1.733 1.73 1.731-1.731z"
+        />
+      </svg>
+    </div>
+
     <div class="uia v1">
       <img src="./assets/images/oia-uia.gif" alt="" />
     </div>
@@ -50,25 +83,19 @@
           <img src="./assets/images/failed.webp" alt="" />
         </div>
         <div class="wheel__sec">
-          <img src="./assets/images/iphone16.webp" alt="" />
+          <img src="./assets/images/gift-1.png" alt="" />
         </div>
         <div class="wheel__sec">
-          <img src="./assets/images/steamdeck.png" alt="" />
+          <img src="./assets/images/gift-2.png" alt="" />
         </div>
         <div class="wheel__sec">
-          <img src="./assets/images/bb3.png" alt="" />
+          <img src="./assets/images/gift-3.png" alt="" />
         </div>
         <div class="wheel__sec">
-          <img src="./assets/images/apple-watch.png" alt="" />
+          <img src="./assets/images/gift-4.png" alt="" />
         </div>
         <div class="wheel__sec">
           <img src="./assets/images/corset.png" alt="" />
-        </div>
-        <div class="wheel__sec">
-          <img src="./assets/images/infinity-gauntlet.png" alt="" />
-        </div>
-        <div class="wheel__sec">
-          <img src="./assets/images/treasure.png" alt="" />
         </div>
       </div>
       <div class="wheel__arrow">
@@ -285,20 +312,24 @@
           </svg>
         </div>
 
-        <form class="form">
+        <form class="form information-form">
           <p class="form-title">Hãy cho chúng mình biết bạn là ai 🥺</p>
-          <div class="input-container">
+          <div class="input-container" data-name="fullname">
             <input type="text" placeholder="Nhập họ và tên" />
             <span> </span>
           </div>
-          <div class="input-container">
+          <div class="input-container" data-name="phone">
             <input type="text" placeholder="Nhập số điện thoại" />
           </div>
-          <button type="submit" class="submit">Hoàn tất</button>
+          <button type="submit" class="submit">
+            <span class="loader"></span>
+            Hoàn tất
+          </button>
         </form>
       </div>
     </div>
 
     <script src="./assets/js/wheelGame.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   </body>
 </html>

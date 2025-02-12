@@ -1,4 +1,5 @@
 const { default: axios } = require("axios");
+const Participant = require("../models/participant");
 
 const getAccessToken = async () => {
     try {
@@ -16,4 +17,31 @@ const getAccessToken = async () => {
     }
 }
 
-module.exports = { getAccessToken };
+const postParticipant = async (data) => {
+    // Hàm đệ quy để lấy access token
+    const response = await getAccessToken();
+
+    const header = {
+        "Access-Token": response.access_token
+    };
+    try {
+        const response = await axios.post("https://crm.viendong.edu.vn/api/OpenAPI/create?module=CPTarget", { data: data }, {
+            headers: header,
+            timeout: 100000
+        });
+
+        const newResult = new Participant({ 
+            firstname: data.firstname, 
+            lastname: data.lastname,
+            phone: data.phone 
+        });
+        await newResult.save();
+
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { getAccessToken, postParticipant };

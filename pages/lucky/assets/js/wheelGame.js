@@ -1,72 +1,136 @@
 $(document).ready(function () {
-    var countClicked = 0;
     var clicked = false;
-    var information = null;
+    var isFilled = false;
+    var loading = false;
+
+    var winAudio = new Audio("./assets/voices/win.wav");
 
     let value = 0; // Lưu tổng số độ quay để luôn tăng
 
     function spinWheel() {
-        let extraSpin = 360 * 5; // Quay ít nhất 5 vòng trước khi dừng
-        let probability = Math.random();
-        let finalAngle;
+        let random;
+        let chance = Math.random(); // Xác suất từ 0 đến 1
 
-        if (probability <= 0.9) {
-            // 90% vào "Chúc bạn may mắn lần sau" (337.5° - 22.5°)
-            finalAngle = Math.random() < 0.5 ? (Math.random() * 22.5) : (337.5 + Math.random() * 22.5);
+        console.log(chance);
+        if (chance < 0.9) {
+            // 90% xác suất vào [0, 30] hoặc [331, 360]
+            let targetAngle;
+            if (Math.random() < 0.5) { 
+                targetAngle = Math.floor(Math.random() * 31); // Random từ 0 đến 30
+            } else { 
+                targetAngle = Math.floor(Math.random() * 30) + 331; // Random từ 331 đến 360
+            }
+
+            let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
+            random = baseRotation + targetAngle;
         } else {
-            // 10% còn lại chia đều cho các góc khác
-            let otherAngles = [67.5, 112.5, 157.5, 202.5, 247.5, 292.5];
-            finalAngle = otherAngles[Math.floor(Math.random() * otherAngles.length)];
+            // 10% xác suất quay vào góc bất kỳ
+            random = Math.floor((Math.random() * 6 + 4) * 360) + Math.floor(Math.random() * 360);
         }
 
-        value += extraSpin + finalAngle;
-
         $(".wheel__inner").css({
-            "transition": "transform 8s cubic-bezier(0.1, 1, 0.3, 1)",
-            "transform": `rotate(${value}deg)`
+            "transition": "cubic-bezier(0.19, 1, 0.22, 1) 5s",    
+            "transform": `rotate(${random}deg)`
         });
 
-        console.log(value % 360);
-
         setTimeout(() => {
-            let position = value % 360;
+            let position = random % 360;
             getPosition(position);
-        }, 8000);
+        }, 5000);
     }
 
     function getPosition(position) {
-        if (position > 337.5 || position <= 22.5) {
-            $('.congratulation__note').text("CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU");
-        } else if (position > 22.5 && position <= 67.5) {
-            $('.congratulation__note').text("CHÚC MỪNG BẠN NỔ HŨ");
-        } else if (position > 67.5 && position <= 112.5) {
-            $('.congratulation__note').text("CHÚC MỪNG BẠN TRÚNG 1 CHIẾC GĂNG TAY VÔ CỰC");
-        } else if (position > 112.5 && position <= 157.5) {
-            $('.congratulation__note').text("CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT ĐỐNG NỊT");
-        } else if (position > 157.5 && position <= 202.5) {
-            $('.congratulation__note').text("CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC APPLE WATCH");
-        } else if (position > 202.5 && position <= 247.5) {
-            $('.congratulation__note').text("CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT HỘP BABY THREE");
-        } else if (position > 247.5 && position <= 292.5) {
-            $('.congratulation__note').text("CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC LAPTOP ACER GAMING");
-        } else if (position > 292.5 && position <= 337.5) {
-            $('.congratulation__note').text("CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC IPHONE 16 PRO MAX");
-        }
+        const rewards = [
+            { min: 0, max: 30, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
+            { min: 31, max: 90, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT ĐỐNG NỊT" },
+            { min: 91, max: 150, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC BALO" },
+            { min: 151, max: 210, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT HỘP BABY THREE" },
+            { min: 211, max: 270, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CUỐN TẬP" },
+            { min: 271, max: 330, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC ÁO CDVD" },
+            { min: 331, max: 360, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
+        ];
 
+        let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "Không xác định";
+
+        $('.congratulation__note').text(rewardText);
+
+        winAudio.play();
         $('.popup').removeClass('active');
         $('.congratulation').fadeIn();
-        clicked = false;
-        countClicked = 0;
     }
+
+    $(document).on('click', ".information-form button[type='submit']", function (event) {
+        event.preventDefault();
+        var dataName = "fullname";
+        var inputNameValue = $('div[data-name="' + dataName + '"]').find('input').val();
+        var dataPhone = "phone";
+        var inputPhoneValue = $('div[data-name="' + dataPhone + '"]').find('input').val();
+
+        if (!inputNameValue || !inputPhoneValue) {
+            $("#notify").text("Vui lòng điền đầy đủ thông tin!").addClass("show");
+            setTimeout(function () { $("#notify").removeClass("show") }, 3000);
+            return;
+        }
+
+        else if (inputPhoneValue.length < 10 || inputPhoneValue.length > 11) {
+            $("#notify").text("Số điện thoại không hợp lệ!").addClass("show");
+            setTimeout(function () { $("#notify").removeClass("show") }, 3000);
+            return;
+        }
+
+        loading = true;
+        var names = inputNameValue.split(' ');
+        var firstName = names[names.length - 1];
+        var lastName = names.slice(0, -1).join(' ');
+
+        var postData = {
+            lastname: lastName,
+            firstname: firstName,
+            designation: firstName,
+            salutationtype: "",
+            birthday: "11-07-2004",
+            mobile: inputPhoneValue,
+            email: "",
+            high_school: "",
+            id_card: "",
+            register_for_admission: "",
+            cptarget_training_system: "",
+            cptarget_source: "website",
+            training_industry_1: "",
+            class: "",
+            address: "",
+            consulting_staff: "",
+            assigned_user_id: "3",
+        };
+
+        axios.post('/api/crm/create-cptarget', postData)
+            .then(() => {
+                isFilled = true;
+                $('.information').fadeOut();
+                if (!clicked) {
+                    setTimeout(spinWheel, 500);
+                }
+                clicked = true;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+            })
+            .finally(() => loading = false);
+    });
+
     $('.wheel__button').click(function () {
-        if (clicked == true) {
-            countClicked++;
+        if (!isFilled) {
+            $('.information').fadeIn();
+            return;
         }
-        else {
-            spinWheel();
-        }
-        clicked = true;
+        // $(".wheel__inner").css({
+        //     "transition": "none",
+        //     "transform": "rotate(0deg)"
+        // });
+        // setTimeout(() => spinWheel(), 500);
     })
+
     $('.congratulation__close').click(function () {
         $('.congratulation').fadeOut();
     })
