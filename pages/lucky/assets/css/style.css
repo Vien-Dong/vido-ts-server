@@ -35,6 +35,7 @@ body {
     0 0 20px rgba(255, 255, 255, 0.5);
   background: radial-gradient(circle, #ffcc00, #ff9900);
   position: relative;
+  overflow: hidden;
 }
 
 .wheel__inner {
@@ -383,10 +384,10 @@ body {
 
 .logo {
   position: fixed;
-  top: 5%;
+  top: 2%;
   left: 50%;
   transform: translateX(-50%);
-  width: 45%;
+  width: 40%;
 }
 
 /* Hiệu ứng nhấp nháy */
@@ -413,20 +414,19 @@ body {
 /* Use a media query to add a breakpoint at 767px: */
 @media screen and (max-width: 767px) {
   .wheel {
-    width: calc(468px * 80 / 100);
-    height: calc(468px * 80 / 100);
-    border: solid calc(9px * 80 / 100) #fff;
-    box-shadow: 0 calc(6px * 80 / 100) calc(13.5px * 80 / 100) 0
-      rgba(0, 0, 0, 0.1);
+    width: 90vw;
+    height: 90vw;
+    border: solid 1.9vw #fff;
+    box-shadow: 0 1.2vw 2.7vw 0 rgba(0, 0, 0, 0.1);
   }
 
   .wheel__inner {
-    width: calc(450px * 80 / 100);
-    height: calc(450px * 80 / 100);
+    width: 86vw;
+    height: 86vw;
   }
 
   .wheel__sec {
-    border-width: calc(225px * 80 / 100) calc(99px * 80 / 100) 0;
+    border-width: 44vw 18.3vw 0;
   }
 
   .wheel__sec img {
@@ -477,7 +477,7 @@ body {
   }
 
   .logo {
-    top: 15%;
+    top: 12%;
   }
 
   .logo,

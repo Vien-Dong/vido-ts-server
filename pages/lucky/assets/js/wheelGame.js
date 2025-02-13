@@ -65,11 +65,11 @@ $(document).ready(function () {
             const code = generateRewardCode(6);
             $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${code}</span>`);
 
-            axios.put(`/api/crm/update-cptarget?record_id=${record_id}`, { winning_code: code })
-                .catch(() => {
-                    alert('Có lỗi xảy ra, vui lòng thử lại sau.');
-                    window.location.reload();
-                });
+            // axios.put(`/api/crm/update-cptarget?record_id=${record_id}`, { winning_code: code })
+            //     .catch(() => {
+            //         alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+            //         window.location.reload();
+            //     });
         }
         else
             $('.congratulation__code').html('');
@@ -131,7 +131,7 @@ $(document).ready(function () {
             id_card: "",
             register_for_admission: "",
             cptarget_training_system: "",
-            cptarget_source: "website",
+            cptarget_source: "lucky_wheel",
             training_industry_1: "",
             class: "",
             address: "",
@@ -160,12 +160,12 @@ $(document).ready(function () {
     });
 
     $('.wheel__button').click(function () {
-        if (!isFilled) {
-            $('.information').fadeIn();
-            return;
-        }
+        // if (!isFilled) {
+        //     $('.information').fadeIn();
+        //     return;
+        // }
 
-        // spinWheel("159630");
+        spinWheel("159630");
     })
 
     $('.congratulation__close').click(function () {
