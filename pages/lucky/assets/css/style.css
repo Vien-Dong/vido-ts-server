@@ -20,7 +20,7 @@ body {
   align-items: center;
   background-color: lightgray;
   font-family: "Open sans", sans-serif;
-  background-image: url("https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/1c9d7f43-9d16-4a40-888e-20b10c7f7df5/dhp7947-821fcb9e-585d-49e1-a8a7-f291df974dda.jpg/v1/fill/w_1280,h_720,q_75,strp/madagascar___beach_background__5_by_martaveusproductions_dhp7947-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NzIwIiwicGF0aCI6IlwvZlwvMWM5ZDdmNDMtOWQxNi00YTQwLTg4OGUtMjBiMTBjN2Y3ZGY1XC9kaHA3OTQ3LTgyMWZjYjllLTU4NWQtNDllMS1hOGE3LWYyOTFkZjk3NGRkYS5qcGciLCJ3aWR0aCI6Ijw9MTI4MCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.uZpwmMZNN3vUMX5Cw2ZEaRPtlOrnNXHG_FnqW5Q-5KM");
+  background-image: url("../images/background.gif");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
@@ -35,6 +35,7 @@ body {
   background: radial-gradient(circle, #ffcc00, #ff9900);
   position: relative;
 }
+
 .wheel__inner {
   width: 450px;
   height: 450px;
@@ -46,45 +47,54 @@ body {
 
 .wheel__sec {
   position: absolute;
-  top: 0;
-  left: 93px;
+  top: 50%;
+  left: 50%;
   width: 0;
   height: 0;
-  border: solid;
-  border-width: 225px 132px 0;
+  border-style: solid;
+  border-width: 225px 99px 0;
   border-color: transparent;
-  transform-origin: 50% 100%;
+  transform-origin: bottom;
 }
 
 .wheel__sec:nth-child(1) {
   border-top-color: #16a085;
+  transform: translate(-50%, -100%) rotate(0deg);
 }
 .wheel__sec:nth-child(2) {
   border-top-color: #2980b9;
-  transform: rotate(60deg);
+  transform: translate(-50%, -100%) rotate(45deg);
 }
 .wheel__sec:nth-child(3) {
   border-top-color: #34495e;
-  transform: rotate(120deg);
+  transform: translate(-50%, -100%) rotate(90deg);
 }
 .wheel__sec:nth-child(4) {
   border-top-color: #f39c12;
-  transform: rotate(180deg);
+  transform: translate(-50%, -100%) rotate(135deg);
 }
 .wheel__sec:nth-child(5) {
   border-top-color: #d35400;
-  transform: rotate(240deg);
+  transform: translate(-50%, -100%) rotate(180deg);
 }
 .wheel__sec:nth-child(6) {
   border-top-color: #c0392b;
-  transform: rotate(300deg);
+  transform: translate(-50%, -100%) rotate(225deg);
+}
+.wheel__sec:nth-child(7) {
+  border-top-color:rgb(96, 39, 32);
+  transform: translate(-50%, -100%) rotate(270deg);
+}
+.wheel__sec:nth-child(8) {
+  border-top-color:rgb(41, 46, 142);
+  transform: translate(-50%, -100%) rotate(315deg);
 }
 
 .wheel__sec img {
   position: absolute;
   width: 3.5vw;
   height: auto;
-  bottom: 9vw;
+  bottom: 10vw;
   transform: translateX(-50%) rotate(0deg);
 }
 
@@ -221,6 +231,12 @@ body {
 
 .congratulation__note {
   text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.congratulation__code {
+  text-align: center;
+  display: block;
 }
 
 .information__container .form {
@@ -384,13 +400,12 @@ body {
   }
 
   .wheel__sec {
-    left: calc(93px * 80 / 100);
-    border-width: calc(225px * 80 / 100) calc(132px * 80 / 100) 0;
+    border-width: calc(225px * 80 / 100) calc(99px * 80 / 100) 0;
   }
 
   .wheel__sec img {
-    width: 12vw;
-    bottom: 26vw;
+    width: 10vw;
+    bottom: 28vw;
   }
 
   .wheel__arrow {

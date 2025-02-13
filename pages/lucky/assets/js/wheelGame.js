@@ -12,13 +12,13 @@ $(document).ready(function () {
         let chance = Math.random(); // Xác suất từ 0 đến 1
 
         console.log(chance);
-        if (chance < 0.9) {
-            // 90% xác suất vào [0, 30] hoặc [331, 360]
+        if (chance < 0.8) {
+            // 90% xác suất vào [0, 22.5] hoặc [337.5, 360]
             let targetAngle;
-            if (Math.random() < 0.5) { 
-                targetAngle = Math.floor(Math.random() * 31); // Random từ 0 đến 30
-            } else { 
-                targetAngle = Math.floor(Math.random() * 30) + 331; // Random từ 331 đến 360
+            if (Math.random() < 0.5) {
+                targetAngle = Math.floor(Math.random() * 23.5); // Random từ 0 đến 22.5
+            } else {
+                targetAngle = Math.floor(Math.random() * 45) + 337.5; // Random từ 337.5 đến 360
             }
 
             let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
@@ -29,7 +29,7 @@ $(document).ready(function () {
         }
 
         $(".wheel__inner").css({
-            "transition": "cubic-bezier(0.19, 1, 0.22, 1) 5s",    
+            "transition": "cubic-bezier(0.19, 1, 0.22, 1) 5s",
             "transform": `rotate(${random}deg)`
         });
 
@@ -41,22 +41,36 @@ $(document).ready(function () {
 
     function getPosition(position) {
         const rewards = [
-            { min: 0, max: 30, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
-            { min: 31, max: 90, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT ĐỐNG NỊT" },
-            { min: 91, max: 150, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC BALO" },
-            { min: 151, max: 210, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT HỘP BABY THREE" },
-            { min: 211, max: 270, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CUỐN TẬP" },
-            { min: 271, max: 330, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC ÁO CDVD" },
-            { min: 331, max: 360, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
+            { min: 0, max: 22.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
+            { min: 23.5, max: 66.5, text: "CÓ CÁI NỊT :V" },
+            { min: 67.5, max: 111.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC BALO" },
+            { min: 112.5, max: 147.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT HỘP BABY THREE" },
+            { min: 148.5, max: 201.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CUỐN TẬP" },
+            { min: 202.5, max: 246.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC ÁO CDVD" },
+            { min: 245.5, max: 291.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT TÚI MÙ" },
+            { min: 292.5, max: 336.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC MÓC KHÓA" },
+            { min: 337.5, max: 360, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
         ];
 
         let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "Không xác định";
 
         $('.congratulation__note').text(rewardText);
 
+        if (position >= 67.5 && position <= 336.5)
+            $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${generateRewardCode(6)}</span>`);
+
         winAudio.play();
         $('.popup').removeClass('active');
         $('.congratulation').fadeIn();
+    }
+
+    function generateRewardCode(length) {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let code = '';
+        for (let i = 0; i < length; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return code;
     }
 
     $(document).on('click', ".information-form button[type='submit']", function (event) {
@@ -120,24 +134,29 @@ $(document).ready(function () {
     });
 
     $('.wheel__button').click(function () {
-        if (!isFilled) {
-            $('.information').fadeIn();
-            return;
-        }
-        // $(".wheel__inner").css({
-        //     "transition": "none",
-        //     "transform": "rotate(0deg)"
-        // });
-        // setTimeout(() => spinWheel(), 500);
+        // if (!isFilled) {
+        //     $('.information').fadeIn();
+        //     return;
+        // }
+
+        spinWheel();
     })
 
     $('.congratulation__close').click(function () {
         $('.congratulation').fadeOut();
+        $(".wheel__inner").css({
+            "transition": "none",
+            "transform": "rotate(0deg)"
+        });
     })
     $('.congratulation').click(function (event) {
         if (event.target != this)
             return;
         $(this).fadeOut();
+        $(".wheel__inner").css({
+            "transition": "none",
+            "transform": "rotate(0deg)"
+        });
     })
     $('.information__close').click(function () {
         $('.information').fadeOut();
