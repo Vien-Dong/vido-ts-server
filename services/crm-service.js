@@ -44,4 +44,24 @@ const postParticipant = async (data) => {
     }
 }
 
-module.exports = { getAccessToken, postParticipant };
+const putParticipant = async (data, record_id) => {
+    // Hàm đệ quy để lấy access token
+    const response = await getAccessToken();
+
+    const header = {
+        "Access-Token": response.access_token
+    };
+    try {
+        const response = await axios.post(`https://crm.viendong.edu.vn/api/OpenAPI/update?module=CPTarget&record=${record_id}`, { data: data }, {
+            headers: header,
+            timeout: 100000
+        });
+
+        return response.data;
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+module.exports = { getAccessToken, postParticipant, putParticipant };

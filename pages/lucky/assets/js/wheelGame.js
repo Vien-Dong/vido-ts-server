@@ -7,13 +7,13 @@ $(document).ready(function () {
 
     let value = 0; // Lưu tổng số độ quay để luôn tăng
 
-    function spinWheel() {
+    function spinWheel(record_id) {
         let random;
         let chance = Math.random(); // Xác suất từ 0 đến 1
 
         console.log(chance);
-        if (chance < 0.8) {
-            // 80% xác suất vào [0, 22.5] hoặc [337.5, 360]
+        if (chance < 0.85) {
+            // 90% xác suất vào [0, 22.5] hoặc [337.5, 360]
             let targetAngle;
             if (Math.random() < 0.5) {
                 targetAngle = Math.floor(Math.random() * 23.5); // Random từ 0 đến 22.5
@@ -24,8 +24,14 @@ $(document).ready(function () {
             let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
             random = baseRotation + targetAngle;
         } else {
-            // 10% xác suất quay vào góc bất kỳ
-            random = Math.floor((Math.random() * 6 + 4) * 360) + Math.floor(Math.random() * 360);
+            // 10% còn lại nhưng không bao giờ quay vào [23.5, 66.5]
+            let targetAngle;
+            do {
+                targetAngle = Math.floor(Math.random() * 360); // Random một góc bất kỳ
+            } while (targetAngle >= 23.5 && targetAngle <= 66.5); // Nếu rơi vào vùng cấm thì random lại
+
+            let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
+            random = baseRotation + targetAngle;
         }
 
         $(".wheel__inner").css({
@@ -35,14 +41,14 @@ $(document).ready(function () {
 
         setTimeout(() => {
             let position = random % 360;
-            getPosition(position);
+            getPosition(position, record_id);
         }, 5000);
     }
 
-    function getPosition(position) {
+    function getPosition(position, record_id) {
         const rewards = [
             { min: 0, max: 22.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
-            { min: 23.5, max: 66.5, text: "CÓ CÁI NỊT :V" },
+            { min: 23.5, max: 66.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
             { min: 67.5, max: 111.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC BALO" },
             { min: 112.5, max: 147.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT HỘP BABY THREE" },
             { min: 148.5, max: 201.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CUỐN TẬP" },
@@ -55,9 +61,17 @@ $(document).ready(function () {
         let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "Không xác định";
         $('.congratulation__note').text(rewardText);
 
-        if (position >= 67.5 && position <= 336.5)
-            $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${generateRewardCode(6)}</span>`);
-        else 
+        if (position >= 67.5 && position <= 336.5) {
+            const code = generateRewardCode(6);
+            $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${code}</span>`);
+
+            axios.put(`/api/crm/update-cptarget?record_id=${record_id}`, { winning_code: code })
+                .catch(() => {
+                    alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+                    window.location.reload();
+                });
+        }
+        else
             $('.congratulation__code').html('');
 
         winAudio.play();
@@ -80,8 +94,12 @@ $(document).ready(function () {
         var inputNameValue = $('div[data-name="' + dataName + '"]').find('input').val();
         var dataPhone = "phone";
         var inputPhoneValue = $('div[data-name="' + dataPhone + '"]').find('input').val();
+        var dataBirthday = "birthday";
+        var inputBirthdayValue = $('div[data-name="' + dataBirthday + '"]').find('input').val();
+        var dataHighschool = "highschool";
+        var inputHighschoolValue = $('div[data-name="' + dataHighschool + '"]').find('input').val();
 
-        if (!inputNameValue || !inputPhoneValue) {
+        if (!inputNameValue || !inputPhoneValue || !inputBirthdayValue || !inputHighschoolValue) {
             $("#notify").text("Vui lòng điền đầy đủ thông tin!").addClass("show");
             setTimeout(function () { $("#notify").removeClass("show") }, 3000);
             return;
@@ -94,6 +112,9 @@ $(document).ready(function () {
         }
 
         loading = true;
+        $(".information-form button[type='submit'] .loader").fadeIn();
+        $(".information-form button[type='submit']").prop('disabled', true);
+
         var names = inputNameValue.split(' ');
         var firstName = names[names.length - 1];
         var lastName = names.slice(0, -1).join(' ');
@@ -103,10 +124,10 @@ $(document).ready(function () {
             firstname: firstName,
             designation: firstName,
             salutationtype: "",
-            birthday: "11-07-2004",
+            birthday: inputBirthdayValue,
             mobile: inputPhoneValue,
             email: "",
-            high_school: "",
+            high_school: inputHighschoolValue,
             id_card: "",
             register_for_admission: "",
             cptarget_training_system: "",
@@ -119,13 +140,17 @@ $(document).ready(function () {
         };
 
         axios.post('/api/crm/create-cptarget', postData)
-            .then(() => {
-                isFilled = true;
-                $('.information').fadeOut();
-                if (!clicked) {
-                    setTimeout(spinWheel, 500);
+            .then((result) => {
+                if (result.data && result.data.success) {
+                    isFilled = true;
+                    $(".information-form button[type='submit'] .loader").fadeOut();
+                    $(".information-form button[type='submit']").prop('disabled', false);
+                    $('.information').fadeOut();
+                    if (!clicked) {
+                        setTimeout(() => spinWheel(result.data.payload?.record_id), 500);
+                    }
+                    clicked = true;
                 }
-                clicked = true;
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -135,12 +160,12 @@ $(document).ready(function () {
     });
 
     $('.wheel__button').click(function () {
-        // if (!isFilled) {
-        //     $('.information').fadeIn();
-        //     return;
-        // }
+        if (!isFilled) {
+            $('.information').fadeIn();
+            return;
+        }
 
-        spinWheel();
+        // spinWheel("159630");
     })
 
     $('.congratulation__close').click(function () {
@@ -167,4 +192,19 @@ $(document).ready(function () {
             return;
         $(this).fadeOut();
     })
+
+    $('#birthday').focus(function() {
+        $(this).attr('type', 'date');
+    }).blur(function() {
+        let dateValue = $(this).val();
+        if (dateValue) {
+            let date = new Date(dateValue);
+            let formattedDate = ("0" + date.getDate()).slice(-2) + "-" + 
+                                ("0" + (date.getMonth() + 1)).slice(-2) + "-" + 
+                                date.getFullYear();
+            $(this).attr('type', 'text').val(formattedDate);
+        } else {
+            $(this).attr('type', 'text');
+        }
+    });
 })
