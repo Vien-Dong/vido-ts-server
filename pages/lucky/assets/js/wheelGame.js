@@ -165,7 +165,10 @@ $(document).ready(function () {
         //     return;
         // }
 
-        spinWheel("159630");
+        if (!clicked) {
+            spinWheel("159630");
+        }
+        clicked = true;
     })
 
     $('.congratulation__close').click(function () {
