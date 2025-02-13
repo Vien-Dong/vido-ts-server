@@ -13,7 +13,7 @@ $(document).ready(function () {
 
         console.log(chance);
         if (chance < 0.8) {
-            // 90% xác suất vào [0, 22.5] hoặc [337.5, 360]
+            // 80% xác suất vào [0, 22.5] hoặc [337.5, 360]
             let targetAngle;
             if (Math.random() < 0.5) {
                 targetAngle = Math.floor(Math.random() * 23.5); // Random từ 0 đến 22.5
@@ -53,11 +53,12 @@ $(document).ready(function () {
         ];
 
         let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "Không xác định";
-
         $('.congratulation__note').text(rewardText);
 
         if (position >= 67.5 && position <= 336.5)
             $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${generateRewardCode(6)}</span>`);
+        else 
+            $('.congratulation__code').html('');
 
         winAudio.play();
         $('.popup').removeClass('active');
