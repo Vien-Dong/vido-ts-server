@@ -77,6 +77,7 @@ $(document).ready(function () {
         winAudio.play();
         $('.popup').removeClass('active');
         $('.congratulation').fadeIn();
+        clicked = false // Reset click
     }
 
     function generateRewardCode(length) {
