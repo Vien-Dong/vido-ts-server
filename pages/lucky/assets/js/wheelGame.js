@@ -11,9 +11,9 @@ $(document).ready(function () {
         let random;
         let chance = Math.random(); // Xác suất từ 0 đến 1
 
-        console.log(chance);
-        if (chance < 0.85) {
-            // 90% xác suất vào [0, 22.5] hoặc [337.5, 360]
+        console.log("Chance: ", chance);
+        if (chance < 0.65) {
+            // 65% xác suất vào [0, 22.5] hoặc [337.5, 360]
             let targetAngle;
             if (Math.random() < 0.5) {
                 targetAngle = Math.floor(Math.random() * 23.5); // Random từ 0 đến 22.5
@@ -24,11 +24,11 @@ $(document).ready(function () {
             let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
             random = baseRotation + targetAngle;
         } else {
-            // 10% còn lại nhưng không bao giờ quay vào [23.5, 66.5]
+            // 35% còn lại nhưng không bao giờ quay vào [23.5, 66.5, 112.5, 147.5]
             let targetAngle;
             do {
                 targetAngle = Math.floor(Math.random() * 360); // Random một góc bất kỳ
-            } while (targetAngle >= 23.5 && targetAngle <= 66.5); // Nếu rơi vào vùng cấm thì random lại
+            } while ((targetAngle >= 23.5 && targetAngle <= 66.5) || (targetAngle >= 112.5 && targetAngle <= 147.5)); // Nếu rơi vào vùng cấm thì random lại
 
             let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
             random = baseRotation + targetAngle;
@@ -50,7 +50,7 @@ $(document).ready(function () {
             { min: 0, max: 22.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
             { min: 23.5, max: 66.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
             { min: 67.5, max: 111.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC BALO" },
-            { min: 112.5, max: 147.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT HỘP BABY THREE" },
+            { min: 112.5, max: 147.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
             { min: 148.5, max: 201.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CUỐN TẬP" },
             { min: 202.5, max: 246.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC ÁO CDVD" },
             { min: 245.5, max: 291.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT TÚI MÙ" },
@@ -58,12 +58,13 @@ $(document).ready(function () {
             { min: 337.5, max: 360, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
         ];
 
-        let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "Không xác định";
+        let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "XUI QUÁ MỘT CHÚT NỮA LÀ TRÚNG RỒI 🤡";
         $('.congratulation__note').text(rewardText);
 
         if (position >= 67.5 && position <= 336.5) {
             const code = generateRewardCode(6);
             $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${code}</span>`);
+            $('.congratulation__description').text('Vui lòng đến gian hàng Cao đẳng Viễn Đông để nhận quà hoặc copy mã trúng thưởng này gửi fanpage Tuyển sinh Cao đẳng Viễn Đông');
 
             // axios.put(`/api/crm/update-cptarget?record_id=${record_id}`, { winning_code: code })
             //     .catch(() => {
@@ -160,16 +161,43 @@ $(document).ready(function () {
             .finally(() => loading = false);
     });
 
-    $('.wheel__button').click(function () {
-        // if (!isFilled) {
-        //     $('.information').fadeIn();
-        //     return;
-        // }
+    async function getDeviceId() {
+        const fp = await FingerprintJS.load();
+        const result = await fp.get();
+        return result.visitorId;
+    }
 
-        if (!clicked) {
-            spinWheel("159630");
-        }
-        clicked = true;
+    async function checkIfPlayed() {
+        const $button = $('.wheel__button'); // Lấy button bằng jQuery
+        $button.addClass('spinning'); // Thêm class để quay
+        var isPlayed = false;
+
+        const deviceId = await getDeviceId();
+        console.log("DeviceId: ", deviceId);
+        await axios.get(`/api/check/check-id?deviceId=${deviceId}`).then((result) => {
+            if (result?.data && result?.data?.payload) isPlayed = true;
+        }).finally(() => $button.removeClass('spinning')); // Dừng quay);
+
+        return isPlayed;
+    }
+
+    $('.wheel__button').click(async function () {
+        await checkIfPlayed().then((isPlayed) => {
+            if (isPlayed) {
+                alert("Bạn đã chơi một lần rồi!");
+            }
+            else {
+                // if (!isFilled) {
+                //     $('.information').fadeIn();
+                //     return;
+                // }
+
+                if (!clicked) {
+                    spinWheel("159630");
+                }
+                clicked = true;
+            }
+        });
     })
 
     $('.congratulation__close').click(function () {
@@ -197,15 +225,15 @@ $(document).ready(function () {
         $(this).fadeOut();
     })
 
-    $('#birthday').focus(function() {
+    $('#birthday').focus(function () {
         $(this).attr('type', 'date');
-    }).blur(function() {
+    }).blur(function () {
         let dateValue = $(this).val();
         if (dateValue) {
             let date = new Date(dateValue);
-            let formattedDate = ("0" + date.getDate()).slice(-2) + "-" + 
-                                ("0" + (date.getMonth() + 1)).slice(-2) + "-" + 
-                                date.getFullYear();
+            let formattedDate = ("0" + date.getDate()).slice(-2) + "-" +
+                ("0" + (date.getMonth() + 1)).slice(-2) + "-" +
+                date.getFullYear();
             $(this).attr('type', 'text').val(formattedDate);
         } else {
             $(this).attr('type', 'text');

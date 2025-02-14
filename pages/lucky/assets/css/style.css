@@ -150,6 +150,10 @@ body {
   font-size: 15px;
 }
 
+.wheel__button.spinning {
+  animation: rotation 0.5s linear infinite;
+}
+
 .wheel__button img, .logo img {
   width: 100%;
 }
@@ -205,6 +209,12 @@ body {
   border-radius: 10px;
 }
 
+.congratulation__container {
+  background-image: url('../images/firework.gif');
+  background-size: auto;
+  background-position: center;
+}
+
 .congratulation__close,
 .information__close {
   position: absolute;
@@ -223,7 +233,7 @@ body {
 .congratulation__emotion {
   color: #f39c12;
   text-align: center;
-  margin: 0 0 20px 0;
+  margin: 0 0 1rem 0;
 }
 
 .congratulation__emotion svg {
@@ -239,6 +249,15 @@ body {
 .congratulation__code {
   text-align: center;
   display: block;
+  margin-bottom: 0.5rem;
+}
+
+.congratulation__description {
+  text-align: center;
+  display: block;
+  font-size: 12px;
+  color: #5a3535;
+  font-style: italic;
 }
 
 .information__container .form {

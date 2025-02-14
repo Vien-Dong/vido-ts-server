@@ -43,7 +43,6 @@ router.post("/postQuestion", async (req, res) => {
     try {
         const body = req.body;
         const result = await createQuestions(body);
-        console.log(result);
         res.status(200).send({
             status: true,
             message: "Tạo câu hỏi nghề thành công.",
