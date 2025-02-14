@@ -12,7 +12,7 @@ $(document).ready(function () {
         let chance = Math.random(); // Xác suất từ 0 đến 1
 
         console.log("Chance: ", chance);
-        if (chance < 0.65) {
+        if (chance < 0.80) {
             // 65% xác suất vào [0, 22.5] hoặc [337.5, 360]
             let targetAngle;
             if (Math.random() < 0.5) {
@@ -66,11 +66,11 @@ $(document).ready(function () {
             $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${code}</span>`);
             $('.congratulation__description').text('Vui lòng đến gian hàng Cao đẳng Viễn Đông để nhận quà hoặc copy mã trúng thưởng này gửi fanpage Tuyển sinh Cao đẳng Viễn Đông');
 
-            // axios.put(`/api/crm/update-cptarget?record_id=${record_id}`, { winning_code: code })
-            //     .catch(() => {
-            //         alert('Có lỗi xảy ra, vui lòng thử lại sau.');
-            //         window.location.reload();
-            //     });
+            axios.put(`/api/crm/update-cptarget?record_id=${record_id}`, { winning_code: code })
+                .catch(() => {
+                    alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+                    window.location.reload();
+                });
         }
         else
             $('.congratulation__code').html('');
@@ -78,7 +78,7 @@ $(document).ready(function () {
         winAudio.play();
         $('.popup').removeClass('active');
         $('.congratulation').fadeIn();
-        clicked = false // Reset click
+        // clicked = false // Reset click
     }
 
     function generateRewardCode(length) {
@@ -192,15 +192,15 @@ $(document).ready(function () {
                 alert("Bạn đã chơi một lần rồi!");
             }
             else {
-                // if (!isFilled) {
-                //     $('.information').fadeIn();
-                //     return;
-                // }
-
-                if (!clicked) {
-                    spinWheel("159630");
+                if (!isFilled) {
+                    $('.information').fadeIn();
+                    return;
                 }
-                clicked = true;
+
+                // if (!clicked) {
+                //     spinWheel("159630");
+                // }
+                // clicked = true;
             }
         });
     })
