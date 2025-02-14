@@ -162,7 +162,12 @@ $(document).ready(function () {
     });
 
     async function getDeviceId() {
-        const fp = await FingerprintJS.load();
+        const fp = await FingerprintJS.load({
+            monitoring: false, // Tắt giám sát để giảm thay đổi ID
+            excludes: {
+                adBlock: true // Bỏ qua kiểm tra AdBlock
+            }
+        });
         const result = await fp.get();
         return result.visitorId;
     }
