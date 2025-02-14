@@ -2,12 +2,13 @@ $(document).ready(function () {
     var clicked = false;
     var isFilled = false;
     var loading = false;
+    var deviceId = '';
 
     var winAudio = new Audio("./assets/voices/win.wav");
 
     let value = 0; // Lưu tổng số độ quay để luôn tăng
 
-    function spinWheel(record_id) {
+    function spinWheel(record_id, deviceId) {
         let random;
         let chance = Math.random(); // Xác suất từ 0 đến 1
 
@@ -41,11 +42,11 @@ $(document).ready(function () {
 
         setTimeout(() => {
             let position = random % 360;
-            getPosition(position, record_id);
+            getPosition(position, record_id, deviceId);
         }, 5000);
     }
 
-    function getPosition(position, record_id) {
+    function getPosition(position, record_id, deviceId) {
         const rewards = [
             { min: 0, max: 22.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
             { min: 23.5, max: 66.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
@@ -61,19 +62,22 @@ $(document).ready(function () {
         let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "XUI QUÁ MỘT CHÚT NỮA LÀ TRÚNG RỒI 🤡";
         $('.congratulation__note').text(rewardText);
 
-        if (position >= 67.5 && position <= 336.5) {
+        if ((position >= 67.5 && position <= 111.5) || (position >= 148.5 && position <= 336.5)) {
             const code = generateRewardCode(6);
             $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${code}</span>`);
             $('.congratulation__description').text('Vui lòng đến gian hàng Cao đẳng Viễn Đông để nhận quà hoặc copy mã trúng thưởng này gửi fanpage Tuyển sinh Cao đẳng Viễn Đông');
 
-            axios.put(`/api/crm/update-cptarget?record_id=${record_id}`, { winning_code: code })
+            axios.put(`/api/crm/update-cptarget?record_id=${record_id}`, { winning_code: code, deviceId })
                 .catch(() => {
                     alert('Có lỗi xảy ra, vui lòng thử lại sau.');
                     window.location.reload();
                 });
         }
         else
+        {
+            axios.put('/api/check/update-id', { deviceId, isCompleted: true });
             $('.congratulation__code').html('');
+        }
 
         winAudio.play();
         $('.popup').removeClass('active');
@@ -149,7 +153,7 @@ $(document).ready(function () {
                     $(".information-form button[type='submit']").prop('disabled', false);
                     $('.information').fadeOut();
                     if (!clicked) {
-                        setTimeout(() => spinWheel(result.data.payload?.record_id), 500);
+                        setTimeout(() => spinWheel(result.data.payload?.record_id, deviceId), 500);
                     }
                     clicked = true;
                 }
@@ -177,10 +181,13 @@ $(document).ready(function () {
         $button.addClass('spinning'); // Thêm class để quay
         var isPlayed = false;
 
-        const deviceId = await getDeviceId();
+        deviceId = await getDeviceId();
         console.log("DeviceId: ", deviceId);
         await axios.get(`/api/check/check-id?deviceId=${deviceId}`).then((result) => {
-            if (result?.data && result?.data?.payload) isPlayed = true;
+            if (result?.data && result?.data?.payload) {
+                if(result?.data?.payload?.isCompleted)
+                    isPlayed = true;
+            }
         }).finally(() => $button.removeClass('spinning')); // Dừng quay);
 
         return isPlayed;
@@ -198,7 +205,7 @@ $(document).ready(function () {
                 }
 
                 // if (!clicked) {
-                //     spinWheel("159630");
+                //     spinWheel("159630", deviceId);
                 // }
                 // clicked = true;
             }

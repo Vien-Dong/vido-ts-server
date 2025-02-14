@@ -2,7 +2,7 @@ const Device = require("../models/device")
 
 const saveDeviceId = async (data) => {
     try {
-        var newDevice = new Device({ deviceId: data.deviceId });
+        var newDevice = new Device({ deviceId: data.deviceId, isCompleted: data.isCompleted });
         return await newDevice.save();
     }
     catch (err) {
@@ -14,7 +14,7 @@ const getDeviceId = async (deviceId) => {
     try {
         var result = await Device.findOne({ deviceId });
         if (!result) {
-            await saveDeviceId({ deviceId });
+            await saveDeviceId({ deviceId, isCompleted: false });
         }
         return result;
     }
@@ -23,4 +23,13 @@ const getDeviceId = async (deviceId) => {
     }
 }
 
-module.exports = { saveDeviceId, getDeviceId }; 
+const updateDeviceId = async (data) => {
+    try {
+        return await Device.findOneAndUpdate({ deviceId: data.deviceId }, { isCompleted: data.isCompleted }, { new: true });
+    }
+    catch (err) {
+        console.log(err);
+    }
+}
+
+module.exports = { saveDeviceId, getDeviceId, updateDeviceId }; 

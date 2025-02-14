@@ -1,5 +1,6 @@
 const { default: axios } = require("axios");
 const Participant = require("../models/participant");
+const Device = require("../models/device");
 
 const getAccessToken = async () => {
     try {
@@ -52,10 +53,14 @@ const putParticipant = async (data, record_id) => {
         "Access-Token": response.access_token
     };
     try {
-        const response = await axios.post(`https://crm.viendong.edu.vn/api/OpenAPI/update?module=CPTarget&record=${record_id}`, { data: data }, {
+        const response = await axios.post(`https://crm.viendong.edu.vn/api/OpenAPI/update?module=CPTarget&record=${record_id}`, { data: {
+            winning_code: data.winning_code
+        } }, {
             headers: header,
             timeout: 100000
         });
+
+        await Device.findOneAndUpdate({ deviceId: data.deviceId }, { isCompleted: true }, { new: true });
 
         return response.data;
     }
