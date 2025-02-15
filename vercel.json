@@ -14,7 +14,7 @@
     ],
     "redirects": [
     {
-      "source": "https://vido-ts-server-v1.vercel.app/:path*",
+      "source": "/:path*",
       "destination": "https://vido-ts-server.vercel.app/:path*",
       "permanent": true
     }
