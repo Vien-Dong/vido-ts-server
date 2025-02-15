@@ -11,12 +11,5 @@
             "src": "/(.*)",
             "dest": "app.js"
         }
-    ],
-    "redirects": [
-    {
-      "source": "/:path*",
-      "destination": "https://vido-ts-server.vercel.app/:path*",
-      "permanent": true
-    }
-  ]
+    ]
 }
