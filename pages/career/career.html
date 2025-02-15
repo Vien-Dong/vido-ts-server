@@ -1,0 +1,94 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Định hướng ngành nghề</title>
+
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/x-icon" href="../contact/assets/img/logo.gif">
+    <link rel="stylesheet" href="./career.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
+    <div class="container w-100 p-5" id="info-form">
+        <h2 class="text-center font-weight-bold">Điền thông tin</h2>
+        <form class="form d-flex flex-column gap-4" id="myForm">
+            <div class="form-input">
+                <input type="number" placeholder="Nhập mã số sinh viên" id="student-code">
+                <label for="student-code">Nhập mã số sinh viên</label>
+            </div>
+            <div class="form-input">
+                <input type="text" placeholder="Nhập tên" id="name">
+                <label for="name">Nhập tên</label>
+            </div>
+            <div class="form-input relative">
+                <input type="text" placeholder="Chọn ngày sinh" id="birthday">
+                <label for="birthday">Chọn ngày sinh</label>
+            </div>
+
+            <button type="button" id="btnSubmit" class="btn bg-success text-white py-2" style="margin-inline: 25rem;">Xác nhận</button>
+        </form>
+    </div>
+    <div id="quiz" class="container w-100 p-5 hidden">
+        <div class="p-5">
+            <h1 id="quiz-name" class="text-center text-primary"></h1>
+
+            <div class="p-5 loader-container hidden" id="loader-container">
+                <div class="loader" id="loader"></div>
+            </div>
+
+            <div class="p-5 question-container" id="question-container">
+                <div id="question-area"></div>
+                <div id="quiz-results">
+                    <h2 id="quiz-results-message"></h2>
+                    <h4 id="quiz-results-score"></h4>
+                    <div id="lottie-container"></div>
+                    <div class="w-100 d-flex flex-column gap-2 px-4">
+                        <div>
+                            <b>Mô tả về ngành:</b>
+                            <p class="mt-1" id="description"></p>
+                        </div>
+
+                        <div>
+                            <b>Điểm hồng của ngành:</b>
+                            <p class="mt-1" id="strength"></p>
+                        </div>
+
+                        <div>
+                            <b>Điểm đen của ngành:</b>
+                            <p class="mt-1" id="weekness"></p>
+                        </div>
+
+                        <div class="d-flex align-items-center gap-1">
+                            <b>Truy cập website để biết rõ hơn:</b>
+                            <p class="m-0" id="url"></p>
+                        </div>
+                    </div>
+                    <br />
+                    <button class="btn" id="quiz-retry-button">Thử lại</button>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-center">
+                <button id="prev-question-button" class="btn">Câu trước</button>
+                <button id="submit-button" class="btn">Hoàn thành</button>
+                <button id="next-question-button" class="btn">Câu tiếp theo</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+</body>
+
+</html>
+
+</body>
+
+</html>

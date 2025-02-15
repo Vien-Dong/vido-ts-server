@@ -1,0 +1,184 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Xóa tài khoản</title>
+    <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            -webkit-font-smoothing: antialiased;
+            -moz-font-smoothing: antialiased;
+            -o-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+        }
+
+        body {
+            font-family: "Open Sans", Helvetica, Arial, sans-serif;
+            font-weight: 300;
+            font-size: 12px;
+            line-height: 18px;
+            color: #777;
+            background: rgb(158, 160, 160);
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        #contact input[type="text"],
+        #contact input[type="email"],
+        #contact input[type="tel"],
+        #contact input[type="url"],
+        #contact textarea,
+        #contact button[type="submit"] {
+            font: 400 12px/16px "Open Sans", Helvetica, Arial, sans-serif;
+        }
+
+        #contact {
+            background: #f9f9f9;
+            padding: 25px;
+            margin: 6rem 0;
+            border-radius: 5px;
+        }
+
+        #contact h3 {
+            color: #f96;
+            display: block;
+            font-size: 30px;
+            font-weight: 400;
+        }
+
+        #contact h4 {
+            margin: 5px 0 15px;
+            display: block;
+            font-size: 13px;
+        }
+
+        fieldset {
+            border: medium none !important;
+            margin: 0 0 10px;
+            min-width: 100%;
+            padding: 0;
+            width: 100%;
+        }
+
+        #contact input[type="text"],
+        #contact input[type="email"],
+        #contact input[type="tel"],
+        #contact input[type="url"],
+        #contact textarea {
+            width: 100%;
+            border: 1px solid #ccc;
+            background: #fff;
+            margin: 0 0 5px;
+            padding: 10px;
+        }
+
+        #contact input[type="text"]:hover,
+        #contact input[type="email"]:hover,
+        #contact input[type="tel"]:hover,
+        #contact input[type="url"]:hover,
+        #contact textarea:hover {
+            -webkit-transition: border-color 0.3s ease-in-out;
+            -moz-transition: border-color 0.3s ease-in-out;
+            transition: border-color 0.3s ease-in-out;
+            border: 1px solid #aaa;
+        }
+
+        #contact textarea {
+            height: 100px;
+            max-width: 100%;
+            resize: none;
+        }
+
+        #contact button[type="submit"] {
+            cursor: pointer;
+            width: 100%;
+            border: none;
+            background: #8ea71d;
+            color: #fff;
+            margin: 0 0 5px;
+            padding: 15px;
+            font-size: 15px;
+        }
+
+        #contact button[type="submit"]:hover {
+            background: #09c;
+            -webkit-transition: background 0.3s ease-in-out;
+            -moz-transition: background 0.3s ease-in-out;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        #contact button[type="submit"]:active {
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+
+        #contact input:focus,
+        #contact textarea:focus {
+            outline: 0;
+            border: 1px solid #999;
+        }
+    </style>
+    <div class="container">
+        <form id="contact" action="/api/mail/send-email" method="POST">
+            <h3 style="margin-bottom: 1rem;">Yêu cầu xóa tài khoản</h3>
+            <h4>Liên hệ với chúng tôi nếu bạn muốn xóa tài khoản ứng dụng "Hướng nghiệp - VIDO Edu"</h4>
+            <fieldset>
+                <input placeholder="Email đăng nhập" id="email" type="email" name="email" tabindex="2" required>
+            </fieldset>
+            <fieldset>
+                <input placeholder="Số điện thoại" id="phone" type="tel" name="phone" tabindex="3" required>
+            </fieldset>
+            <fieldset>
+                <textarea id="message" name="message" placeholder="Lý do bạn muốn xóa tài khoản...."
+                    tabindex="5"></textarea>
+            </fieldset>
+            <h4>Chúng tôi muốn chắc chắn rằng bạn đã hiểu về việc xóa tài khoản của mình. Tài khoản sau khi xóa sẽ không
+                thể khôi phục, chính vì vậy hãy cân nhắc.</h4>
+            <button type="submit">Gửi yêu cầu</button>
+        </form>
+    </div>
+    <script type="text/javascript">
+        document.getElementById("contact").addEventListener("submit", function (event) {
+            event.preventDefault();
+            submit();
+        });
+
+        const submit = () => {
+            fetch('/api/mail/send-email', {
+                method: 'POST',
+                body: JSON.stringify({
+                    email: document.getElementById("email").value,
+                    phone: document.getElementById("phone").value,
+                    message: document.getElementById("message").value
+                }),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }
+            })
+                .then(response => response.text())
+                .then(data => {
+                    alert('Đã gửi tin nhắn của bạn')
+                    console.log(data); // Log phản hồi từ máy chủ
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra, vui lòng thử lại sau.');
+                });
+        }
+    </script>
+</body>
+
+</html>

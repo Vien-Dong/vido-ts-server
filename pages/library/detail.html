@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết Sách</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.png" />
+    <link rel="stylesheet" href="./library.css" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <link href="css/font-awesome.css" rel="stylesheet" />
+    <link href="css/flaticon.css" rel="stylesheet" />
+    <link href="css/slick-slider.css" rel="stylesheet" />
+    <link href="css/fancybox.css" rel="stylesheet" />
+    <link href="css/color.css" rel="stylesheet" />
+    <link href="css/responsive.css" rel="stylesheet" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <div class="ereaders-main-wrapper">
+      <header id="ereaders-header" class="ereaders-header-one">
+        <div class="ereaders-main-header">
+          <div class="container">
+            <div class="row">
+              <aside class="col-md-3">
+                <a href="/library" class="logo"
+                  ><img src="images/logo.png" alt=""
+                /></a>
+              </aside>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="ereaders-subheader">
+        <div class="ereaders-subheader-text">
+          <span class="ereaders-subheader-transparent"></span>
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <h1>Chi tiết sách</h1>
+                <p>
+                  Danh sách tất cả sách của thư viện trường cao đẳng Viễn Đông.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ereaders-breadcrumb">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-12">
+                <ul>
+                  <li><a href="/library">Trang chủ</a></li>
+                  <li class="active">Chi tiết sách</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ereaders-main-content">
+        <main id="content" role="main">
+          <br />
+          <div class="container">
+            <div
+              class="metadataFieldLabel dc_identifier_uri_label"
+              style="margin-bottom: 24px"
+            >
+              Please use this identifier to cite or link to this item:
+              <span
+                id="metadataFieldValue_dc_identifier_uri"
+                style="
+                  background-color: #f9f2f4;
+                  color: #c7254e;
+                  padding: 2px 4px;
+                "
+              ></span>
+            </div>
+            <table class="table itemDisplayTable">
+              <tbody>
+                <tr>
+                  <td class="metadataFieldLabel dc_title_label">
+                    BookName:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_title"></td>
+                </tr>
+                <tr>
+                  <td class="metadataFieldLabel dc_contributor_label">
+                    Authors:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_contributor"></td>
+                </tr>
+                <tr>
+                  <td class="metadataFieldLabel dc_subject_label">
+                    Category:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_subject"></td>
+                </tr>
+                <tr>
+                  <td class="metadataFieldLabel dc_date_issued_label">
+                    Publish Year:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_date_issued"></td>
+                </tr>
+                <tr>
+                  <td class="metadataFieldLabel dc_publisher_label">
+                    Publisher Name:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_publisher"></td>
+                </tr>
+                <tr>
+                  <td class="metadataFieldLabel dc_location_label">
+                    Location:&nbsp;
+                  </td>
+                  <td class="metadataFieldValue dc_location"></td>
+                </tr>
+              </tbody>
+            </table>
+            <br />
+            <div class="panel panel-info">
+              <div class="panel-heading metadataFieldLabel">
+                Files in This Item:
+              </div>
+              <table class="table panel-body">
+                <thead>
+                  <tr>
+                    <th class="metadataFieldValue">File</th>
+                    <th class="metadataFieldValue">Format</th>
+                    <th class="metadataFieldValue">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="fileTableBody">
+                  <!-- Files will be populated here by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="modal">
+      <div
+        class="modal-dialog"
+        style="max-width: 80% !important"
+        role="document"
+      >
+        <div class="modal-content">
+          <!-- Modal Header -->
+          <div class="modal-header">
+            <h4 class="modal-title">Xem tài liệu</h4>
+          </div>
+
+          <!-- Modal body -->
+          <div class="modal-body">
+            Tên tài liệu: <a name="filename" id="filename"></a>
+            <iframe src="" width="100%" height="500px" id="frame"></iframe>
+          </div>
+
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" id="dismiss">
+              Đóng
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script type="text/javascript" src="detail.js"></script>
+    <script type="text/javascript" src="library.js"></script>
+    <script type="text/javascript" src="category.js"></script>
+    <script type="text/javascript" src="script/jquery.js"></script>
+    <script type="text/javascript" src="script/jquery-ui.js"></script>
+    <script type="text/javascript" src="script/bootstrap.min.js"></script>
+    <script type="text/javascript" src="script/slick.slider.min.js"></script>
+    <script type="text/javascript" src="script/fancybox.pack.js"></script>
+    <script type="text/javascript" src="script/isotope.min.js"></script>
+    <script type="text/javascript" src="script/progressbar.js"></script>
+    <script
+      type="text/javascript"
+      src="script/jquery.countdown.min.js"
+    ></script>
+    <script type="text/javascript" src="script/circle-chart.js"></script>
+    <script type="text/javascript" src="script/numscroller.js"></script>
+    <script type="text/javascript" src="script/functions.js"></script>
+    <script
+      src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs"
+      type="module"
+    ></script>
+  </body>
+</html>
