@@ -60,7 +60,7 @@ const putParticipant = async (data, record_id) => {
             timeout: 100000
         });
 
-        await Device.findOneAndUpdate({ deviceId: data.deviceId }, { isCompleted: true }, { new: true });
+        // await Device.findOneAndUpdate({ deviceId: data.deviceId }, { isCompleted: true }, { new: true });
 
         return response.data;
     }

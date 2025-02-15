@@ -8,7 +8,7 @@ $(document).ready(function () {
 
     let value = 0; // Lưu tổng số độ quay để luôn tăng
 
-    function spinWheel(record_id, deviceId) {
+    function spinWheel(record_id) {
         let random;
         let chance = Math.random(); // Xác suất từ 0 đến 1
 
@@ -42,11 +42,11 @@ $(document).ready(function () {
 
         setTimeout(() => {
             let position = random % 360;
-            getPosition(position, record_id, deviceId);
+            getPosition(position, record_id);
         }, 5000);
     }
 
-    function getPosition(position, record_id, deviceId) {
+    function getPosition(position, record_id) {
         const rewards = [
             { min: 0, max: 22.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
             { min: 23.5, max: 66.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
@@ -67,7 +67,7 @@ $(document).ready(function () {
             $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${code}</span>`);
             $('.congratulation__description').text('Vui lòng đến gian hàng Cao đẳng Viễn Đông để nhận quà hoặc copy mã trúng thưởng này gửi fanpage Tuyển sinh Cao đẳng Viễn Đông');
 
-            axios.put(`/api/crm/update-cptarget?record_id=${record_id}`, { winning_code: code, deviceId })
+            axios.put(`/api/crm/update-cptarget?record_id=${record_id}`, { winning_code: code })
                 .catch(() => {
                     alert('Có lỗi xảy ra, vui lòng thử lại sau.');
                     window.location.reload();
@@ -75,7 +75,7 @@ $(document).ready(function () {
         }
         else
         {
-            axios.put('/api/check/update-id', { deviceId, isCompleted: true });
+            // axios.put('/api/check/update-id', { deviceId, isCompleted: true });
             $('.congratulation__code').html('');
         }
 
@@ -153,7 +153,7 @@ $(document).ready(function () {
                     $(".information-form button[type='submit']").prop('disabled', false);
                     $('.information').fadeOut();
                     if (!clicked) {
-                        setTimeout(() => spinWheel(result.data.payload?.record_id, deviceId), 500);
+                        setTimeout(() => spinWheel(result.data.payload?.record_id), 500);
                     }
                     clicked = true;
                 }
@@ -194,7 +194,7 @@ $(document).ready(function () {
     }
 
     $('.wheel__button').click(async function () {
-        await checkIfPlayed();
+        // await checkIfPlayed();
         if (!isFilled) {
             $('.information').fadeIn();
             return;
