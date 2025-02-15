@@ -50,7 +50,7 @@ $(document).ready(function () {
         const rewards = [
             { min: 0, max: 22.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
             { min: 23.5, max: 66.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
-            { min: 67.5, max: 111.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC BALO" },
+            { min: 67.5, max: 111.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
             { min: 112.5, max: 147.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
             { min: 148.5, max: 201.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CUỐN TẬP" },
             { min: 202.5, max: 246.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC ÁO CDVD" },
@@ -62,7 +62,7 @@ $(document).ready(function () {
         let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "XUI QUÁ MỘT CHÚT NỮA LÀ TRÚNG RỒI 🤡";
         $('.congratulation__note').text(rewardText);
 
-        if ((position >= 67.5 && position <= 111.5) || (position >= 148.5 && position <= 336.5)) {
+        if (position >= 148.5 && position <= 336.5) {
             const code = generateRewardCode(6);
             $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${code}</span>`);
             $('.congratulation__description').text('Vui lòng đến gian hàng Cao đẳng Viễn Đông để nhận quà hoặc copy mã trúng thưởng này gửi fanpage Tuyển sinh Cao đẳng Viễn Đông');
