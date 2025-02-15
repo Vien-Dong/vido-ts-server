@@ -13,7 +13,24 @@ var socketIO = require("socket.io");
 
 var port = process.env.PORT || 3000;
 
-app.use(cors());
+const allowedOrigins = [
+    'http://localhost:3050',  // Cho phép localhost
+    'https://vido-ts-server-v1.vercel.app/' // Domain trên Vercel
+];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization'
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('js'));

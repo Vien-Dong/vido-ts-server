@@ -111,6 +111,12 @@ $(document).ready(function () {
             return;
         }
 
+        else if (inputNameValue.length < 3) {
+            $("#notify").text("Vui lòng nhập đúng họ tên của bạn").addClass("show");
+            setTimeout(function () { $("#notify").removeClass("show") }, 3000);
+            return;
+        }
+
         else if (inputPhoneValue.length < 10 || inputPhoneValue.length > 11) {
             $("#notify").text("Số điện thoại không hợp lệ!").addClass("show");
             setTimeout(function () { $("#notify").removeClass("show") }, 3000);
@@ -160,6 +166,8 @@ $(document).ready(function () {
             })
             .catch(error => {
                 console.error('Error:', error);
+                $(".information-form button[type='submit'] .loader").fadeOut();
+                $(".information-form button[type='submit']").prop('disabled', false);
                 alert('Có lỗi xảy ra, vui lòng thử lại sau.');
             })
             .finally(() => loading = false);
