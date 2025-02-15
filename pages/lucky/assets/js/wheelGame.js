@@ -194,22 +194,27 @@ $(document).ready(function () {
     }
 
     $('.wheel__button').click(async function () {
-        await checkIfPlayed().then((isPlayed) => {
-            if (isPlayed) {
-                alert("Bạn đã chơi một lần rồi!");
-            }
-            else {
-                if (!isFilled) {
-                    $('.information').fadeIn();
-                    return;
-                }
+        await checkIfPlayed();
+        if (!isFilled) {
+            $('.information').fadeIn();
+            return;
+        }
+        // await checkIfPlayed().then((isPlayed) => {
+        //     if (isPlayed) {
+        //         alert("Bạn đã chơi một lần rồi!");
+        //     }
+        //     else {
+        //         if (!isFilled) {
+        //             $('.information').fadeIn();
+        //             return;
+        //         }
 
-                // if (!clicked) {
-                //     spinWheel("159630", deviceId);
-                // }
-                // clicked = true;
-            }
-        });
+        //         // if (!clicked) {
+        //         //     spinWheel("159630", deviceId);
+        //         // }
+        //         // clicked = true;
+        //     }
+        // });
     })
 
     $('.congratulation__close').click(function () {
