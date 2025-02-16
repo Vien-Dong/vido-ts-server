@@ -8,6 +8,7 @@ router.post('/create-cptarget', async (req, res) => {
 
     try {
         const result = await postParticipant(data);
+        if (!result) res.status(500).send("Lỗi tạo mới khách hàng!");
         res.status(200).send({
             success: true,
             message: "Tạo khách hàng thành công.",
@@ -24,7 +25,7 @@ router.put('/update-cptarget', async (req, res) => {
     const data = req.body;
 
     try {
-        const result = await putParticipant(data, record_id);   
+        const result = await putParticipant(data, record_id);
         res.status(200).send({
             success: true,
             message: "Tạo khách hàng thành công.",
@@ -37,14 +38,17 @@ router.put('/update-cptarget', async (req, res) => {
 });
 
 router.get('/get-token', async (req, res) => {
-    await axios.get("https://crm.viendong.edu.vn/api/OpenAPI/auth", {
-        params: {
-            username: "giaotran",
-            access_key_md5: "969677b1d7f282346b93c81b26e421f1"
-        }
-    }).then((result) => {
-        res.status(200).send(result.data);
-    }).catch((error) => res.status(500).send("Error: ", error));
+    try {
+        const result = await getAccessToken();
+        res.status(200).send({
+            success: true,
+            message: "Lấy token thành công.",
+            payload: result
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
 });
 
 module.exports = router;

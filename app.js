@@ -13,10 +13,30 @@ var socketIO = require("socket.io");
 
 var port = process.env.PORT || 3000;
 
-app.use(cors());
+const allowedOrigins = [
+    'http://localhost:3050',  // Cho phép localhost
+    'https://vido-ts-server-v1.vercel.app/' // Domain trên Vercel
+];
+
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization'
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('js'));
+app.use((req, res, next) => {
+    res.redirect(301, `https://vido-ts-server.vercel.app${req.originalUrl}`);
+});
 
 mongoose.connect("mongodb+srv://administrator:admin123456@cluster.jh4lmtx.mongodb.net/").then(() => {
     console.log("Connected to mongodb");
