@@ -273,11 +273,12 @@ body {
   margin-block: 0.5rem;
 }
 
-.information__container .input-container {
+.information__container .input-container, .select-container {
   position: relative;
 }
 
 .information__container .input-container input,
+.select-container,
 .information__container .form button {
   outline: none;
   border: 1px solid #e5e7eb;
@@ -296,7 +297,7 @@ body {
   background-color: #83716c;
 }
 
-.information__container .input-container input {
+.information__container .input-container input, .select-container{
   background-color: #fff;
   padding: 1rem;
   font-size: 0.875rem;

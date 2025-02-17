@@ -7,7 +7,7 @@
     <title>Vòng quay may mắn</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="icon" href="./assets/images/lucky-wheel.png">
+    <link rel="icon" href="./assets/images/lucky-wheel.png" />
     <link
       href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@600&display=swap"
     />
@@ -194,14 +194,19 @@
             <input type="text" placeholder="Nhập số điện thoại" />
           </div>
           <div class="input-container" data-name="birthday">
-            <input
-              type="text"
-              placeholder="Nhập ngày sinh (dd-mm-yyyy)"
-            />
+            <input type="text" placeholder="Nhập ngày sinh (dd-mm-yyyy)" />
           </div>
-          <div class="input-container" data-name="highschool">
-            <input type="text" placeholder="Nhập trường THPT" />
+          <div style="display: flex; gap: 10px">
+            <div class="input-container" data-name="class" style="flex: 1">
+              <input type="text" placeholder="Nhập lớp" />
+            </div>
+            <div class="input-container" data-name="highschool" style="flex: 2">
+              <input type="text" placeholder="Nhập trường THPT" />
+            </div>
           </div>
+          <select id="Training_industry" name="Training_industry" class="select-container">
+            <option value="" disabled selected>Chọn ngành muốn học ĐH, CĐ</option>
+          </select>
           <button type="submit" class="submit">
             <span class="loader"></span>
             Hoàn tất
@@ -212,6 +217,7 @@
 
     <p id="notify-prize"></p>
 
+    
     <script src="./assets/js/wheelGame.js"></script>
     <script src="./assets/js/check.js"></script>
     <script src="./assets/js/animation.js"></script>
