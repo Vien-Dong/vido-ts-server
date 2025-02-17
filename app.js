@@ -34,14 +34,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('js'));
-app.use((req, res, next) => {
-    if (req.originalUrl.startsWith('/lucky-wheel')) {
-        res.redirect(301, 'https://vido-ts-server.vercel.app/lucky-wheel');
-    } else {
-        next(); // Cho phép tiếp tục với các route khác
-    }
-});
-
 
 mongoose.connect("mongodb+srv://administrator:admin123456@cluster.jh4lmtx.mongodb.net/").then(() => {
     console.log("Connected to mongodb");
