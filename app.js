@@ -34,9 +34,9 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('js'));
-app.use((req, res, next) => {
-    res.redirect(301, `https://vido-ts-server.vercel.app${req.originalUrl}`);
-});
+// app.use((req, res, next) => {
+//     res.redirect(301, `https://vido-ts-server.vercel.app${req.originalUrl}`);
+// });
 
 mongoose.connect("mongodb+srv://administrator:admin123456@cluster.jh4lmtx.mongodb.net/").then(() => {
     console.log("Connected to mongodb");
