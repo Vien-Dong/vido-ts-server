@@ -42,6 +42,7 @@ const getAccessToken = async () => {
         });
         
         if(response?.data) {
+            console.log(response?.data);
             cachedToken = response?.data?.access_token;
             tokenExpiresAt = Number(response?.data?.expire_time ?? 0) * 1000;
             await redis.set("tokenData", JSON.stringify({ 
