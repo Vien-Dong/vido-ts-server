@@ -15,7 +15,8 @@ var port = process.env.PORT || 3000;
 
 const allowedOrigins = [
     'http://localhost:3050',  // Cho phép localhost
-    'https://vido-ts-server-v1.vercel.app/' // Domain trên Vercel
+    'https://vido-ts-server-v1.vercel.app/',
+    'https://vido-ts-server.vercel.app/' // Domain trên Vercel
 ];
 
 const corsOptions = {
