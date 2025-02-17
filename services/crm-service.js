@@ -40,6 +40,8 @@ const getAccessToken = async () => {
         const response = await axios.get("https://crm.viendong.edu.vn/api/OpenAPI/auth", {
             params: param,
         });
+
+        console.log(response);
         
         if(response?.data) {
             cachedToken = response?.data?.access_token;
