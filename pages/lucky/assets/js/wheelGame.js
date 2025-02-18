@@ -30,8 +30,8 @@ $(document).ready(function () {
     let chance = Math.random(); // Xác suất từ 0 đến 1
 
     console.log("Chance: ", chance);
-    if (chance < 0.95) {
-      // 65% xác suất vào [0, 22.5] hoặc [337.5, 360]
+    if (chance < 0.85) {
+      // 85% xác suất vào [0, 22.5] hoặc [337.5, 360]
       let targetAngle;
       if (Math.random() < 0.5) {
         targetAngle = Math.floor(Math.random() * 23.5); // Random từ 0 đến 22.5
@@ -42,11 +42,11 @@ $(document).ready(function () {
       let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
       random = baseRotation + targetAngle;
     } else {
-      // 35% còn lại nhưng không bao giờ quay vào [23.5, 66.5, 112.5, 147.5]
+      // 15% còn lại nhưng không bao giờ quay vào [23.5, 66.5, 112.5, 147.5]
       let targetAngle;
       do {
         targetAngle = Math.floor(Math.random() * 360); // Random một góc bất kỳ
-      } while (targetAngle >= 23.5 && targetAngle <= 291.5); // Nếu rơi vào vùng cấm thì random lại
+      } while ((targetAngle >= 23.5 && targetAngle <= 111.5) || (targetAngle >= 148.5 && targetAngle <= 246.5)); // Nếu rơi vào vùng cấm thì random lại
 
       let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
       random = baseRotation + targetAngle;
@@ -66,20 +66,20 @@ $(document).ready(function () {
   function getPosition(position, record_id) {
     const rewards = [
       { min: 0, max: 22.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
-      { min: 23.5, max: 66.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
-      { min: 67.5, max: 111.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
-      { min: 112.5, max: 147.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
-      { min: 148.5, max: 201.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
-      { min: 202.5, max: 246.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
-      { min: 245.5, max: 291.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" },
-      { min: 292.5, max: 336.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC MÓC KHÓA" },
+      { min: 23.5, max: 66.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" }, // PI
+      { min: 67.5, max: 111.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" }, // BALO
+      { min: 112.5, max: 147.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" }, // BB3
+      { min: 148.5, max: 201.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" }, // TẬP
+      { min: 202.5, max: 246.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" }, // ÁO
+      { min: 245.5, max: 291.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT TÚI MÙ" }, // TÚI MÙ
+      { min: 292.5, max: 336.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC MÓC KHÓA" }, // MÓC KHÓA
       { min: 337.5, max: 360, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
     ];
 
     let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "XUI QUÁ MỘT CHÚT NỮA LÀ TRÚNG RỒI 🤡";
     $('.congratulation__note').text(rewardText);
 
-    if (position >= 292.5 && position <= 336.5) {
+    if ((position >= 112.5 && position <= 147.5) || (position >= 245.5 && position <= 336.5)) {
       const code = generateRewardCode(6);
       $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${code}</span>`);
       $('.congratulation__description').text('Vui lòng đến gian hàng Cao đẳng Viễn Đông để nhận quà hoặc copy mã trúng thưởng này gửi fanpage Tuyển sinh Cao đẳng Viễn Đông');
