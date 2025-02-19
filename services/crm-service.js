@@ -34,8 +34,8 @@ const getAccessToken = async () => {
     // 3️⃣ Nếu Redis cũng không có, gọi API lấy token mới
     try {
         const param = {
-            username: "giaotran",
-            access_key_md5: "969677b1d7f282346b93c81b26e421f1"
+            username: "admin",
+            access_key_md5: "37488f318b75565be18d3b5accb8d439"
         };
         const response = await axios.get("https://crm.viendong.edu.vn/api/OpenAPI/auth", {
             params: param,
