@@ -50,17 +50,17 @@ $(document).ready(function () {
 
       let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
       random = baseRotation + targetAngle;
-
-      $(".wheel__inner").css({
-        "transition": "cubic-bezier(0.19, 1, 0.22, 1) 5s",
-        "transform": `rotate(${random}deg)`
-      });
-
-      setTimeout(() => {
-        let position = random % 360;
-        getPosition(position, record_id);
-      }, 5000);
     }
+
+    $(".wheel__inner").css({
+      "transition": "cubic-bezier(0.19, 1, 0.22, 1) 5s",
+      "transform": `rotate(${random}deg)`
+    });
+
+    setTimeout(() => {
+      let position = random % 360;
+      getPosition(position, record_id);
+    }, 5000);
   }
 
   function getPosition(position, record_id) {
