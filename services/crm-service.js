@@ -19,17 +19,17 @@ const getAccessToken = async () => {
         };
     }
 
-    // 2️⃣ Nếu không có, kiểm tra Redis
-    let tokenData = await redis.get("tokenData");
-    if(tokenData) {
-        tokenData = JSON.parse(tokenData);
-        if (Date.now() < Number(tokenData.expire_time)) {
-            return {
-                access_token: tokenData.access_token,
-                expire_time: Number(tokenData.expire_time) / 1000
-            };
-        }
-    }
+    // // 2️⃣ Nếu không có, kiểm tra Redis
+    // let tokenData = await redis.get("tokenData");
+    // if(tokenData) {
+    //     tokenData = JSON.parse(tokenData);
+    //     if (Date.now() < Number(tokenData.expire_time)) {
+    //         return {
+    //             access_token: tokenData.access_token,
+    //             expire_time: Number(tokenData.expire_time) / 1000
+    //         };
+    //     }
+    // }
 
     // 3️⃣ Nếu Redis cũng không có, gọi API lấy token mới
     try {
