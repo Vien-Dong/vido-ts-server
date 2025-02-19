@@ -19,17 +19,17 @@ const getAccessToken = async () => {
         };
     }
 
-    // // 2️⃣ Nếu không có, kiểm tra Redis
-    // let tokenData = await redis.get("tokenData");
-    // if(tokenData) {
-    //     tokenData = JSON.parse(tokenData);
-    //     if (Date.now() < Number(tokenData.expire_time)) {
-    //         return {
-    //             access_token: tokenData.access_token,
-    //             expire_time: Number(tokenData.expire_time) / 1000
-    //         };
-    //     }
-    // }
+    // 2️⃣ Nếu không có, kiểm tra Redis
+    let tokenData = await redis.get("tokenData");
+    if (tokenData) {
+        tokenData = JSON.parse(tokenData);
+        if (Date.now() < Number(tokenData.expire_time)) {
+            return {
+                access_token: tokenData.access_token,
+                expire_time: Number(tokenData.expire_time) / 1000
+            };
+        }
+    }
 
     // 3️⃣ Nếu Redis cũng không có, gọi API lấy token mới
     try {
@@ -42,12 +42,12 @@ const getAccessToken = async () => {
         });
 
         console.log(response);
-        
-        if(response?.data) {
+
+        if (response?.data) {
             console.log(response?.data);
             cachedToken = response?.data?.access_token;
             tokenExpiresAt = Number(response?.data?.expire_time ?? 0) * 1000;
-            await redis.set("tokenData", JSON.stringify({ 
+            await redis.set("tokenData", JSON.stringify({
                 access_token: response?.data?.access_token,
                 expire_time: Number(response?.data?.expire_time ?? 0) * 1000
             }), "EX", 86400);
@@ -105,9 +105,11 @@ const putParticipant = async (data, record_id) => {
         "Access-Token": response.access_token
     };
     try {
-        const response = await axios.post(`https://crm.viendong.edu.vn/api/OpenAPI/update?module=CPTarget&record=${record_id}`, { data: {
-            winning_code: data.winning_code
-        } }, {
+        const response = await axios.post(`https://crm.viendong.edu.vn/api/OpenAPI/update?module=CPTarget&record=${record_id}`, {
+            data: {
+                winning_code: data.winning_code
+            }
+        }, {
             headers: header,
             timeout: 100000
         });
