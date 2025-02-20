@@ -66,17 +66,17 @@ $(document).ready(function () {
   function getPosition(position, record_id) {
     const rewards = [
       { min: 0, max: 22.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
-      { min: 23.5, max: 66.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" }, // PI
-      { min: 67.5, max: 111.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" }, // BALO
+      { min: 23.5, max: 66.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // IP
+      { min: 67.5, max: 111.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // BALO
       { min: 112.5, max: 147.5, text: "CHÚC MỪNG BẠN ĐÃ TRÚNG 1 VOUCHER" }, // BB3 || VOUCHER
-      { min: 148.5, max: 201.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" }, // TẬP
-      { min: 202.5, max: 246.5, text: "PHẦN QUÀ NÀY ĐÃ HẾT MẤT RÙI 😢" }, // ÁO
+      { min: 148.5, max: 201.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // TẬP
+      { min: 202.5, max: 246.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // ÁO
       { min: 245.5, max: 291.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT TÚI MÙ" }, // TÚI MÙ
       { min: 292.5, max: 336.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC MÓC KHÓA" }, // MÓC KHÓA
       { min: 337.5, max: 360, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
     ];
 
-    let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "XUI QUÁ MỘT CHÚT NỮA LÀ TRÚNG RỒI 🤡";
+    let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "XUI QUÁ MỘT CHÚT NỮA LÀ TRÚNG RỒI 🤡. NẾU CÓ MÃ THÌ BẠN ĐỔI QUÀ KHÁC NHÉ.";
     $('.congratulation__note').text(rewardText);
 
     if ((position >= 112.5 && position <= 147.5) || (position >= 245.5 && position <= 336.5)) {
