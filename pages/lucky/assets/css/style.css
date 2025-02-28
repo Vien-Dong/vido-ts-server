@@ -410,6 +410,13 @@ body {
   width: 40%;
 }
 
+.notice {
+  position: absolute;
+  bottom: 0;
+  background-color: #ffffffd1;
+  padding: 8px;
+}
+
 /* Hiệu ứng nhấp nháy */
 @keyframes blink {
   0% {

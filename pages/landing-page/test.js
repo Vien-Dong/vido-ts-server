@@ -956,7 +956,6 @@ var equalsLadiPage = function (t, e) {
     MOBILE: "mobile",
     DEVICE: "device",
     DOMAIN_GOOGLE_DOCS: "docs.google.com",
-    POWERED_BY_IMAGE: "https://w.ladicdn.com/source/v3/by/ladipage.svg?v=1.0",
     STATIC_W_DOMAIN: "w.ladicdn.com",
     STATIC_S_DOMAIN: "s.ladicdn.com",
     APP_RUNTIME_PREFIX: "_runtime",
@@ -1490,7 +1489,6 @@ var equalsLadiPage = function (t, e) {
       builder_section_popup_id: "SECTION_POPUP",
       builder_section_background_id: "BODY_BACKGROUND",
       builder_popup_menu_mobile_id: "POPUP_MENU_MOBILE",
-      ladipage_powered_by_classname: "ladipage_powered_by",
       current_element_mouse_down_image_compare: null,
       current_element_mouse_down_image_compare_position_x: 0,
       mouse_down_diff_touch_action: 10,
@@ -13715,7 +13713,7 @@ var LadiFormulaData = {},
             n.forEach(function (t) {
               a || (a = r.endsWith(t.toLowerCase()));
             }),
-              a && i.runTimeout(e, 3e3);
+              a;
             B("PageView", {}, function (t, n) {
               if ((-1 != t || a || i.runTimeout(e, 3e3), 200 == t)) {
                 var o = JSON.parse(n),
@@ -18233,11 +18231,6 @@ var LadiFormulaData = {},
     "https://api.checkout.ladisales.com/1.0/checkout/create"),
   (LadiPageScript.const.API_FILE_UPLOAD =
     "https://api.files.ladicdn.com/2.0/ladipage-upload-file"),
-  (LadiPageScript.const.API_DATASET_DATA =
-    "https://g.ladicdn.com/dataset/{0}.json?id={1}"),
-  (LadiPageScript.const.API_DATASET_BLOG = "https://g.ladicdn.com/blog-"),
-  (LadiPageScript.const.API_SECTION_GLOBAL_HTML =
-    "https://g.ladicdn.com/section/{0}-{1}.html"),
   (LadiPageScript.const.LADIFLOW_SDK =
     "https://w.ladicdn.com/ladiflow/sdk.js?v=1.0"),
   (LadiPageScript.const.LADISALES_SDK =
