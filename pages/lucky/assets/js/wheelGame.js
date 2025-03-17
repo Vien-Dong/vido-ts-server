@@ -46,7 +46,7 @@ $(document).ready(function () {
       let targetAngle;
       do {
         targetAngle = Math.floor(Math.random() * 360); // Random một góc bất kỳ
-      } while ((targetAngle >= 23.5 && targetAngle <= 111.5) || (targetAngle >= 148.5 && targetAngle <= 246.5)); // Nếu rơi vào vùng cấm thì random lại
+      } while ((targetAngle >= 23.5 && targetAngle <= 246.5)); // Nếu rơi vào vùng cấm thì random lại
 
       let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
       random = baseRotation + targetAngle;
@@ -68,7 +68,7 @@ $(document).ready(function () {
       { min: 0, max: 22.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
       { min: 23.5, max: 66.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // IP
       { min: 67.5, max: 111.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // BALO
-      { min: 112.5, max: 147.5, text: "CHÚC MỪNG BẠN ĐÃ TRÚNG 1 VOUCHER" }, // BB3 || VOUCHER
+      { min: 112.5, max: 147.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // BB3 || VOUCHER
       { min: 148.5, max: 201.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // TẬP
       { min: 202.5, max: 246.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // ÁO
       { min: 245.5, max: 291.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT TÚI MÙ" }, // TÚI MÙ
@@ -79,7 +79,7 @@ $(document).ready(function () {
     let rewardText = rewards.find(r => position >= r.min && position <= r.max)?.text || "XUI QUÁ MỘT CHÚT NỮA LÀ TRÚNG RỒI 🤡. NẾU CÓ MÃ THÌ BẠN ĐỔI QUÀ KHÁC NHÉ.";
     $('.congratulation__note').text(rewardText);
 
-    if ((position >= 112.5 && position <= 147.5) || (position >= 245.5 && position <= 336.5)) {
+    if ((position >= 245.5 && position <= 336.5)) {
       const code = generateRewardCode(6);
       $('.congratulation__code').html(`Mã nhận thưởng: <span style="color: red; font-style: italic;">${code}</span>`);
       $('.congratulation__description').text('Vui lòng đến gian hàng Cao đẳng Viễn Đông để nhận quà hoặc copy mã trúng thưởng này gửi fanpage Tuyển sinh Cao đẳng Viễn Đông');
