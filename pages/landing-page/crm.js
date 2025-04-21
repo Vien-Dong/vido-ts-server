@@ -11,7 +11,7 @@ $(document).ready(function () {
     });
 
     // Bắt sự kiện khi click vào button mới
-    $(document).on("click", ".btn-submit-custom", function (event) {
+    $(document).off("click", ".btn-submit-custom").on("click", ".btn-submit-custom", function (event) {
         event.preventDefault();
 
         var inputNameValue = $('input[name="name"]').val();
