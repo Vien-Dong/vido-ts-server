@@ -67,9 +67,13 @@ app.get('/library/detail', function (req, res) {
 app.get('/landing-page', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/landing-page/index.html'));
 });
+app.get('/landing-page-cd18', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/landing-page-cd18/index.html'));
+});
 app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/lucky'));
 app.use(express.static(__dirname + '/pages/landing-page'));
+app.use(express.static(__dirname + '/pages/landing-page-cd18'));
 app.use(express.static(__dirname + '/pages/exam'));
 app.use(express.static(__dirname + '/pages/contact'));
 app.use(express.static(__dirname + '/pages/career'));
