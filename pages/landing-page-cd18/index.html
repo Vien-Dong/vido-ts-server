@@ -370,6 +370,15 @@
       type="text/xml+oembed"
       href="https://page1.htecom.net/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fpage1.htecom.net%2F&amp;format=xml"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
     <link rel="stylesheet" href="./assets/css/style-v3.css" />
     <link rel="stylesheet" href="./assets/css/main.css" />
     <link rel="stylesheet" href="./assets/css/footer.css" />
@@ -1042,7 +1051,11 @@
                                   border-width: 3px 3px 3px 3px;
                                 "
                               ></div>
-                              <a class="text-inner text-center" href="#dang-ky">
+                              <a
+                                class="text-inner text-center"
+                                id="tourclick"
+                                href="javascript:void(0);"
+                              >
                                 <div
                                   class="img has-hover x md-x lg-x y md-y lg-y"
                                   id="image_1394116927"
@@ -1085,204 +1098,8 @@
                               }
                             </style>
                           </div>
-
-                          <div
-                            id="text-box-1138996318"
-                            class="text-box banner-layer x50 md-x50 lg-x50 y50 md-y50 lg-y50 res-text"
-                          >
-                            <div class="text-box-content text dark">
-                              <div class="text-inner text-center">
-                                <div
-                                  class="kh_module_map hidden"
-                                  id="vr-tour-map"
-                                >
-                                  <div class="kh_map_container">
-                                    <div id="image-map-pro-6689"></div>
-                                    <div class="kh_list_building">
-                                      <div
-                                        id="kh-spot-7563"
-                                        class="lightbox-by-id lightbox-content mfp-hide lightbox-white kh_lightbox_map"
-                                        style="max-width: 900px; padding: 0"
-                                      >
-                                        <a href="#kh-spot-7563"></a>
-                                        <div class="kh_item_building">
-                                          <div class="kh_inner_building row">
-                                            <figure
-                                              class="kh_avt_building col large-6 small-12"
-                                            >
-                                              <div class="col-inner">
-                                                <img
-                                                  decoding="async"
-                                                  src="https://page1.htecom.net/wp-content/uploads/2023/04/image003.1.jpg"
-                                                  class="img-fluid"
-                                                  alt="Nhà công vụ"
-                                                />
-                                              </div>
-                                            </figure>
-                                            <div
-                                              class="kh_info_building col large-6 small-12"
-                                            >
-                                              <div
-                                                class="kh_inner_info col-inner"
-                                              >
-                                                <div class="kh_title_building">
-                                                  <img
-                                                    decoding="async"
-                                                    src="https://page1.htecom.net/wp-content/themes/htecom/assets/images/default.png"
-                                                    class="img-fluid"
-                                                  />Nhà công vụ
-                                                </div>
-                                                <div class="kh_des_building">
-                                                  Lorem Ipsum is simply dummy
-                                                  text of the printing and
-                                                  typesetting industry. Lorem
-                                                  Ipsum has been the industry's
-                                                  standard dummy text ever since
-                                                  the 1500s, when an unknown
-                                                  printer took a galley of type
-                                                  and scrambled it to make a
-                                                  type specimen book.
-                                                </div>
-                                                <a
-                                                  href="javascript:void(0)"
-                                                  class="kh_open_paroname"
-                                                  data-src="https://page1.htecom.net/wp-content/uploads/2023/04/full-seamless-spherical-hdr-panorama-view-modern-empty-classroom-conference-lecture-hall-equirectangular-projection-ar-245485996.jpg"
-                                                  >Khám phá</a
-                                                >
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                      <div
-                                        id="kh-spot-3292"
-                                        class="lightbox-by-id lightbox-content mfp-hide lightbox-white kh_lightbox_map"
-                                        style="max-width: 900px; padding: 0"
-                                      >
-                                        <a href="#kh-spot-3292"></a>
-                                        <div class="kh_item_building">
-                                          <div class="kh_inner_building row">
-                                            <figure
-                                              class="kh_avt_building col large-6 small-12"
-                                            >
-                                              <div class="col-inner">
-                                                <img
-                                                  decoding="async"
-                                                  src="https://page1.htecom.net/wp-content/uploads/2023/04/MG-9595h.jpg"
-                                                  class="img-fluid"
-                                                  alt="Khu nhà A"
-                                                />
-                                              </div>
-                                            </figure>
-                                            <div
-                                              class="kh_info_building col large-6 small-12"
-                                            >
-                                              <div
-                                                class="kh_inner_info col-inner"
-                                              >
-                                                <div class="kh_title_building">
-                                                  <img
-                                                    decoding="async"
-                                                    src="https://page1.htecom.net/wp-content/themes/htecom/assets/images/default.png"
-                                                    class="img-fluid"
-                                                  />Khu nhà A
-                                                </div>
-                                                <div class="kh_des_building">
-                                                  Lorem Ipsum is simply dummy
-                                                  text of the printing and
-                                                  typesetting industry. Lorem
-                                                  Ipsum has been the industry's
-                                                  standard dummy text ever since
-                                                  the 1500s, when an unknown
-                                                  printer took a galley of type
-                                                  and scrambled it to make a
-                                                  type specimen book.
-                                                </div>
-                                                <a
-                                                  href="javascript:void(0)"
-                                                  class="kh_open_paroname"
-                                                  data-src="https://page1.htecom.net/wp-content/uploads/2023/04/6.jpg"
-                                                  >Khám phá</a
-                                                >
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-
-                                      <div
-                                        id="kh-spot-8202"
-                                        class="lightbox-by-id lightbox-content mfp-hide lightbox-white kh_lightbox_map"
-                                        style="max-width: 900px; padding: 0"
-                                      >
-                                        <a href="#kh-spot-8202"></a>
-                                        <div class="kh_item_building">
-                                          <div class="kh_inner_building row">
-                                            <figure
-                                              class="kh_avt_building col large-6 small-12"
-                                            >
-                                              <div class="col-inner">
-                                                <img
-                                                  decoding="async"
-                                                  src="https://page1.htecom.net/wp-content/uploads/2023/04/co-so-vat-chat-ht1-2-361.jpg"
-                                                  class="img-fluid"
-                                                  alt="Giảng đường"
-                                                />
-                                              </div>
-                                            </figure>
-                                            <div
-                                              class="kh_info_building col large-6 small-12"
-                                            >
-                                              <div
-                                                class="kh_inner_info col-inner"
-                                              >
-                                                <div class="kh_title_building">
-                                                  <img
-                                                    decoding="async"
-                                                    src="https://page1.htecom.net/wp-content/themes/htecom/assets/images/default.png"
-                                                    class="img-fluid"
-                                                  />Giảng đường
-                                                </div>
-                                                <div class="kh_des_building">
-                                                  Lorem Ipsum is simply dummy
-                                                  text of the printing and
-                                                  typesetting industry. Lorem
-                                                  Ipsum has been the industry's
-                                                  standard dummy text ever since
-                                                  the 1500s, when an unknown
-                                                  printer took a galley of type
-                                                  and scrambled it to make a
-                                                  type specimen book.
-                                                </div>
-                                                <a
-                                                  href="javascript:void(0)"
-                                                  class="kh_open_paroname"
-                                                  data-src="https://page1.htecom.net/wp-content/uploads/2023/04/grodno-belarus-may-panorama-interior-library-center-children-development-full-spherical-degrees-seamless-138934619.jpg"
-                                                  >Khám phá</a
-                                                >
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div id="kh_paronama"></div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <style>
-                              #text-box-1138996318 {
-                                width: 100%;
-                              }
-                              #text-box-1138996318 .text-box-content {
-                                font-size: 100%;
-                              }
-                            </style>
-                          </div>
                         </div>
+                        <div class="banner has-hover" id="tour-banner"></div>
                       </div>
 
                       <style>
@@ -1592,7 +1409,7 @@
                       >
                         <div class="box-text-inner">
                           <div id="text-1601355948" class="text">
-                            <h4>Khối ngành Ngoại ngữ</h4>
+                            <h4>Khối ngành Ngoại ngữ & Sư phạm</h4>
                             <p>
                               Được trang bị kiến thức về dịch thuật, giảng dạy,
                               truyền thông và quan hệ.
@@ -1796,7 +1613,7 @@
                       </h3>
                       <h2 class="">
                         <span style="font-size: 200%"
-                          >Điều kiện để xét tuyển</span
+                          >Phương thức xét tuyển</span
                         >
                       </h2>
 
@@ -1811,9 +1628,16 @@
                     </div>
 
                     <p>
-                      Chỉ cần tốt nghiệp THPT, bạn đã có thể đăng ký xét tuyển
-                      dễ dàng, không cần thi đầu vào – cơ hội học tập mở rộng
-                      với nhiều ngành nghề hấp dẫn.
+                      >> Điều kiện xét tuyển: Tốt nghiệp THPT hoặc TTGDTX <br />
+
+                      >> Điểm chuẩn: <br />
+
+                      => Hệ Cao đẳng chính quy: 12 điểm; <br />
+
+                      => Hệ Đại học (VHVL các trường liên kết: Đại học Kinh tế
+                      TPHCM, Đại học Sư phạm Kỹ thuật TPHCM, Đại học Giao thông
+                      vận tải TPHCM, Đại học Mở, Đại học Quốc tế Hồng Bằng): 15
+                      đến 17 điểm;
                     </p>
                     <a
                       href="#dang-ky"
@@ -1856,8 +1680,11 @@
                             </div>
                             <div class="icon-box-text last-reset">
                               <div id="text-2666971664" class="text">
-                                <h3>Điều kiện 1</h3>
-                                <p>Xét tuyển học bạ THPT</p>
+                                <h3>Học bạ THPT/TTGDTX</h3>
+                                <p>
+                                  Điểm TB cả năm lớp 11 và HK1 lớp 12 hoặc 2 HK
+                                  lớp 12 hoặc điểm TB cả năm lớp 12 >= 6.0
+                                </p>
 
                                 <style>
                                   #text-2666971664 {
@@ -1909,8 +1736,10 @@
                             </div>
                             <div class="icon-box-text last-reset">
                               <div id="text-2546456856" class="text">
-                                <h3>Điều kiện 2</h3>
-                                <p>Không thi đầu vào</p>
+                                <h3>Thi tốt nghiệp THPT</h3>
+                                <p>
+                                  Xét tuyển từ điểm thi tốt nghiệp THPT 2025
+                                </p>
 
                                 <style>
                                   #text-2546456856 {
@@ -1962,8 +1791,11 @@
                             </div>
                             <div class="icon-box-text last-reset">
                               <div id="text-1387379947" class="text">
-                                <h3>Điều kiện 3</h3>
-                                <p>Miễn 100% phí hồ sơ khi đăng ký online</p>
+                                <h3>Kỳ thi ĐGNL</h3>
+                                <p>
+                                  Xét tuyển từ điểm bài thi đánh giá năng lực ĐH
+                                  Quốc gia TP.HCM 2025
+                                </p>
 
                                 <style>
                                   #text-1387379947 {
@@ -2086,7 +1918,7 @@
                     style="background-color: rgb(240, 244, 249)"
                   >
                     <div class="box has-hover has-hover box-text-bottom">
-                      <div class="box-image" style="max-height: 150px">
+                      <div class="box-image image-s">
                         <div class="">
                           <img
                             loading="lazy"
@@ -2124,7 +1956,7 @@
                     style="background-color: rgb(240, 244, 249)"
                   >
                     <div class="box has-hover has-hover box-text-bottom">
-                      <div class="box-image" style="max-height: 150px">
+                      <div class="box-image image-s">
                         <div class="">
                           <img
                             loading="lazy"
@@ -2162,7 +1994,7 @@
                     style="background-color: rgb(240, 244, 249)"
                   >
                     <div class="box has-hover has-hover box-text-bottom">
-                      <div class="box-image" style="max-height: 150px">
+                      <div class="box-image image-s">
                         <div class="">
                           <img
                             loading="lazy"
@@ -2200,7 +2032,7 @@
                     style="background-color: rgb(240, 244, 249)"
                   >
                     <div class="box has-hover has-hover box-text-bottom">
-                      <div class="box-image" style="max-height: 150px">
+                      <div class="box-image image-s">
                         <div class="">
                           <img
                             loading="lazy"
@@ -2481,17 +2313,7 @@
           </section> -->
 
           <section class="section step_submit" id="section_72901706">
-            <div class="bg section-bg fill bg-fill bg-loaded bg-loaded"></div>
-
             <div class="section-content relative">
-              <span
-                class="scroll-to"
-                data-label="Scroll to: #ho-so"
-                data-bullet="false"
-                data-link="#ho-so"
-                data-title="Change this"
-                ><a name="ho-so"></a
-              ></span>
               <div class="row" id="row-525967224">
                 <div id="col-421135332" class="col small-12 large-12">
                   <div class="col-inner">
@@ -2515,155 +2337,306 @@
                   </div>
                 </div>
               </div>
-              <div class="row step_submit_list" id="row-1062770317">
-                <div
-                  id="col-261094577"
-                  class="col medium-3 small-12 large-3"
-                  data-animate="fadeInLeft"
-                  data-animated="true"
-                >
+              <div id="SECTION3377" class="ladi-section ladi-animation">
+                <div class="ladi-section-background"></div>
+                <div class="ladi-container">
                   <div
-                    class="col-inner"
-                    style="background-color: rgb(240, 244, 249)"
+                    id="CAROUSEL3378"
+                    class="ladi-element"
+                    data-scrolled="true"
+                    data-next-time="1745376273110"
+                    data-is-next="true"
+                    data-current="2"
                   >
-                    <div class="box has-hover has-hover box-text-bottom">
-                      <div class="box-image" style="width: 25%">
-                        <div class="">
-                          <img
-                            loading="lazy"
-                            decoding="async"
-                            width="91"
-                            height="91"
-                            src="https://page1.htecom.net/wp-content/uploads/2023/04/hoso1.png"
-                            class="attachment- size-"
-                            alt=""
-                          />
+                    <div class="ladi-carousel">
+                      <div class="ladi-carousel-content" style="left: -1920px">
+                        <div id="BOX3399" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="LIST_PARAGRAPH3017" class="ladi-element">
+                          <div class="ladi-list-paragraph ladi-transition">
+                            <ul>
+                              <li class="">
+                                Chương trình đào tạo với vô số môn học thú vị<br />
+                              </li>
+                              <li class="">
+                                Được thực tập tại các bệnh viện lớn, cơ hội tiếp
+                                xúc trực tiếp với môi trường làm việc chuyên
+                                nghiệp.
+                              </li>
+                              <li class="">
+                                Sử dụng các mô hình và trang thiết bị hiện đại
+                                giúp tăng hiệu suất học tập của sinh viên.
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div id="BOX3383" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="HEADLINE2536" class="ladi-element">
+                          <h1 class="ladi-headline ladi-transition">
+                            Điều Dưỡng
+                          </h1>
+                        </div>
+                        <div id="PARAGRAPH2551" class="ladi-element">
+                          <div class="ladi-paragraph ladi-transition">
+                            Ngành Điều Dưỡng tại CĐVĐ
+                          </div>
+                        </div>
+                        <div id="PARAGRAPH2975" class="ladi-element">
+                          <div class="ladi-paragraph ladi-transition">
+                            SỐ LƯỢNG TUYỂN SINH 2025
+                          </div>
+                        </div>
+                        <a
+                          id="BUTTON3396"
+                          class="ladi-element ladi-animation"
+                          href="#SECTION3815"
+                        >
+                          <div class="ladi-button ladi-transition">
+                            <div class="ladi-button-background"></div>
+                            <div
+                              id="BUTTON_TEXT3396"
+                              class="ladi-element ladi-button-headline"
+                            >
+                              <p class="ladi-headline ladi-transition">
+                                tham gia ngay
+                              </p>
+                            </div>
+                          </div>
+                        </a>
+                        <div id="LIST_PARAGRAPH3398" class="ladi-element">
+                          <div class="ladi-list-paragraph ladi-transition">
+                            <ul>
+                              <li class="">100 chỉ tiêu &nbsp;</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div id="BOX3400" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="IMAGE2533" class="ladi-element">
+                          <div class="ladi-image ladi-transition">
+                            <div class="ladi-image-background"></div>
+                          </div>
+                        </div>
+                        <div id="BOX3403" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="LIST_PARAGRAPH3404" class="ladi-element">
+                          <div class="ladi-list-paragraph ladi-transition">
+                            <ul>
+                              <li class="">
+                                Các lớp học được trang bị đầy đủ các thiết bị
+                                cần thiết cho việc pha chế đồ uống, từ các loại
+                                ly, shaker, đến các loại rượu và nguyên liệu
+                                khác.
+                              </li>
+                              <li class="">
+                                Có thể đảm nhận các công việc trong các bộ phận
+                                của một khách sạn – nhà hàng từ 3-5 sao.
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div id="BOX3405" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="HEADLINE3406" class="ladi-element">
+                          <h1 class="ladi-headline ladi-transition">
+                            Nhà Hàng - Khách Sạn
+                          </h1>
+                        </div>
+                        <div id="PARAGRAPH3407" class="ladi-element">
+                          <div class="ladi-paragraph ladi-transition">
+                            Ngành Nhà Hàng Khách Sạn tại CĐVĐ
+                          </div>
+                        </div>
+                        <div id="PARAGRAPH3408" class="ladi-element">
+                          <div class="ladi-paragraph ladi-transition">
+                            SỐ LƯỢNG TUYỂN SINH 2025
+                          </div>
+                        </div>
+                        <a
+                          id="BUTTON3409"
+                          class="ladi-element ladi-animation"
+                          href="#SECTION3815"
+                        >
+                          <div class="ladi-button ladi-transition">
+                            <div class="ladi-button-background"></div>
+                            <div
+                              id="BUTTON_TEXT3409"
+                              class="ladi-element ladi-button-headline"
+                            >
+                              <p class="ladi-headline ladi-transition">
+                                tham gia ngay
+                              </p>
+                            </div>
+                          </div>
+                        </a>
+                        <div id="LIST_PARAGRAPH3411" class="ladi-element">
+                          <div class="ladi-list-paragraph ladi-transition">
+                            <ul>
+                              <li class="">100 chỉ tiêu &nbsp;</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div id="BOX3412" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="IMAGE3413" class="ladi-element">
+                          <div class="ladi-image ladi-transition">
+                            <div class="ladi-image-background"></div>
+                          </div>
+                        </div>
+                        <div id="BOX3415" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="LIST_PARAGRAPH3416" class="ladi-element">
+                          <div class="ladi-list-paragraph ladi-transition">
+                            <ul>
+                              <li class="">
+                                Được làm việc trong môi trường máy móc hiện đại
+                              </li>
+                              <li class="">
+                                Một trong những ngành học được ưa chuộng và có
+                                nhiều cơ hội việc làm hấp dẫn.
+                              </li>
+                              <li class="">
+                                Có tiềm năng phát triển cao, cơ hội để tăng
+                                lương và thăng tiến trong sự nghiệp.
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div id="BOX3417" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="HEADLINE3418" class="ladi-element">
+                          <h1 class="ladi-headline ladi-transition">
+                            Cơ Khí - Điện Tử
+                          </h1>
+                        </div>
+                        <div id="PARAGRAPH3419" class="ladi-element">
+                          <div class="ladi-paragraph ladi-transition">
+                            Ngành Cơ Khí Điện Tử tại CĐVĐ
+                          </div>
+                        </div>
+                        <div id="PARAGRAPH3420" class="ladi-element">
+                          <div class="ladi-paragraph ladi-transition">
+                            SỐ LƯỢNG TUYỂN SINH 2025
+                          </div>
+                        </div>
+                        <a
+                          id="BUTTON3421"
+                          class="ladi-element ladi-animation"
+                          href="#SECTION3815"
+                        >
+                          <div class="ladi-button ladi-transition">
+                            <div class="ladi-button-background"></div>
+                            <div
+                              id="BUTTON_TEXT3421"
+                              class="ladi-element ladi-button-headline"
+                            >
+                              <p class="ladi-headline ladi-transition">
+                                THAM GIA NGAY
+                              </p>
+                            </div>
+                          </div>
+                        </a>
+                        <div id="LIST_PARAGRAPH3423" class="ladi-element">
+                          <div class="ladi-list-paragraph ladi-transition">
+                            <ul>
+                              <li class="">100 chỉ tiêu &nbsp;</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div id="BOX3424" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="IMAGE3425" class="ladi-element">
+                          <div class="ladi-image ladi-transition">
+                            <div class="ladi-image-background"></div>
+                          </div>
+                        </div>
+                        <div id="BOX3427" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="LIST_PARAGRAPH3428" class="ladi-element">
+                          <div class="ladi-list-paragraph ladi-transition">
+                            <ul>
+                              <li class="">
+                                Mức lương khởi điểm từ 8-10 triệu/tháng
+                              </li>
+                              <li class="">
+                                Sinh viên được trang bị kiến thức, kỹ năng về
+                                nền tảng nghệ thuật và phương pháp thiết kế.
+                              </li>
+                              <li class="">
+                                Thị trường quảng cáo, truyền thông đang phát
+                                triển mạnh mẽ, tạo ra nhu cầu lớn về nhân lực.
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div id="BOX3429" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="HEADLINE3430" class="ladi-element">
+                          <h1 class="ladi-headline ladi-transition">
+                            Thiết Kế Đồ Họa
+                          </h1>
+                        </div>
+                        <div id="PARAGRAPH3431" class="ladi-element">
+                          <div class="ladi-paragraph ladi-transition">
+                            Ngành Thiết Kế Đồ Họa tại CĐVĐ
+                          </div>
+                        </div>
+                        <div id="PARAGRAPH3432" class="ladi-element">
+                          <div class="ladi-paragraph ladi-transition">
+                            SỐ LƯỢNG TUYỂN SINH 2025
+                          </div>
+                        </div>
+                        <a
+                          id="BUTTON3433"
+                          class="ladi-element ladi-animation-hidden"
+                          href="#SECTION3815"
+                        >
+                          <div class="ladi-button ladi-transition">
+                            <div class="ladi-button-background"></div>
+                            <div
+                              id="BUTTON_TEXT3433"
+                              class="ladi-element ladi-button-headline"
+                            >
+                              <p class="ladi-headline ladi-transition">
+                                THAM GIA NGAY
+                              </p>
+                            </div>
+                          </div>
+                        </a>
+                        <div id="LIST_PARAGRAPH3435" class="ladi-element">
+                          <div class="ladi-list-paragraph ladi-transition">
+                            <ul>
+                              <li class="">100 chỉ tiêu &nbsp;</li>
+                            </ul>
+                          </div>
+                        </div>
+                        <div id="BOX3436" class="ladi-element">
+                          <div class="ladi-box ladi-transition"></div>
+                        </div>
+                        <div id="IMAGE3437" class="ladi-element">
+                          <div class="ladi-image ladi-transition">
+                            <div class="ladi-image-background"></div>
+                          </div>
                         </div>
                       </div>
-
-                      <div class="box-text text-center">
-                        <div class="box-text-inner">
-                          <h4>Đăng ký xét tuyển</h4>
-                          <p>
-                            Ipsum yorem dolor amet sit elit. Duis at est id
-                            leosco for it
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  id="col-1793461418"
-                  class="col medium-3 small-12 large-3"
-                  data-animate="fadeInLeft"
-                  data-animated="true"
-                >
-                  <div
-                    class="col-inner"
-                    style="background-color: rgb(240, 244, 249)"
-                  >
-                    <div class="box has-hover has-hover box-text-bottom">
-                      <div class="box-image" style="width: 25%">
-                        <div class="">
-                          <img
-                            loading="lazy"
-                            decoding="async"
-                            width="91"
-                            height="91"
-                            src="https://page1.htecom.net/wp-content/uploads/2023/04/hoso2.png"
-                            class="attachment- size-"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-
-                      <div class="box-text text-center">
-                        <div class="box-text-inner">
-                          <h4>Nộp hồ sơ xét tuyển</h4>
-                          <p>
-                            Ipsum yorem dolor amet sit elit. Duis at est id
-                            leosco for it
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  id="col-1672635985"
-                  class="col medium-3 small-12 large-3"
-                  data-animate="fadeInLeft"
-                  data-animated="true"
-                >
-                  <div
-                    class="col-inner"
-                    style="background-color: rgb(240, 244, 249)"
-                  >
-                    <div class="box has-hover has-hover box-text-bottom">
-                      <div class="box-image" style="width: 25%">
-                        <div class="">
-                          <img
-                            loading="lazy"
-                            decoding="async"
-                            width="91"
-                            height="91"
-                            src="https://page1.htecom.net/wp-content/uploads/2023/04/hoso3.png"
-                            class="attachment- size-"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-
-                      <div class="box-text text-center">
-                        <div class="box-text-inner">
-                          <h4>Thông báo kết quả</h4>
-                          <p>
-                            Ipsum yorem dolor amet sit elit. Duis at est id
-                            leosco for it
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div
-                  id="col-976170905"
-                  class="col medium-3 small-12 large-3"
-                  data-animate="fadeInLeft"
-                  data-animated="true"
-                >
-                  <div
-                    class="col-inner"
-                    style="background-color: rgb(240, 244, 249)"
-                  >
-                    <div class="box has-hover has-hover box-text-bottom">
-                      <div class="box-image" style="width: 25%">
-                        <div class="">
-                          <img
-                            loading="lazy"
-                            decoding="async"
-                            width="91"
-                            height="91"
-                            src="https://page1.htecom.net/wp-content/uploads/2023/04/hoso4.png"
-                            class="attachment- size-"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-
-                      <div class="box-text text-center">
-                        <div class="box-text-inner">
-                          <h4>Nhập học</h4>
-                          <p>
-                            Ipsum yorem dolor amet sit elit. Duis at est id
-                            leosco for it
-                          </p>
-                        </div>
-                      </div>
+                      <!-- <div
+                        class="ladi-carousel-arrow ladi-carousel-arrow-left"
+                      ></div>
+                      <div
+                        class="ladi-carousel-arrow ladi-carousel-arrow-right"
+                      ></div> -->
                     </div>
                   </div>
                 </div>
@@ -3457,7 +3430,111 @@
     <script src="https://cdn.jsdelivr.net/npm/uevent@2/browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/photo-sphere-viewer@4/dist/photo-sphere-viewer.min.js"></script>
     <script src="./assets/js/main.js"></script>
+    <script src="./assets/js/tour.js"></script>
+    <script src="./assets/js/test.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <div class="scroll-to-bullets hide-for-medium"></div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const carousel = document.getElementById("CAROUSEL3378");
+        const carouselContent = carousel.querySelector(
+          ".ladi-carousel-content"
+        );
+        const slides = 4; // Total number of slides
+        let currentSlide = 0;
+
+        // Initialize carousel
+        updateCarousel();
+
+        // Auto-slide functionality
+        let autoSlideInterval = setInterval(() => {
+          nextSlide();
+        }, 5000); // Change slide every 5 seconds
+
+        function prevSlide() {
+          currentSlide = (currentSlide - 1 + slides) % slides;
+          updateCarousel();
+          resetAutoSlideTimer();
+        }
+
+        function nextSlide() {
+          currentSlide = (currentSlide + 1) % slides;
+          updateCarousel();
+          resetAutoSlideTimer();
+        }
+
+        function updateCarousel() {
+          // Update data-current attribute
+          carousel.setAttribute("data-current", currentSlide);
+
+          // Get the current viewport width
+          const viewportWidth = window.innerWidth;
+
+          // Calculate the slide width based on current viewport
+          const slideWidth = carousel.offsetWidth;
+
+          // Calculate the left position based on the current slide
+          const leftPosition = -currentSlide * slideWidth;
+          carouselContent.style.left = `${leftPosition}px`;
+
+          // Smooth transition
+          carouselContent.style.transition = "left 0.5s ease-in-out";
+        }
+
+        function resetAutoSlideTimer() {
+          // Reset the auto-slide timer when manually changing slides
+          clearInterval(autoSlideInterval);
+          autoSlideInterval = setInterval(() => {
+            nextSlide();
+          }, 5000);
+        }
+
+        // Add event listeners to arrows for better interaction
+        const prevArrow = document.querySelector(".ladi-carousel-arrow-left");
+        const nextArrow = document.querySelector(".ladi-carousel-arrow-right");
+
+        if (prevArrow) prevArrow.addEventListener("click", prevSlide);
+        if (nextArrow) nextArrow.addEventListener("click", nextSlide);
+
+        // Add event listener for window resize to handle responsive behavior
+        window.addEventListener("resize", function () {
+          // Recalculate carousel dimensions on window resize
+          updateCarousel();
+        });
+
+        // Add touch swipe support for mobile devices
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        carousel.addEventListener(
+          "touchstart",
+          function (e) {
+            touchStartX = e.changedTouches[0].screenX;
+          },
+          false
+        );
+
+        carousel.addEventListener(
+          "touchend",
+          function (e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+          },
+          false
+        );
+
+        function handleSwipe() {
+          const swipeThreshold = 50; // Minimum distance required for a swipe
+
+          if (touchEndX < touchStartX - swipeThreshold) {
+            // Swipe left - show next slide
+            nextSlide();
+          } else if (touchEndX > touchStartX + swipeThreshold) {
+            // Swipe right - show previous slide
+            prevSlide();
+          }
+        }
+      });
+    </script>
   </body>
 </html>
