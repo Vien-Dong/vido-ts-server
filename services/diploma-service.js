@@ -21,8 +21,8 @@ const importDiploma = async () => {
         let count = 0; 
         const headers = ["Ngành","MSSV","Số hiệu ", "Họ và Tên", "Ngày sinh", 
             "Giới tính", "Xếp loại", "Số QĐ Tốt nghiệp", "Năm TN","Vào sổ cấp văn bằng, chứng chỉ số"];
-        const workBook = XLSX.readFile("files/DS_van_bang.xlsx");
-        const data = XLSX.utils.sheet_to_json(workBook.Sheets["Up Web_0402"]);
+        const workBook = XLSX.readFile("files/Upwweb_ĐC.xlsx");
+        const data = XLSX.utils.sheet_to_json(workBook.Sheets["Sheet1"]);
 
         const processRows = async () => {
             for (const row of data) {
