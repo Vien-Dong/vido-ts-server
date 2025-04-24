@@ -8,23 +8,17 @@ $(document).ready(function () {
     let training_system = [
         { label: "Đại học", value: 'university' },
         { label: "Cao đẳng", value: 'college' },
-        { label: "Trung cấp nghề", value: 'vocational' },
-        { label: "Chương trình ngắn hạn", value: 'shortTermVocational' },
         { label: "Du học Úc", value: 'australia' },
         { label: "Du học Đức", value: 'germany' },
         { label: "Du học Mỹ", value: 'usa' },
-        { label: "Xuất khẩu lao động", value: 'laborExport' },
         { label: "Học tiếp THPT", value: 'continueHighSchool' },
         { label: "Du học Nhật Bản", value: 'japan' },
         { label: "Du học Hàn Quốc", value: 'korea' },
-        { label: "Học song song văn hóa và nghề", value: 'culturalParallelism' },
-        { label: "Liên thông", value: 'universityTransfer' },
         { label: "Đại học ĐH Kinh tế", value: 'universityUEH' },
         { label: "LĐại học Giao Thông Vận Tải", value: 'universityGSA' },
         { label: "Đại học Sư Phạm Kỹ Thuật", value: 'universitySPK' },
         { label: "Đại học Mở", value: 'universityMBS' },
         { label: "Đại học Hồng Bàng", value: 'universityHB' },
-        { label: "Cao đẳng 9+3+1 (tốt nghiệp THCS)", value: 'college9_3_1' },
         { label: "Du học THPT + nghề Hàn Quốc", value: 'THPT_korea' },
         { label: "Du học Philippines", value: 'phi' }
     ]
