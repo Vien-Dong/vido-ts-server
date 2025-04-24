@@ -852,13 +852,11 @@ body .is-layout-grid {
 @media (max-width: 768px) {
   #SECTION3377 {
     height: 1042px;
-    pointer-events: none !important;
   }
 }
 
 @media (min-width: 768px) {
   #SECTION3377 {
-    pointer-events: none !important;
     height: 660.5px;
   }
 
@@ -889,7 +887,6 @@ body .is-layout-grid {
   height: 100%;
   top: 0;
   left: 0;
-  pointer-events: none;
   overflow: hidden;
 }
 
@@ -925,7 +922,7 @@ body .is-layout-grid {
   #BOX3415,
   #BOX3427 {
     width: 917.616px;
-    height: 433px;
+    height: 633px;
   }
 }
 
@@ -1301,10 +1298,6 @@ table {
   height: 0 !important;
 }
 
-.pointer-events-none {
-  pointer-events: none;
-}
-
 .transition-parent-collapse-height {
   transition: height 150ms linear 0s;
 }
@@ -1343,7 +1336,6 @@ body.grab {
   left: 0;
   height: 100%;
   width: 100%;
-  pointer-events: none;
 }
 
 .ladi-element {
@@ -1375,7 +1367,6 @@ body.grab {
   height: 100%;
   top: 0;
   left: 0;
-  pointer-events: none;
   overflow: hidden;
 }
 
@@ -1520,7 +1511,6 @@ body.grab {
 .ladi-popup .ladi-popup-background {
   height: 100%;
   width: 100%;
-  pointer-events: none;
 }
 
 .ladi-countdown {
@@ -1540,7 +1530,6 @@ body.grab {
   background-attachment: inherit;
   background-origin: inherit;
   display: table;
-  pointer-events: none;
 }
 
 .ladi-countdown .ladi-countdown-text {
@@ -1549,7 +1538,6 @@ body.grab {
   height: 100%;
   text-decoration: inherit;
   display: table;
-  pointer-events: none;
 }
 
 .ladi-countdown .ladi-countdown-text span {
@@ -1585,7 +1573,6 @@ body.grab {
 .ladi-button .ladi-button-background {
   height: 100%;
   width: 100%;
-  pointer-events: none;
   transition: inherit;
 }
 
@@ -1950,7 +1937,6 @@ body.grab {
   height: 100%;
   top: 0;
   left: 0;
-  pointer-events: none;
 }
 
 .ladi-form .ladi-form-item.ladi-form-checkbox {
@@ -2162,7 +2148,6 @@ body.grab {
   height: var(--check-size);
   -webkit-mask-size: var(--check-size);
   mask-size: var(--check-size);
-  pointer-events: none;
   background-color: #fff;
   position: absolute;
   top: -1px;
@@ -2255,7 +2240,6 @@ body.grab {
   position: absolute;
   width: var(--icon-size);
   height: var(--icon-size);
-  pointer-events: none;
   top: 4px;
   left: 2px;
   -webkit-mask-size: var(--icon-size);
@@ -2281,7 +2265,6 @@ body.grab {
   position: absolute;
   width: var(--icon-size);
   height: var(--icon-size);
-  pointer-events: none;
   left: 2px;
   -webkit-mask-size: var(--icon-size);
   mask-size: var(--icon-size);
@@ -2354,7 +2337,6 @@ body.grab {
   height: 100%;
   top: 0;
   left: 0;
-  pointer-events: none;
 }
 
 .button-unmute {
@@ -2396,7 +2378,6 @@ body.grab {
   position: absolute;
   width: 100%;
   height: 100%;
-  pointer-events: none;
 }
 
 .ladi-cart-number {
@@ -2437,7 +2418,6 @@ body.grab {
   margin: 0 auto;
   width: 100%;
   height: 100%;
-  pointer-events: none;
 }
 
 .ladi-headline {
@@ -2519,7 +2499,6 @@ body.grab {
   border-radius: 50%;
   width: 53px;
   height: 53px;
-  pointer-events: none;
 }
 
 .ladi-notify .ladi-notify-title {
@@ -6859,7 +6838,7 @@ a:link {
   #BOX3415,
   #BOX3427 {
     width: 917.616px;
-    height: 433px;
+    height: 633px;
   }
 
   #BOX3399 {
@@ -6914,7 +6893,7 @@ a:link {
   }
 
   #BUTTON3396 {
-    top: 366.287px;
+    top: 400.287px;
     left: 60.9458px;
   }
 
@@ -6982,7 +6961,7 @@ a:link {
   }
 
   #BUTTON3409 {
-    top: 365.724px;
+    top: 400.287px;
     left: 1017.64px;
   }
 
@@ -7044,7 +7023,7 @@ a:link {
   }
 
   #BUTTON3421 {
-    top: 367.426px;
+    top: 400.287px;
     left: 1987.64px;
   }
 
@@ -7101,7 +7080,7 @@ a:link {
   }
 
   #BUTTON3433 {
-    top: 382.724px;
+    top: 400.287px;
     left: 2938.64px;
   }
 
