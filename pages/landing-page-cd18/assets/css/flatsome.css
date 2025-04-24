@@ -2717,7 +2717,6 @@ li.hide-title>a {
 .badge {
     display: table;
     z-index: 20;
-    pointer-events: none;
     height: 2.8em;
     width: 2.8em;
     -webkit-backface-visibility: hidden;
@@ -3841,7 +3840,6 @@ input.wpcf7-not-valid,
     line-height: 1;
     top: .5em;
     opacity: 0;
-    pointer-events: none;
     left: 1.1em;
     font-weight: normal
 }
@@ -4838,7 +4836,6 @@ img.back-image,
 }
 
 .mfp-arrow i {
-    pointer-events: none;
     font-size: 42px !important
 }
 
@@ -8408,7 +8405,6 @@ img.inline {
     border-style: solid;
     border-color: #ececec;
     position: absolute;
-    pointer-events: none;
     border-radius: 0;
     margin: 0;
     top: 0;
@@ -8741,7 +8737,6 @@ a.hotspot:hover {
     background: -o-linear-gradient(bottom, #323232 0%, rgba(50, 50, 50, 0) 33%);
     background: linear-gradient(to top, #323232 0%, rgba(50, 50, 50, 0) 33%);
     opacity: .3;
-    pointer-events: none;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     -webkit-transition: opacity .3s;
@@ -9031,7 +9026,6 @@ a.hotspot:hover {
     left: 0;
     top: 0;
     z-index: 9999999;
-    pointer-events: none;
     width: auto;
     overflow: visible
 }
@@ -9939,7 +9933,6 @@ ul.menu>li.has-child,
     height: 0;
     width: 0;
     position: absolute;
-    pointer-events: none;
     border-color: rgba(136, 183, 213, 0);
     border-bottom-color: #f1f1f1;
     border-width: 10px;
@@ -10287,7 +10280,6 @@ html {
     opacity: 0;
     bottom: 20px;
     right: 20px;
-    pointer-events: none;
     -webkit-transform: translateY(30%);
     -ms-transform: translateY(30%);
     transform: translateY(30%)
