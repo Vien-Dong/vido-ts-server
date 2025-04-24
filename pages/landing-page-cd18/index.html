@@ -577,16 +577,10 @@
             <div class="section-content relative">
               <div class="banner-container">
                 <img
-                  src="assets/images//bannerdulich.png"
+                  src="assets/images/banner.jpg"
                   alt="Banner Cao đẳng Viễn Đông"
                   class="banner-image"
                 />
-                <div class="button-group">
-                  <a href="#dang-ky" class="btn btn-primary">Đăng ký ngay</a>
-                  <a href="#dang-ky" class="btn btn-secondary"
-                    >Tư vấn miễn phí</a
-                  >
-                </div>
               </div>
 
               <style>
@@ -806,28 +800,60 @@
                       <div class="swiper mySwiper">
                         <div class="swiper-wrapper">
                           <div class="swiper-slide">
-                            <img src="assets/images/carousel/1.jpg" alt="Ảnh 1" style="width: 100%; height: auto"/>
+                            <img
+                              src="assets/images/carousel/1.jpg"
+                              alt="Ảnh 1"
+                              style="width: 100%; height: auto"
+                            />
                           </div>
                           <div class="swiper-slide">
-                            <img src="assets/images/carousel/2.jpg" alt="Ảnh 1" style="width: 100%; height: auto"/>
+                            <img
+                              src="assets/images/carousel/2.jpg"
+                              alt="Ảnh 1"
+                              style="width: 100%; height: auto"
+                            />
                           </div>
                           <div class="swiper-slide">
-                            <img src="assets/images/carousel/3.jpg" alt="Ảnh 1" style="width: 100%; height: auto"/>
+                            <img
+                              src="assets/images/carousel/3.jpg"
+                              alt="Ảnh 1"
+                              style="width: 100%; height: auto"
+                            />
                           </div>
                           <div class="swiper-slide">
-                            <img src="assets/images/carousel/4.jpg" alt="Ảnh 1" style="width: 100%; height: auto"/>
+                            <img
+                              src="assets/images/carousel/4.jpg"
+                              alt="Ảnh 1"
+                              style="width: 100%; height: auto"
+                            />
                           </div>
                           <div class="swiper-slide">
-                            <img src="assets/images/carousel/5.jpg" alt="Ảnh 1" style="width: 100%; height: auto"/>
+                            <img
+                              src="assets/images/carousel/5.jpg"
+                              alt="Ảnh 1"
+                              style="width: 100%; height: auto"
+                            />
                           </div>
                           <div class="swiper-slide">
-                            <img src="assets/images/carousel/6.jpg" alt="Ảnh 1" style="width: 100%; height: auto"/>
+                            <img
+                              src="assets/images/carousel/6.jpg"
+                              alt="Ảnh 1"
+                              style="width: 100%; height: auto"
+                            />
                           </div>
                           <div class="swiper-slide">
-                            <img src="assets/images/carousel/7.jpg" alt="Ảnh 1" style="width: 100%; height: auto"/>
+                            <img
+                              src="assets/images/carousel/7.jpg"
+                              alt="Ảnh 1"
+                              style="width: 100%; height: auto"
+                            />
                           </div>
                           <div class="swiper-slide">
-                            <img src="assets/images/carousel/8.jpg" alt="Ảnh 1" style="width: 100%; height: auto"/>
+                            <img
+                              src="assets/images/carousel/8.jpg"
+                              alt="Ảnh 1"
+                              style="width: 100%; height: auto"
+                            />
                           </div>
                         </div>
                       </div>
@@ -838,14 +864,21 @@
                           function () {
                             new Swiper(".mySwiper", {
                               slidesPerView: 2,
+                              slidesPerGroup: 2, 
                               spaceBetween: 20,
                               loop: true,
                               autoplay: {
                                 delay: 3000,
                               },
                               breakpoints: {
-                                0: { slidesPerView: 1 },
-                                768: { slidesPerView: 2 },
+                                0: {
+                                  slidesPerView: 1,
+                                  slidesPerGroup: 1, 
+                                },
+                                768: {
+                                  slidesPerView: 2,
+                                  slidesPerGroup: 2,
+                                },
                               },
                             });
                           }
