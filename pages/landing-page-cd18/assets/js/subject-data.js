@@ -66,8 +66,8 @@ const Subjects = [
     image: "./assets/images/subject/logistics.jpg",
   },
   {
-    name: "Quản trị Martketing",
-    description: "Ngành Quản trị Martketing tại CĐVĐ",
+    name: "Quản trị Marketing",
+    description: "Ngành Quản trị Marketing tại CĐVĐ",
     target: "100 chỉ tiêu",
     highlights: [
       "Gắn liền với thực tiễn, giúp sinh viên áp dụng kiến thức vào công việc kinh doanh và quản lý, đặc biệt là khởi sự doanh nghiệp.",
