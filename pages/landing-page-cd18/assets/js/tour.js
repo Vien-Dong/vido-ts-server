@@ -6,7 +6,7 @@ $(document).ready(function () {
 
     $('#tour-banner').html(`
           <iframe 
-            src="https://www.youtube.com/embed/6RcQ9qx0n0s?si=LMBPepEMZE5l7zWG"
+            src="https://www.youtube.com/embed/6RcQ9qx0n0s?si=35XRNG-jeKSDb8yY"
             frameborder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowfullscreen
