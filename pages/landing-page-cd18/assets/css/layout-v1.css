@@ -1,0 +1,231 @@
+.box_title h3.uppercase {
+  letter-spacing: 1px;
+  font-weight: 500 !important;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.discover_us::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 40%;
+  left: 0;
+  top: 0;
+  background-color: #f0f4f9;
+}
+.discover_us .row-discover {
+  border-radius: 10px;
+  overflow: hidden;
+}
+.discover_us .row-discover > .col > .col-inner > .row {
+  height: 100%;
+}
+.box_title h3.uppercase::after {
+  content: "";
+  width: 50px;
+  height: 1px;
+  background-color: var(--secondary-color);
+  margin-left: 10px;
+}
+.banner_about_us > .banner-inner > .banner-bg {
+  height: 100% !important;
+  transform: unset !important;
+  border-radius: 10px !important;
+}
+.banner_about_us {
+  overflow: visible !important;
+}
+.box_text_about_us > p {
+  margin: 0;
+}
+.box_text_about_us {
+  padding: 10px 30px;
+  bottom: -60px !important;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  overflow: hidden;
+  background: #fff;
+  position: relative;
+}
+.box_text_about_us::after {
+  content: "";
+  position: absolute;
+  width: calc(100% - 30px);
+  height: 3px;
+  background-color: var(--primary-color);
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.big-title .section-title b {
+  display: none;
+}
+.big-title .section-title {
+  justify-content: center;
+  text-align: center;
+}
+.btn-start-tour {
+  cursor: pointer;
+}
+.btn-start-tour p {
+  margin: 3px 0 0 0 !important;
+  font-size: 14px;
+  font-weight: 600;
+}
+.training_program .box_title h3.uppercase {
+  display: block;
+}
+.training_program .box_title h3.uppercase::after {
+  display: none;
+}
+
+.list_training_programs .box-text-bottom {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.list_training_programs .box-text-bottom .box-text {
+  padding: 0 !important;
+}
+.list_training_programs .box-text-bottom .box-text .text {
+  padding: 10px 20px;
+  border-bottom: 1px solid #ddd;
+}
+.list_training_programs .box-text-bottom .box-text .text h4 {
+  margin-bottom: 10px;
+}
+.list_training_programs .box-text-bottom .box-text .button {
+  margin: 10px 20px;
+}
+
+.btn_impress_numbers {
+  display: inline-flex;
+  align-items: center;
+}
+.btn_impress_numbers::after {
+  content: "Sinh viên thành công";
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2;
+  text-align: left;
+  margin-left: 10px;
+}
+.impress_numbers .icon-box-text p {
+  margin: 0;
+}
+.impress_numbers .icon-box-text h3 {
+  margin-bottom: 0px;
+}
+.impress_numbers .icon-box {
+  align-items: center;
+}
+.impress_numbers > .bg {
+  background-size: contain !important;
+}
+.testimonial_slide .flickity-slider > .row > .col {
+}
+.testimonial_slide .flickity-slider > .row {
+}
+.testimonial_slide .flickity-slider > .row > .col > .col-inner {
+  padding: 30px;
+}
+
+.testimonial_slide .flickity-button {
+  right: 0 !important;
+  bottom: 0 !important;
+  transform: unset !important;
+  min-height: unset !important;
+  height: 50px;
+  top: unset;
+  width: 50px;
+  background-color: var(--primary-color);
+  border-radius: unset !important;
+  left: unset !important;
+}
+.testimonial_slide .flickity-button-icon .arrow {
+  /*! max-width: 30%; */
+  fill: #222 !important;
+}
+.testimonial_slide .flickity-button.previous {
+  right: 50px !important;
+}
+.testimonial_slide .flickity-button-icon {
+  max-width: 70%;
+}
+.testimonial_slide::before {
+  content: "";
+  position: absolute;
+}
+.img_girl {
+  height: max-content !important;
+  width: max-content !important;
+  bottom: 0;
+  right: 100px;
+}
+.step_submit_list > .col > .col-inner {
+  padding: 30px 20px;
+}
+.step_submit_list > .col > .col-inner .box-image::before {
+  content: "1";
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background-color: var(--secondary-color);
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+  font-size: 14px;
+  right: -14px;
+  top: -14px;
+}
+.step_submit_list > .col:nth-child(2) > .col-inner .box-image::before {
+  content: "2";
+}
+.step_submit_list > .col:nth-child(3) > .col-inner .box-image::before {
+  content: "3";
+}
+.step_submit_list > .col:nth-child(4) > .col-inner .box-image::before {
+  content: "4";
+}
+.step_submit_list > .col > .col-inner .box-image {
+  overflow: inherit;
+}
+
+.cta_form .form_column > .col-inner {
+  padding: 30px;
+  border-top: 5px solid var(--primary-color);
+}
+.cta_form .form_column .wpcf7 {
+  margin-top: 30px;
+}
+.wrap_field {
+  padding-bottom: 0 !important;
+  margin-bottom: 20px !important;
+}
+.wrap_field .wpcf7-form-control-wrap {
+}
+.wrap_field .wpcf7-form-control-wrap .wpcf7-form-control {
+  margin-bottom: 0;
+  box-shadow: none;
+  min-height: 50px;
+}
+.wrap_field .wpcf7-form-control-wrap textarea.wpcf7-form-control {
+  min-height: 150px;
+}
+.wrap_btn_submit {
+  display: block;
+  margin: 0 0 0 auto;
+  width: max-content;
+}
+.wrap_btn_submit .wpcf7-spinner {
+  position: absolute;
+  margin: 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.wrap_btn_submit .btn-submit {
+  margin: 0;
+}

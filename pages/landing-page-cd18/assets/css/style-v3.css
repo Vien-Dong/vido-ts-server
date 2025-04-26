@@ -936,7 +936,8 @@ body .is-layout-grid {
   #BOX3427,
   #BOX3503,
   #BOX3515,
-  #BOX3527 {
+  #BOX3527,
+  #BOX3597 {
     width: 917.616px;
     height: 633px;
   }
@@ -955,7 +956,8 @@ body .is-layout-grid {
 #BOX3427 > .ladi-box,
 #BOX3503 > .ladi-box,
 #BOX3515 > .ladi-box,
-#BOX3527 > .ladi-box {
+#BOX3527 > .ladi-box,
+#BOX3597 > .ladi-box {
   box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 30px -15px;
 }
 
@@ -2944,8 +2946,10 @@ a:link {
 #BOX3517 > .ladi-box:hover,
 #HEADLINE3418 > .ladi-headline:hover,
 #HEADLINE3518 > .ladi-headline:hover,
+#HEADLINE3598 > .ladi-headline:hover,
 #PARAGRAPH3419 > .ladi-paragraph:hover,
 #PARAGRAPH3519 > .ladi-paragraph:hover,
+#PARAGRAPH3599 > .ladi-paragraph:hover,
 #PARAGRAPH3420 > .ladi-paragraph:hover,
 #PARAGRAPH3520 > .ladi-paragraph:hover,
 #BUTTON3421 > .ladi-button:hover,
@@ -2956,18 +2960,24 @@ a:link {
 #LIST_PARAGRAPH3523 > .ladi-list-paragraph:hover,
 #BOX3424 > .ladi-box:hover,
 #BOX3524 > .ladi-box:hover,
+#BOX3594 > .ladi-box:hover,
 #IMAGE3425:hover > .ladi-image,
 #IMAGE3525:hover > .ladi-image,
 #BOX3427 > .ladi-box:hover,
 #BOX3527 > .ladi-box:hover,
+#BOX3597 > .ladi-box:hover,
 #LIST_PARAGRAPH3428 > .ladi-list-paragraph:hover,
 #LIST_PARAGRAPH3528 > .ladi-list-paragraph:hover,
+#LIST_PARAGRAPH3598 > .ladi-list-paragraph:hover,
 #BOX3429 > .ladi-box:hover,
 #BOX3529 > .ladi-box:hover,
+#BOX3599 > .ladi-box:hover,
 #HEADLINE3430 > .ladi-headline:hover,
 #HEADLINE3530 > .ladi-headline:hover,
+#HEADLINE3590 > .ladi-headline:hover,
 #PARAGRAPH3431 > .ladi-paragraph:hover,
 #PARAGRAPH3531 > .ladi-paragraph:hover,
+#PARAGRAPH3591 > .ladi-paragraph:hover,
 #PARAGRAPH3432 > .ladi-paragraph:hover,
 #PARAGRAPH3532 > .ladi-paragraph:hover,
 #BUTTON3433 > .ladi-button:hover,
@@ -2975,8 +2985,10 @@ a:link {
 #LIST_PARAGRAPH3435 > .ladi-list-paragraph:hover,
 #BOX3436 > .ladi-box:hover,
 #BOX3536 > .ladi-box:hover,
+#BOX3596 > .ladi-box:hover,
 #IMAGE3437:hover > .ladi-image,
 #IMAGE3537:hover > .ladi-image,
+#IMAGE3587:hover > .ladi-image,
 #HEADLINE3381 > .ladi-headline:hover,
 #HEADLINE3382 > .ladi-headline:hover,
 #BUTTON3873 > .ladi-button:hover,
@@ -3027,7 +3039,9 @@ a:link {
 #SHAPE3516:hover > .ladi-shape,
 #SHAPE3517:hover > .ladi-shape,
 #HEADLINE3518 > .ladi-headline:hover,
+#HEADLINE3598 > .ladi-headline:hover,
 #PARAGRAPH3519 > .ladi-paragraph:hover,
+#PARAGRAPH3599 > .ladi-paragraph:hover,
 #IMAGE3884:hover > .ladi-image,
 #IMAGE4013:hover > .ladi-image,
 #IMAGE4014:hover > .ladi-image,
@@ -3344,6 +3358,7 @@ a:link {
 #BUTTON3433 > .ladi-button > .ladi-button-background,
 #BOX3436 > .ladi-box,
 #BOX3536 > .ladi-box,
+#BOX3596 > .ladi-box,
 #BUTTON3873 > .ladi-button > .ladi-button-background,
 #BUTTON3440 > .ladi-button > .ladi-button-background,
 #BUTTON3459 > .ladi-button > .ladi-button-background,
@@ -3674,6 +3689,7 @@ a:link {
 #BOX3503 > .ladi-box,
 #BOX3515 > .ladi-box,
 #BOX3527 > .ladi-box,
+#BOX3597 > .ladi-box,
 #BOX2679 > .ladi-box,
 #BOX3499 > .ladi-box,
 #BOX3510 > .ladi-box,
@@ -3872,6 +3888,7 @@ a:link {
 #BOX3517 > .ladi-box,
 #BOX3429 > .ladi-box,
 #BOX3529 > .ladi-box,
+#BOX3599 > .ladi-box,
 #BOX3451 > .ladi-box,
 #BOX3452 > .ladi-box,
 #BOX3446 > .ladi-box {
@@ -3960,6 +3977,7 @@ a:link {
 #LIST_PARAGRAPH3423 ul li:before,
 #LIST_PARAGRAPH3428 ul li:before,
 #LIST_PARAGRAPH3528 ul li:before,
+#LIST_PARAGRAPH3598 ul li:before,
 #LIST_PARAGRAPH3435 ul li:before,
 #LIST_PARAGRAPH3554 ul li:before,
 #LIST_PARAGRAPH3555 ul li:before,
@@ -4002,6 +4020,7 @@ a:link {
 #IMAGE3437 > .ladi-image,
 #IMAGE3525 > .ladi-image,
 #IMAGE3537 > .ladi-image,
+#IMAGE3587 > .ladi-image,
 #BOX2679 > .ladi-box,
 #BOX3499 > .ladi-box,
 #BOX3510 > .ladi-box,
@@ -4728,7 +4747,8 @@ a:link {
 #BOX3427 > .ladi-box,
 #BOX3503 > .ladi-box,
 #BOX3515 > .ladi-box,
-#BOX3527 > .ladi-box {
+#BOX3527 > .ladi-box,
+#BOX3597 > .ladi-box {
   box-shadow: rgba(0, 0, 0, 0.2) 0px 0px 30px -15px;
 }
 
@@ -4751,7 +4771,8 @@ a:link {
 #LIST_PARAGRAPH3423 ul li,
 #LIST_PARAGRAPH3428 ul li,
 #LIST_PARAGRAPH3435 ul li,
-#LIST_PARAGRAPH3528 ul li {
+#LIST_PARAGRAPH3528 ul li,
+#LIST_PARAGRAPH3598 ul li {
   padding-bottom: 8px;
   padding-left: 29px;
 }
@@ -4767,6 +4788,7 @@ a:link {
 #LIST_PARAGRAPH3423 ul li:before,
 #LIST_PARAGRAPH3428 ul li:before,
 #LIST_PARAGRAPH3528 ul li:before,
+#LIST_PARAGRAPH3598 ul li:before,
 #LIST_PARAGRAPH3435 ul li:before {
   width: 16px;
   height: 16px;
@@ -4781,6 +4803,7 @@ a:link {
 #BOX3517 > .ladi-box,
 #BOX3429 > .ladi-box,
 #BOX3529 > .ladi-box,
+#BOX3599 > .ladi-box,
 #BOX3451 > .ladi-box,
 #BOX3452 > .ladi-box,
 #BOX3446 > .ladi-box {
@@ -4800,7 +4823,9 @@ a:link {
 #PARAGRAPH3419,
 #PARAGRAPH3431,
 #PARAGRAPH3519,
-#PARAGRAPH3531 {
+#PARAGRAPH3599,
+#PARAGRAPH3531,
+#PARAGRAPH3591 {
   width: 398px;
 }
 
@@ -4819,8 +4844,10 @@ a:link {
 #PARAGRAPH3507 > .ladi-paragraph,
 #PARAGRAPH3508 > .ladi-paragraph,
 #PARAGRAPH3519 > .ladi-paragraph,
+#PARAGRAPH3599 > .ladi-paragraph,
 #PARAGRAPH3520 > .ladi-paragraph,
 #PARAGRAPH3531 > .ladi-paragraph,
+#PARAGRAPH3591 > .ladi-paragraph,
 #PARAGRAPH3532 > .ladi-paragraph {
   font-size: 18px;
   font-weight: bold;
@@ -4866,6 +4893,7 @@ a:link {
 #LIST_PARAGRAPH3516 > .ladi-list-paragraph,
 #LIST_PARAGRAPH3523 > .ladi-list-paragraph,
 #LIST_PARAGRAPH3528 > .ladi-list-paragraph,
+#LIST_PARAGRAPH3598 > .ladi-list-paragraph,
 #LIST_PARAGRAPH3535 > .ladi-list-paragraph {
   font-size: 15px;
   line-height: 1.4;
@@ -4880,6 +4908,7 @@ a:link {
 #BOX3524 > .ladi-box,
 #BOX3436 > .ladi-box,
 #BOX3536 > .ladi-box,
+#BOX3596 > .ladi-box,
 #POPUP3844 > .ladi-popup > .ladi-overlay,
 #POPUP3844 > .ladi-popup > .ladi-popup-background,
 #POPUP3844 > .ladi-popup {
@@ -4892,7 +4921,8 @@ a:link {
 #BOX3436 > .ladi-box,
 #BOX3512 > .ladi-box,
 #BOX3524 > .ladi-box,
-#BOX3536 > .ladi-box {
+#BOX3536 > .ladi-box,
+#BOX3596 > .ladi-box {
   background-image: linear-gradient(rgb(253, 251, 251), rgb(234, 237, 238));
   background-color: initial;
   background-size: initial;
@@ -4907,7 +4937,9 @@ a:link {
 #HEADLINE3430 > .ladi-headline,
 #HEADLINE3506 > .ladi-headline,
 #HEADLINE3518 > .ladi-headline,
-#HEADLINE3530 > .ladi-headline {
+#HEADLINE3598 > .ladi-headline,
+#HEADLINE3530 > .ladi-headline,
+#HEADLINE3590 > .ladi-headline {
   font-weight: bold;
   line-height: 1;
   color: rgb(255, 255, 255);
@@ -4919,7 +4951,8 @@ a:link {
 #IMAGE3437 > .ladi-image > .ladi-image-background,
 #IMAGE3513 > .ladi-image > .ladi-image-background,
 #IMAGE3525 > .ladi-image > .ladi-image-background,
-#IMAGE3537 > .ladi-image > .ladi-image-background {
+#IMAGE3537 > .ladi-image > .ladi-image-background,
+#IMAGE3587 > .ladi-image > .ladi-image-background {
   width: 497.566px;
   height: 328.6px;
   top: -0.000115px;
@@ -4957,6 +4990,12 @@ a:link {
 }
 
 #IMAGE3537 > .ladi-image > .ladi-image-background {
+  background-image: url("../images/gsa.png");
+  background-position: center;
+  background-size: contain;
+}
+
+#IMAGE3587 > .ladi-image > .ladi-image-background {
   background-image: url("../images/vinh.jpg");
   background-position: center;
   background-size: contain;
@@ -5066,7 +5105,8 @@ a:link {
 
 #HEADLINE2680,
 #HEADLINE3507,
-#HEADLINE3518 {
+#HEADLINE3518,
+#HEADLINE3598 {
   width: max-content;
 }
 
@@ -6241,7 +6281,9 @@ a:link {
   #HEADLINE3430 > .ladi-headline,
   #HEADLINE3506 > .ladi-headline,
   #HEADLINE3518 > .ladi-headline,
-  #HEADLINE3530 > .ladi-headline {
+  #HEADLINE3598 > .ladi-headline,
+  #HEADLINE3530 > .ladi-headline,
+  #HEADLINE3590 > .ladi-headline {
     font-size: 26px;
   }
 
@@ -6494,6 +6536,7 @@ a:link {
   #PARAGRAPH2681 > .ladi-paragraph,
   #PARAGRAPH3508 > .ladi-paragraph,
   #PARAGRAPH3519 > .ladi-paragraph,
+  #PARAGRAPH3599 > .ladi-paragraph,
   #PARAGRAPH3654 > .ladi-paragraph {
     line-height: 1.6;
   }
@@ -6971,7 +7014,8 @@ a:link {
   #BOX3427,
   #BOX3503,
   #BOX3515,
-  #BOX3527 {
+  #BOX3527,
+  #BOX3597 {
     width: 917.616px;
     height: 633px;
   }
@@ -7177,7 +7221,8 @@ a:link {
   #LIST_PARAGRAPH3416,
   #LIST_PARAGRAPH3428,
   #LIST_PARAGRAPH3516,
-  #LIST_PARAGRAPH3528 {
+  #LIST_PARAGRAPH3528,
+  #LIST_PARAGRAPH3598 {
     width: 413px;
   }
 
@@ -7277,7 +7322,12 @@ a:link {
 
   #BOX3527 {
     top: 24px;
-    left: 1943.19px;
+    left: 2898.19px;
+  }
+
+  #BOX3597 {
+    top: 24px;
+    left: 3243.19px;
   }
 
   #LIST_PARAGRAPH3428 {
@@ -7290,6 +7340,11 @@ a:link {
     left: 1971.64px;
   }
 
+  #LIST_PARAGRAPH3598 {
+    top: 181.17px;
+    left: 2931.64px;
+  }
+
   #BOX3429 {
     width: 280.841px;
     height: 52.5717px;
@@ -7298,10 +7353,17 @@ a:link {
   }
 
   #BOX3529 {
-    width: 280.841px;
+    width: 400.841px;
     height: 52.5717px;
     top: 65.85px;
     left: 1972.94px;
+  }
+
+  #BOX3599 {
+    width: 280.841px;
+    height: 52.5717px;
+    top: 65.85px;
+    left: 2932.94px;
   }
 
   #HEADLINE3430 {
@@ -7316,6 +7378,12 @@ a:link {
     left: 1996.36px;
   }
 
+  #HEADLINE3590 {
+    width: 100%;
+    top: 78.754px;
+    left: 2956.36px;
+  }
+
   #PARAGRAPH3431 {
     top: 193.147px;
     left: 2941.64px;
@@ -7324,6 +7392,11 @@ a:link {
   #PARAGRAPH3531 {
     top: 133.147px;
     left: 1971.64px;
+  }
+
+  #PARAGRAPH3591 {
+    top: 133.147px;
+    left: 2931.64px;
   }
 
   #PARAGRAPH3432 {
@@ -7355,6 +7428,13 @@ a:link {
     left: 2409.73px;
   }
 
+  #BOX3596 {
+    width: 402.783px;
+    height: 349.841px;
+    top: 66.806px;
+    left: 3379.73px;
+  }
+
   #IMAGE3437 {
     width: 381.091px;
     height: 328.6px;
@@ -7367,6 +7447,13 @@ a:link {
     height: 328.6px;
     top: 76.7px;
     left: 2420.54px;
+  }
+
+  #IMAGE3587 {
+    width: 381.091px;
+    height: 328.6px;
+    top: 76.7px;
+    left: 3390.54px;
   }
 
   #GROUP3794 {
@@ -7681,7 +7768,8 @@ a:link {
 
   #PARAGRAPH2681,
   #PARAGRAPH3508,
-  #PARAGRAPH3519 {
+  #PARAGRAPH3519,
+  #PARAGRAPH3599 {
     width: 291px;
   }
 
@@ -7715,7 +7803,8 @@ a:link {
   }
 
   #HEADLINE3507 > .ladi-headline,
-  #HEADLINE3518 > .ladi-headline {
+  #HEADLINE3518 > .ladi-headline,
+  #HEADLINE3598 > .ladi-headline {
     text-align: left;
   }
 
@@ -8312,7 +8401,6 @@ a:link {
   }
 
   #BOX3542,
-  #BOX3599,
   #BOX3614,
   #BOX3583 {
     width: 269px;
@@ -8722,7 +8810,16 @@ a:link {
   }
 }
 
+#img-slide {
+  width: 80.5%; 
+  height: auto;
+}
+
 @media (max-width: 767px) {
+  #img-slide {
+    width: 100%; 
+  }
+
   #SECTION2508 {
     height: 52.7031px;
   }
@@ -9051,7 +9148,9 @@ a:link {
   #HEADLINE3430 > .ladi-headline,
   #HEADLINE3506 > .ladi-headline,
   #HEADLINE3518 > .ladi-headline,
-  #HEADLINE3530 > .ladi-headline {
+  #HEADLINE3598 > .ladi-headline,
+  #HEADLINE3530 > .ladi-headline,
+  #HEADLINE3590 > .ladi-headline {
     font-size: 22px;
   }
 
@@ -9118,7 +9217,8 @@ a:link {
   #HEADLINE3382 > .ladi-headline,
   #PARAGRAPH2681 > .ladi-paragraph,
   #PARAGRAPH3508 > .ladi-paragraph,
-  #PARAGRAPH3519 > .ladi-paragraph {
+  #PARAGRAPH3519 > .ladi-paragraph,
+  #PARAGRAPH3599 > .ladi-paragraph {
     line-height: 1.4;
   }
 
@@ -9605,7 +9705,7 @@ a:link {
 
   #SECTION3377,
   #SECTION3378 {
-    height: 842px;
+    height: 942px;
   }
 
   #CAROUSEL3377,
@@ -9624,7 +9724,8 @@ a:link {
 
   #BOX3503,
   #BOX3515,
-  #BOX3527 {
+  #BOX3527,
+  #BOX3597 {
     width: 397px;
     height: 976px;
   }
@@ -9701,7 +9802,8 @@ a:link {
   #BOX3436,
   #BOX3512,
   #BOX3524,
-  #BOX3536 {
+  #BOX3536,
+  #BOX3596 {
     width: 341px;
     height: 288px;
   }
@@ -9717,7 +9819,8 @@ a:link {
   #IMAGE3437,
   #IMAGE3513,
   #IMAGE3525,
-  #IMAGE3537 {
+  #IMAGE3537,
+  #IMAGE3587 {
     width: 320px;
     height: 269px;
   }
@@ -9778,7 +9881,8 @@ a:link {
   #BOX3429,
   #BOX3505,
   #BOX3517,
-  #BOX3529 {
+  #BOX3529,
+  #BOX3599 {
     width: 316px;
     height: 52px;
   }
@@ -9885,8 +9989,12 @@ a:link {
   #HEADLINE3418,
   #HEADLINE3430,
   #HEADLINE2933,
-  #HEADLINE3530 {
+  #HEADLINE3590 {
     width: 266px;
+  }
+
+  #HEADLINE3530 {
+    width: 300px;
   }
 
   #HEADLINE3518 {
@@ -9950,6 +10058,11 @@ a:link {
     left: 850px;
   }
 
+  #BOX3597 {
+    top: 12px;
+    left: 1270px;
+  }
+
   #LIST_PARAGRAPH3428 {
     width: 338px;
     top: 191.607px;
@@ -9962,6 +10075,12 @@ a:link {
     left: 883.64px;
   }
 
+  #LIST_PARAGRAPH3598 {
+    width: 338px;
+    top: 191.607px;
+    left: 1300.64px;
+  }
+
   #BOX3429 {
     top: 41.806px;
     left: 1311.94px;
@@ -9972,6 +10091,11 @@ a:link {
     left: 891.94px;
   }
 
+  #BOX3599 {
+    top: 41.806px;
+    left: 1301.94px;
+  }
+
   #HEADLINE3430 {
     top: 54.754px;
     left: 1371.94px;
@@ -9979,7 +10103,12 @@ a:link {
 
   #HEADLINE3530 {
     top: 54.754px;
-    left: 911.94px;
+    left: 901.94px;
+  }
+
+  #HEADLINE3590 {
+    top: 54.754px;
+    left: 1321.94px;
   }
 
   #PARAGRAPH3431 {
@@ -9990,6 +10119,11 @@ a:link {
   #PARAGRAPH3531 {
     top: 123.584px;
     left: 883.64px;
+  }
+
+  #PARAGRAPH3591 {
+    top: 123.584px;
+    left: 1300.64px;
   }
 
   #PARAGRAPH3432 {
@@ -10017,6 +10151,11 @@ a:link {
     left: 881px;
   }
 
+  #BOX3596 {
+    top: 495.459px;
+    left: 1301px;
+  }
+
   #IMAGE3437 {
     top: 404.137px;
     left: 1312.64px;
@@ -10025,6 +10164,11 @@ a:link {
   #IMAGE3537 {
     top: 504.137px;
     left: 875.64px;
+  }
+
+  #IMAGE3587 {
+    top: 504.137px;
+    left: 1295.64px;
   }
 
   #GROUP3794 {
@@ -10368,7 +10512,8 @@ a:link {
   }
 
   #HEADLINE3507 > .ladi-headline,
-  #HEADLINE3518 > .ladi-headline {
+  #HEADLINE3518 > .ladi-headline,
+  #HEADLINE3598 > .ladi-headline {
     text-align: center;
   }
 
@@ -10430,6 +10575,7 @@ a:link {
   }
 
   #PARAGRAPH3519,
+  #PARAGRAPH3599,
   #HEADLINE3840 {
     width: 349px;
   }

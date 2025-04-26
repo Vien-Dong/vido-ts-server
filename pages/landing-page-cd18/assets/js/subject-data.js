@@ -41,7 +41,7 @@ const Subjects = [
       "Sinh viên được tham gia kiến tập tại doanh nghiệp ở mỗi học kỳ.s",
     ],
     url: "https://www.viendong.edu.vn/khoa-co-khi",
-    image: "./assets/images/subject/cokhi.jpg",
+    image: "./assets/images/subject/ketoan.jpg",
   },
   {
     name: "Quản Trị Kinh Doanh",
@@ -66,15 +66,15 @@ const Subjects = [
     image: "./assets/images/subject/logistics.jpg",
   },
   {
-    name: "Quản trị Martketing",
-    description: "Ngành Quản trị Martketing tại CĐVĐ",
+    name: "Quản trị Marketing",
+    description: "Ngành Quản trị Marketing tại CĐVĐ",
     target: "100 chỉ tiêu",
     highlights: [
       "Gắn liền với thực tiễn, giúp sinh viên áp dụng kiến thức vào công việc kinh doanh và quản lý, đặc biệt là khởi sự doanh nghiệp.",
       "Có cơ hội thực tập tại các doanh nghiệp lớn trong và ngoài nước.",
     ],
     url: "https://www.viendong.edu.vn/khoa-kinh-te",
-    image: "./assets/images/subject/marketing.jpg",
+    image: "./assets/images/subject/quantrimarketing.PNG",
   },
   { 
     name: "Quản trị văn phòng (Thư ký Y Khoa)",
