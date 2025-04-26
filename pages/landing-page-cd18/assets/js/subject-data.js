@@ -22,8 +22,8 @@ const Subjects = [
     image: "./assets/images/subject/nhahang.jpg",
   },
   {
-    name: "Cơ Khí - Điện Tử",
-    description: "Ngành Cơ Khí Điện Tử tại CĐVĐ",
+    name: "Cơ Khí",
+    description: "Ngành Cơ Khí tại CĐVĐ",
     target: "100 chỉ tiêu",
     highlights: [
       "Một trong những ngành học được ưa chuộng và có nhiều cơ hội việc làm hấp dẫn.",
@@ -32,6 +32,7 @@ const Subjects = [
     url: "https://www.viendong.edu.vn/khoa-co-khi",
     image: "./assets/images/subject/cokhi.jpg",
   },
+
   {
     name: "Kế Toán",
     description: "Ngành Kế Toán tại CĐVĐ",
