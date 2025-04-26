@@ -52,7 +52,7 @@ const Subjects = [
       "Có cơ hội thực tập tại các doanh nghiệp lớn trong và ngoài nước.",
     ],
     url: "https://www.viendong.edu.vn/khoa-kinh-te",
-    image: "./assets/images/subject/quantrikinhdoanh.jpg",
+    image: "./assets/images/subject/quantrikd.jpg",
   },
   {
     name: "Logistics",
@@ -151,7 +151,7 @@ const Subjects = [
       "Có cơ hội thực tập tại các công ty công nghệ lớn và các tổ chức trong ngành công nghệ thông tin.",
     ],
     url: "https://www.viendong.edu.vn/khoa-cong-nghe-thong-tin",
-    image: "./assets/images/subject/laptrinhungdung.jpg",
+    image: "./assets/images/subject/ltud.jpg",
   },
   {
     name: "Truyền thông đa phương tiện",
@@ -261,7 +261,7 @@ const Subjects = [
       "Có cơ hội thực tập tại các khách sạn lớn và các tổ chức trong ngành du lịch.",
     ],
     url: "https://www.viendong.edu.vn/khoa-nha-hang-khach-san",
-    image: "./assets/images/subject/quantrikhachsan.jpg",
+    image: "./assets/images/subject/qtks.jpg",
   },
   {
     name: "Du lịch & Lữ hành",
