@@ -328,6 +328,7 @@ const Subjects = [
     ],
     url: "https://www.viendong.edu.vn/ho-tro-sinh-vien.html",
     image: "./assets/images/subject/csvc.jpg",
+    flag: false
   },
   {
     name: "Sân banh",
@@ -339,5 +340,6 @@ const Subjects = [
     ],
     url: "https://www.viendong.edu.vn/ho-tro-sinh-vien.html",
     image: "./assets/images/subject/sanbanh.jpg",
+    flag: false
   }
 ];

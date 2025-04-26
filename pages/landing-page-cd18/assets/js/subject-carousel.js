@@ -12,10 +12,10 @@ function renderSubjects(subjects) {
             <div class="subject-title">${subject.name}</div>
             <div class="subject-enrollment">SỐ LƯỢNG TUYỂN SINH 2025</div>
             <div class="subject-quota">${subject.target}</div>
-            <div class="subject-department">Ngành ${subject.name} tại CĐVĐ</div>
+            <div class="subject-department">${subject?.flag == false ? `${subject.name} tại CĐVĐ` : `Ngành ${subject.name} tại CĐVĐ`}</div>
             <ul class="subject-highlights">
               ${subject?.highlights && subject?.highlights.map((h) => `<li>${h}</li>`).join("")}
-              <li><a style="color: blue" href="${subject.url}" target="_blank">Bấm vào đây để xem thêm thông tin về ngành</a></li>
+              <li><a style="color: blue" href="${subject.url}" target="_blank">Bấm vào đây để xem thêm thông tin ${subject?.flag === false ? '' : `về ngành`}</a></li>
             </ul>
           </div>
           <div class="subject-image">
