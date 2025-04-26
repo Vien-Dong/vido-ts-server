@@ -21,6 +21,7 @@ const Universities = [
             "Đội ngũ giảng viên nhiều kinh nghiệm, tâm huyết với nghề."
         ],
         image: "./assets/images/university/uet.jpg",
+        url: "https://www.viendong.edu.vn/d7148174639-thong-bao-tuyen-sinh-cao-dang-chinh-quy-2019.html"
     },
     {
         name: "Đại học Giao Thông Vận Tải TPHCM",
@@ -32,6 +33,7 @@ const Universities = [
             "Giảng viên là các chuyên gia đầu ngành, gắn kết nghiên cứu – ứng dụng thực tiễn."
         ],
         image: "./assets/images/university/gsa.png",
+        url: "https://www.viendong.edu.vn/d7148174639-thong-bao-tuyen-sinh-cao-dang-chinh-quy-2019.html"
     },
     {
         name: "Đại học Trà Vinh TPHCM",
@@ -43,5 +45,6 @@ const Universities = [
             "Hợp tác quốc tế với nhiều trường đại học và tổ chức trên thế giới."
         ],
         image: "./assets/images/university/vinh.jpg",
+        url: "https://www.viendong.edu.vn/thong-bao-tuyen-sinh-dai-hoc-tra-vinh-vhvl-cao-dang-nam-2025.html"
     },
 ];
