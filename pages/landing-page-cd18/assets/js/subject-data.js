@@ -206,7 +206,7 @@ const Subjects = [
       "Có cơ hội làm việc tại các bệnh viện, phòng khám, trung tâm y tế và các tổ chức phi chính phủ liên quan đến sức khỏe.",
     ],
     url: "https://www.viendong.edu.vn/y-si-da-khoa",
-    image: "./assets/images/subject/ysida.jpg",
+    image: "./assets/images/subject/ysidakhoa.jpg",
   },
   {
     name: "Xét nghiệm",
@@ -303,7 +303,7 @@ const Subjects = [
     highlights: [
       "Sinh viên được trang bị kiến thức về tâm lý trẻ em, phương pháp giáo dục mầm non, kỹ năng tổ chức hoạt động học tập và vui chơi cho trẻ.",
       "Ngành giáo dục mầm non đang phát triển mạnh mẽ, tạo ra nhiều cơ hội việc làm cho sinh viên.",
-    ],
+    ],  
     url: "https://www.viendong.edu.vn/khoa-giao-duc-mam-non",
     image: "./assets/images/subject/giaoduc.jpg",
   },
