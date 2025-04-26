@@ -9,6 +9,7 @@ const Universities = [
             "Mạng lưới hợp tác rộng khắp với các doanh nghiệp, tổ chức và trường đại học danh tiếng"
         ],
         image: "./assets/images/university/ueh.jpg",
+        url: "https://www.viendong.edu.vn/thong-bao-tuyen-sinh-dai-hoc-vhvl-2025-lien-ket-voi-dh-kinh-te-tp-hcm.html"
     },
     {
         name: "Đại học Sư Phạm Kỹ Thuật TPHCM",

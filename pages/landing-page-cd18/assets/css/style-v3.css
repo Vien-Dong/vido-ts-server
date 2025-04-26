@@ -8810,7 +8810,16 @@ a:link {
   }
 }
 
+#img-slide {
+  width: 80.5%; 
+  height: auto;
+}
+
 @media (max-width: 767px) {
+  #img-slide {
+    width: 100%; 
+  }
+
   #SECTION2508 {
     height: 52.7031px;
   }
