@@ -317,5 +317,27 @@ const Subjects = [
     ],
     url: "https://www.viendong.edu.vn/khoa-ngoai-ngu",
     image: "./assets/images/subject/tienganhsupham.jpg",
+  },
+  {
+    name: "Cơ sở vật chất",
+    description: "Hệ thống cơ sở vật chất hiện đại tại CĐ Viễn Đông",
+    target: "Không ngừng nâng cấp và mở rộng",
+    highlights: [
+      "Trang bị đầy đủ phòng học máy lạnh, thư viện điện tử và phòng thực hành chuyên ngành đạt chuẩn.",
+      "Khuôn viên rộng rãi, khu thể thao đa năng, ký túc xá tiện nghi, tạo môi trường học tập và sinh hoạt lý tưởng cho sinh viên.",
+    ],
+    url: "https://www.viendong.edu.vn/ho-tro-sinh-vien.html",
+    image: "./assets/images/subject/csvc.jpg",
+  },
+  {
+    name: "Sân banh",
+    description: "Sân bóng đá hiện đại phục vụ sinh viên tại CĐ Viễn Đông",
+    target: "Sân chơi thể thao cho lứa trẻ",
+    highlights: [
+      "Sân bóng đá cỏ nhân tạo rộng rãi, đạt chuẩn, phục vụ nhu cầu luyện tập và thi đấu thể thao cho sinh viên.",
+      "Thường xuyên tổ chức các giải đấu bóng đá nội bộ, tạo sân chơi bổ ích, rèn luyện sức khỏe và tinh thần đồng đội.",
+    ],
+    url: "https://www.viendong.edu.vn/ho-tro-sinh-vien.html",
+    image: "./assets/images/subject/sanbanh.jpg",
   }
 ];
