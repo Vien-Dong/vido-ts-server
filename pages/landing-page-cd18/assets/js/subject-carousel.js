@@ -10,9 +10,9 @@ function renderSubjects(subjects) {
         <div class="subject-body" style="display: flex; justify-content: space-between; align-items: center;">
           <div class="subject-content"> 
             <div class="subject-title">${subject.name}</div>
-            <div class="subject-enrollment">SỐ LƯỢNG TUYỂN SINH 2025</div>
-            <div class="subject-quota">${subject.target}</div>
-            <div class="subject-department">${subject?.flag == false ? `${subject.name} tại CĐVĐ` : `Ngành ${subject.name} tại CĐVĐ`}</div>
+            ${subject?.flag === false ? `` : `<div class="subject-enrollment">SỐ LƯỢNG TUYỂN SINH 2025</div>`}
+            ${subject?.flag === false ? `` : `<div class="subject-quota">${subject.target}</div>`}
+            <div class="subject-department">${subject?.flag == false ? `` : `Ngành ${subject.name}`}</div>
             <ul class="subject-highlights">
               ${subject?.highlights && subject?.highlights.map((h) => `<li>${h}</li>`).join("")}
               <li><a style="color: blue" href="${subject.url}" target="_blank">Bấm vào đây để xem thêm thông tin ${subject?.flag === false ? '' : `về ngành`}</a></li>
@@ -33,7 +33,7 @@ function renderSubjects(subjects) {
   new Swiper(".subject-swiper", {
     loop: true,
     autoplay: {
-      delay: 5000
+      delay: 8000
     },
     pagination: {
       el: ".swiper-pagination",

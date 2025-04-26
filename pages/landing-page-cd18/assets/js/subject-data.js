@@ -325,6 +325,7 @@ const Subjects = [
     highlights: [
       "Trang bị đầy đủ phòng học máy lạnh, thư viện điện tử và phòng thực hành chuyên ngành đạt chuẩn.",
       "Khuôn viên rộng rãi, khu thể thao đa năng, ký túc xá tiện nghi, tạo môi trường học tập và sinh hoạt lý tưởng cho sinh viên.",
+      "Hệ thống sân bóng đá, bóng rổ, phòng gym hiện đại phục vụ nhu cầu rèn luyện thể chất cho sinh viên."
     ],
     url: "https://www.viendong.edu.vn/ho-tro-sinh-vien.html",
     image: "./assets/images/subject/csvc.jpg",
@@ -337,6 +338,7 @@ const Subjects = [
     highlights: [
       "Sân bóng đá cỏ nhân tạo rộng rãi, đạt chuẩn, phục vụ nhu cầu luyện tập và thi đấu thể thao cho sinh viên.",
       "Thường xuyên tổ chức các giải đấu bóng đá nội bộ, tạo sân chơi bổ ích, rèn luyện sức khỏe và tinh thần đồng đội.",
+      "Sân bóng được bảo trì thường xuyên, đảm bảo mặt sân luôn trong tình trạng tốt nhất cho việc thi đấu và tập luyện."
     ],
     url: "https://www.viendong.edu.vn/ho-tro-sinh-vien.html",
     image: "./assets/images/subject/sanbanh.jpg",
