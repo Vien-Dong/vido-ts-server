@@ -74,7 +74,7 @@ const Subjects = [
       "Có cơ hội thực tập tại các doanh nghiệp lớn trong và ngoài nước.",
     ],
     url: "https://www.viendong.edu.vn/khoa-kinh-te",
-    image: "./assets/images/subject/quantrimarketing.PNG",
+    image: "./assets/images/subject/quantrimarketing.jpg",
   },
   { 
     name: "Quản trị văn phòng (Thư ký Y Khoa)",
