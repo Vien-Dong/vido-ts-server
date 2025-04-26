@@ -38,7 +38,7 @@ const Subjects = [
     target: "100 chỉ tiêu",
     highlights: [
       "Gắn liền với hệ thống thực hành, giúp sinh viên áp dụng kiến thức vào thực tế.",
-      "Sinh viên được tham gia kiến tập tại doanh nghiệp ở mỗi học kỳ.s",
+      "Sinh viên được tham gia kiến tập tại doanh nghiệp ở mỗi học kỳ.",
     ],
     url: "https://www.viendong.edu.vn/khoa-co-khi",
     image: "./assets/images/subject/ketoan.jpg",
