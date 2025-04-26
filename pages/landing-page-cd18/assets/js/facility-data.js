@@ -1,0 +1,1 @@
+const Facilities = Array.from({ length: 20 }, (_, i) => `./assets/images/facility/${i + 1}.jpg`);
