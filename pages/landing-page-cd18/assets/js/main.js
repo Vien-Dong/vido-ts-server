@@ -56,8 +56,7 @@ $(document).ready(function () {
     $(document).on("click", "#admissionForm .wrap_btn_submit input", function (event) {
         event.preventDefault();
 
-        const clickedButtonValue = $(this).val(); // lấy nội dung nút
-
+        var clickedButtonValue = $(this).val();
 
         var inputNameValue = $('input[name="hoten"]').val();
         var selectedIndustry = $('select[name="nganhhoc"]').val();
@@ -99,10 +98,10 @@ $(document).ready(function () {
         var lastName = names.slice(0, -1).join(" ");
 
         var note = "";
-        if (clickedButtonValue.includes("xét tuyển")) {
-            note = "xét tuyển";
-        } else if (clickedButtonValue.includes("tư vấn")) {
-            note = "cần tư vấn";
+        if (clickedButtonValue === "Tôi muốn tư vấn ngay") {
+            note = "Cần tư vấn";
+        } else if (clickedButtonValue === "Tôi muốn xét tuyển") {
+            note = "Xét tuyển";
         }
 
         var postData = {
@@ -120,6 +119,7 @@ $(document).ready(function () {
             cptarget_source: "landing_page",
             training_industry_1: selectedIndustry,
             class: myclass,
+            note: note,
             address: address,
             consulting_staff: "",
             assigned_user_id: "3",
