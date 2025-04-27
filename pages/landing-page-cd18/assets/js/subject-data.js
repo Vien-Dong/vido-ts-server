@@ -237,7 +237,7 @@ const Subjects = [
     target: "100 chỉ tiêu",
     highlights: [
       "Sinh viên được thực hành dịch thuật các loại tài liệu, hợp đồng, văn bản, và tham gia vào các buổi hội thảo, tọa đàm song ngữ.",
-      "Chú trọng vào việc rèn luyện kỹ năng viết, nói, và giao tiếp trong môi trường đa văn hóa.",
+      "Chú trọng vào việc rèn luyện kỹ năng viết, nói và giao tiếp trong môi trường đa văn hóa.",
     ],
     url: "https://www.viendong.edu.vn/khoa-ngoai-ngu",
     image: "./assets/images/subject/bienphiendich.jpg",
@@ -281,7 +281,7 @@ const Subjects = [
     target: "100 chỉ tiêu",
     highlights: [
       "Chương trình học kết hợp giữa lý thuyết và thực hành, giúp sinh viên nắm vững kiến thức và kỹ năng cần thiết cho nghề nghiệp.",
-      "Sinh viên được trang bị kiến thức về kỹ thuật chế biến món ăn, an toàn thực phẩm, quản lý bếp, và kỹ năng giao tiếp trong môi trường nhà hàng – khách sạn.",
+      "Sinh viên được trang bị kiến thức về kỹ thuật chế biến món ăn, an toàn thực phẩm, quản lý bếp và kỹ năng giao tiếp trong môi trường nhà hàng – khách sạn.",
     ],
     url: "https://www.viendong.edu.vn/khoa-nha-hang-khach-san",
     image: "./assets/images/subject/kythuatchebienmonan.jpg",
@@ -333,7 +333,7 @@ const Subjects = [
     flag: false
   },
   {
-    name: "Sân banh",
+    name: "Sân bóng",
     description: "Sân bóng đá hiện đại phục vụ sinh viên tại CĐ Viễn Đông",
     target: "Sân chơi thể thao cho lứa trẻ",
     highlights: [
