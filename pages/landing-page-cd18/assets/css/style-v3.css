@@ -11964,7 +11964,34 @@ body.lazyload .ladi-spin-lucky-start {
   }
 }
 
+#wrap_btn_submit {
+  display: flex; 
+  align-items: center; 
+  gap: 15px;
+}
+
+#re-btn a {
+  border-radius: 5px; 
+  background-color: #3D90D7; 
+  color: white; 
+  font-size: 0.85em;
+}
+
 @media screen and (max-width: 768px) {
+  #re-btn {
+    display: none;
+  }
+
+  #wrap_btn_submit {
+    flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+
+  #wrap_btn_submit input {
+    width: 100%;
+  }
+
   .gallery-grid {
       grid-template-columns: repeat(2, 1fr);
       grid-template-rows: repeat(3, 200px);
