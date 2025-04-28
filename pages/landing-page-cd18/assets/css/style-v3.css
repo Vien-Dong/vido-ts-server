@@ -207,7 +207,6 @@ html :where(.is-position-sticky) {
 }
 .container-width,
 .full-width .ubermenu-nav,
-.container,
 .row {
   max-width: 1200px;
 }
@@ -11721,9 +11720,11 @@ body.lazyload .ladi-spin-lucky-start {
 }
 
 .container {
-  max-width: 1200px;
-  margin: 0 auto;
+  justify-content: center;
+  margin: 0 !important;
   padding: 20px;
+  width: 100%;
+  padding-inline: 10%;
 }
 
 .gallery-grid {
@@ -11970,6 +11971,14 @@ body.lazyload .ladi-spin-lucky-start {
   gap: 15px;
 }
 
+.footer {
+  background: white;
+}
+
+#container-mobile {
+  display: none;
+}
+
 #re-btn a {
   border-radius: 5px; 
   background-color: #3D90D7; 
@@ -11978,8 +11987,23 @@ body.lazyload .ladi-spin-lucky-start {
 }
 
 @media screen and (max-width: 768px) {
-  #re-btn {
+  .container #re-btn {
     display: none;
+  }
+
+  #container-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-block: 10px;
+    padding-inline: 10px;
+    justify-content: center;
+    align-items:center;
+  }
+
+  #container-mobile #re-btn,
+  #container-mobile #re-btn a {
+    width: 100%;
   }
 
   #wrap_btn_submit {

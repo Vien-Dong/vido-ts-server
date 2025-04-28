@@ -827,14 +827,8 @@ body,
     margin-right: auto
 }
 
-.container {
-    padding-left: 15px;
-    padding-right: 15px
-}
-
 .container-width,
 .full-width .ubermenu-nav,
-.container,
 .row {
     max-width: 1080px
 }
