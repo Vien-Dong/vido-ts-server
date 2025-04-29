@@ -124,7 +124,7 @@ const getAccessTokenWhenRefreshtokenExpire = async (refreshToken) => {
 
 const revokeToken = async (refreshToken, isRevokeAll) => {
     try {
-        const result = null;
+        let result = null;
         if (isRevokeAll) {
             result = await Token.updateMany(null, { $set: { refresh_token_is_expire: true } });
         }
@@ -170,7 +170,7 @@ const sendMessage = async (phone, templateId, templateData, trackingId) => {
             {
                 return "Gửi thành công";
             }
-            return "Gửi thất bại";
+            return res.data;
         }
         return "Lỗi server"; 
     }
