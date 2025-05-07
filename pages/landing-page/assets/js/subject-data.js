@@ -15,7 +15,7 @@ const Subjects = [
     description: "Ngành Nhà Hàng Khách Sạn tại CĐVĐ",
     target: "100 chỉ tiêu",
     highlights: [
-      "Các lớp học được trang bị đầy đủ các thiết bị cần thiết cho việc pha chế đồ uống...",
+      "Các lớp học được trang bị đầy đủ các thiết bị cần thiết cho việc pha chế đồ uống",
       "Có thể đảm nhận các công việc trong các bộ phận của một khách sạn – nhà hàng từ 3-5 sao.",
     ],
     url: "https://www.viendong.edu.vn/khoa-nha-hang-khach-san",
@@ -236,7 +236,7 @@ const Subjects = [
     description: "Ngành Biên phiên dịch tại CĐVĐ",
     target: "100 chỉ tiêu",
     highlights: [
-      "Sinh viên được thực hành dịch thuật các loại tài liệu, hợp đồng, văn bản, và tham gia vào các buổi hội thảo, tọa đàm song ngữ.",
+      "Sinh viên được thực hành dịch thuật các loại tài liệu, hợp đồng, văn bản và tham gia vào các buổi hội thảo, tọa đàm song ngữ.",
       "Chú trọng vào việc rèn luyện kỹ năng viết, nói và giao tiếp trong môi trường đa văn hóa.",
     ],
     url: "https://www.viendong.edu.vn/khoa-ngoai-ngu",
