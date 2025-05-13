@@ -3103,7 +3103,7 @@
 
       #PARAGRAPH3283 > .ladi-paragraph,
       #PARAGRAPH3284 > .ladi-paragraph {
-        font-size: 14px;
+        font-size: 12px;
         font-style: italic;
         line-height: 1.6;
         color: rgb(0, 0, 0);
@@ -7859,7 +7859,7 @@
           flex-direction: column;
           padding-block: 10px;
           padding-inline: 1rem;
-          gap: 15px;
+          gap: 25px;
         }
 
         #HEADLINE4017 > .ladi-headline,
@@ -8492,7 +8492,7 @@
         #HEADLINE3381 > .ladi-headline,
         #HEADLINE3449 > .ladi-headline,
         #PARAGRAPH2751 > .ladi-paragraph {
-          font-size: 27px;
+          font-size: 23px;
         }
 
         #HEADLINE3266,
@@ -9105,7 +9105,7 @@
 
         #PARAGRAPH3443 {
           width: 277px;
-          top: 217.625px;
+          top: 228.625px;
           left: 98.1846px;
         }
 
@@ -9128,7 +9128,7 @@
 
         #PARAGRAPH3447 {
           width: 247px;
-          top: 325.956px;
+          top: 333.956px;
           left: 98.1846px;
         }
 
@@ -9434,7 +9434,7 @@
         }
 
         #PARAGRAPH2632 > .ladi-paragraph {
-          font-size: 16px;
+          font-size: 15px;
         }
 
         #HEADLINE3453 {
@@ -10904,7 +10904,7 @@
       <div id="SECTION2508" class="ladi-section" style="margin-bottom: 6px;">
         <div class="ladi-section-background"></div>
         <div>
-          <div id="HEADLINE4017" class="ladi-element" style="padding-left: 12px; display: flex; gap: 50px; width: 100%; justify-content: space-between;" >
+          <div id="HEADLINE4017" class="ladi-element" style="padding-inline: 12px; display: flex; width: 100%; justify-content: space-around;" >
             <div class="logo align-self-center">
                 <a href="https://www.viendong.edu.vn/"><img src="https://www.viendong.edu.vn/wp-content/uploads/2024/03/logo.svg" alt="logo-main"></a>
             </div>
@@ -10928,10 +10928,10 @@
                   }
               </style>
             </div>
-            <div style="align-self: center;">
-                <ul style="display: flex; gap: 10px;">                  
-                    <li style="color: red; font-size: larger; font-weight: bold; width: 300px; text-align: center">Tổng Đài Miễn Phí - 0922 33 44 00</li>
-                </ul>
+            <div style="align-self: center; background-color: #fdc800;" id="REGISTER-BTN">
+              <a href="" class="button primary is-large" >
+                <span>Liên hệ hotline - 0922334400 - 02838911111</span>
+            </a>
             </div>              
           </div>
         </div>
@@ -13022,7 +13022,7 @@
                   }
   
                   .subject-title {
-                    font-size: 18px;
+                    font-size: 15px;
                     font-weight: bold;
                     color: #fff;
                     background-color: #f33954;
@@ -13054,7 +13054,7 @@
   
                   .subject-department {
                     color: #f33954;
-                    font-size: 16px;
+                    font-size: 14px;
                     font-weight: bold;
                     margin: 20px 0 15px 0;
                   }
@@ -13144,18 +13144,41 @@
           <div id="BOX3451" class="ladi-element">
             <div class="ladi-box ladi-transition"></div>
           </div>
-          <div id="HEADLINE2898" class="ladi-element">
-            <h3 class="ladi-headline ladi-transition">
-              Học phí siêu ưu đãi<br />Nhà nước hỗ trợ 50 – 70% theo Nghị định 81 & 97/2023&nbsp;
-            </h3>
-          </div>
+          <style>
+            @keyframes pulse {
+              0% { transform: scale(1); }
+              50% { transform: scale(1.03); }
+              100% { transform: scale(1); }
+            }
+            .highlight-box {
+              animation: pulse 2s infinite;
+              background-color: #fff8e1;
+              border: 2px solid #ff9800;
+              padding: 20px;
+              border-radius: 10px;
+              box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+            }
+            #HEADLINE2898 {
+  padding-left: 5vw;
+  padding-right: 5vw;
+}
+            </style>
+            
+            <div id="HEADLINE2898" class="ladi-element highlight-box">
+              <h3 class="ladi-headline" style="color: #e65100; font-size: 13px; font-weight: bold; text-align: center;">
+                🎓 Học phí siêu ưu đãi <br />
+                💰 Nhà nước hỗ trợ 50 – 70% <br />
+                📜 Theo Nghị định 81 & 97/2023
+              </h3>
+            </div>
+            
           <div id="IMAGE3438" class="ladi-element">
             <div class="ladi-image ladi-transition">
               <div class="ladi-image-background"></div>
             </div>
           </div>
           <a id="BUTTON3440" class="ladi-element" href="#SECTION3815">
-            <div class="ladi-button ladi-transition">
+            <div class="ladi-button ladi-transition" style="position: absolute; top: 30px;">
               <div class="ladi-button-background"></div>
               <div
                 id="BUTTON_TEXT3440"
@@ -13407,7 +13430,7 @@
                 </div>
                 <div id="PARAGRAPH2681" class="ladi-element">
                   <div class="ladi-paragraph ladi-transition">
-                    “Em rất thích học Thầy Nguyễn Ngọc Bảo dạy môn Vật Lý , và Thầy Đoàn Thái Học dạy môn Hoá Học. Thầy Bảo và Thầy Học rất ân cần trong việc giảng dạy cho học sinh, giúp em học môn Lý và Hoá hiểu hơn. 🥰🥰"<br />
+                    “Em rất thích học Thầy Nguyễn Ngọc Bảo dạy môn Vật Lý và Thầy Đoàn Thái Học dạy môn Hoá Học. Thầy Bảo và Thầy Học rất ân cần trong việc giảng dạy cho học sinh, giúp em học môn Lý và Hoá hiểu hơn. 🥰🥰"<br />
                   </div>
                 </div>
                 <div id="BOX3499" class="ladi-element">
@@ -14503,151 +14526,6 @@
       <div id="SECTION2327" class="ladi-section">
         <div class="ladi-section-background"></div>
         <div class="ladi-container">
-          <div id="GROUP3787" class="ladi-element">
-            <div class="ladi-group">
-              <div id="HEADLINE2337" class="ladi-element">
-                <h3 class="ladi-headline ladi-transition">
-                  <span style="font-weight: lighter;">Địa chỉ</span>
-                  <br />
-                </h3>
-              </div>
-              <div id="SHAPE2338" class="ladi-element">
-                <div class="ladi-shape ladi-transition">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 24 24"
-                    fill="rgba(0,0,0,1)"
-                  >
-                    <path
-                      d="M12,2C15.31,2 18,4.66 18,7.95C18,12.41 12,19 12,19C12,19 6,12.41 6,7.95C6,4.66 8.69,2 12,2M12,6A2,2 0 0,0 10,8A2,2 0 0,0 12,10A2,2 0 0,0 14,8A2,2 0 0,0 12,6M20,19C20,21.21 16.42,23 12,23C7.58,23 4,21.21 4,19C4,17.71 5.22,16.56 7.11,15.83L7.75,16.74C6.67,17.19 6,17.81 6,18.5C6,19.88 8.69,21 12,21C15.31,21 18,19.88 18,18.5C18,17.81 17.33,17.19 16.25,16.74L16.89,15.83C18.78,16.56 20,17.71 20,19Z"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-              <div id="HEADLINE2339" class="ladi-element">
-                <h6 class="ladi-headline ladi-transition">
-                  <span style="color: rgb(0, 0, 0)">
-                    <span style="font-weight: lighter; font-style: italic;">Lô 2, Công viên phần mềm
-                      Quang Trung, P. Tân Chánh Hiệp, Q.12, TP.HCM</span><br />
-                  </span>
-                </h6>
-              </div>
-            </div>
-          </div>
-          <div id="IMAGE3813" class="ladi-element">
-            <div class="ladi-image ladi-transition">
-              <div class="ladi-image-background"></div>
-            </div>
-          </div>
-          <div id="IMAGE3814" class="ladi-element">
-            <div class="ladi-image ladi-transition">
-              <div class="ladi-image-background"></div>
-            </div>
-          </div>
-          <div id="HTML_CODE3925" class="ladi-element">
-            <div class="ladi-html-code">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.4696326521853!2d106.62562117480603!3d10.85184028930156!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752a2769eec849%3A0xc623b505cddae0bf!2zVHLGsOG7nW5nIENhbyDEkeG6s25nIFZp4buFbiDEkMO0bmc!5e0!3m2!1svi!2s!4v1740538343265!5m2!1svi!2s"
-                width="100%"
-                height="100%"
-                frameborder="0"
-                style="border: 0"
-                allowfullscreen=""
-                aria-hidden="false"
-                tabindex="0"
-              ></iframe>
-            </div>
-          </div>
-          <div id="GROUP3784" class="ladi-element">
-            <div class="ladi-group">
-              <div id="SHAPE2334" class="ladi-element">
-                <div class="ladi-shape ladi-transition">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="100%"
-                    height="100%"
-                    preserveAspectRatio="none"
-                    viewBox="0 0 1536 1896.0833"
-                    class=""
-                    fill="rgba(255,255,255,1)"
-                  >
-                    <path
-                      d="M768 128q209 0 385.5 103T1433 510.5 1536 896t-103 385.5-279.5 279.5T768 1664t-385.5-103T103 1281.5 0 896t103-385.5T382.5 231 768 128zm274 521q-2 1-9.5 9.5T1019 668q2 0 4.5-5t5-11 3.5-7q6-7 22-15 14-6 52-12 34-8 51 11-2-2 9.5-13t14.5-12q3-2 15-4.5t15-7.5l2-22q-12 1-17.5-7t-6.5-21q0 2-6 8 0-7-4.5-8t-11.5 1-9 1q-10-3-15-7.5t-8-16.5-4-15q-2-5-9.5-10.5T1112 484q-1-2-2.5-5.5t-3-6.5-4-5.5-5.5-2.5-7 5-7.5 10-4.5 5q-3-2-6-1.5t-4.5 1-4.5 3-5 3.5q-3 2-8.5 3t-8.5 2q15-5-1-11-10-4-16-3 9-4 7.5-12t-8.5-14h5q-1-4-8.5-8.5T1002 438t-13-6q-8-5-34-9.5t-33-.5q-5 6-4.5 10.5t4 14T925 459q1 6-5.5 13t-6.5 12q0 7 14 15.5t10 21.5q-3 8-16 16t-16 12q-5 8-1.5 18.5T914 584q2 2 1.5 4t-3.5 4.5-5.5 4-6.5 3.5l-3 2q-11 5-20.5-6T863 570q-7-25-16-30-23-8-29 1-5-13-41-26-25-9-58-4 6-1 0-15-7-15-19-12 3-6 4-17.5t1-13.5q3-13 12-23 1-1 7-8.5t9.5-13.5.5-6q35 4 50-11 5-5 11.5-17t10.5-17q9-6 14-5.5t14.5 5.5 14.5 5q14 1 15.5-11t-7.5-20q12 1 3-17-5-7-8-9-12-4-27 5-8 4 2 8-1-1-9.5 10.5T801 346t-16-5q-1-1-5.5-13.5T770 314q-8 0-16 15 3-8-11-15t-24-8q19-12-8-27-7-4-20.5-5t-19.5 4q-5 7-5.5 11.5t5 8T681 303t11.5 4 8.5 3q14 10 8 14-2 1-8.5 3.5T689 332t-6 4q-3 4 0 14t-2 14q-5-5-9-17.5t-7-16.5q7 9-25 6l-10-1q-4 0-16 2t-20.5 1-13.5-8q-4-8 0-20 1-4 4-2-4-3-11-9.5t-10-8.5q-46 15-94 41 6 1 12-1 5-2 13-6.5t10-5.5q34-14 42-7l5-5q14 16 20 25-7-4-30-1-20 6-22 12 7 12 5 18-4-3-11.5-10T498 339t-15-5q-16 0-22 1-146 80-235 222 7 7 12 8 4 1 5 9t2.5 11 11.5-3q9 8 3 19 1-1 44 27 19 17 21 21 3 11-10 18-1-2-9-9t-9-4q-3 5 .5 18.5T308 685q-7 0-9.5 16t-2.5 35.5-1 23.5l2 1q-3 12 5.5 34.5T324 815q-13 3 20 43 6 8 8 9 3 2 12 7.5t15 10 10 10.5q4 5 10 22.5t14 23.5q-2 6 9.5 20t10.5 23q-1 0-2.5 1t-2.5 1q3 7 15.5 14t15.5 13q1 3 2 10t3 11 8 2q2-20-24-62-15-25-17-29-3-5-5.5-15.5T421 915q2 0 6 1.5t8.5 3.5 7.5 4 2 3q-3 7 2 17.5t12 18.5 17 19 12 13q6 6 14 19.5t0 13.5q9 0 20 10t17 20q5 8 8 26t5 24q2 7 8.5 13.5t12.5 9.5l16 8 13 7q5 2 18.5 10.5T642 1168q10 4 16 4t14.5-2.5 13.5-3.5q15-2 29 15t21 21q36 19 55 11-2 1 .5 7.5t8 15.5 9 14.5 5.5 8.5q5 6 18 15t18 15q6-4 7-9-3 8 7 20t18 10q14-3 14-32-31 15-49-18 0-1-2.5-5.5t-4-8.5-2.5-8.5 0-7.5 5-3q9 0 10-3.5t-2-12.5-4-13q-1-8-11-20t-12-15q-5 9-16 8t-16-9q0 1-1.5 5.5t-1.5 6.5q-13 0-15-1 1-3 2.5-17.5t3.5-22.5q1-4 5.5-12t7.5-14.5 4-12.5-4.5-9.5-17.5-2.5q-19 1-26 20-1 3-3 10.5t-5 11.5-9 7q-7 3-24 2t-24-5q-13-8-22.5-29t-9.5-37q0-10 2.5-26.5t3-25T652 986q3-2 9-9.5t10-10.5q2-1 4.5-1.5t4.5 0 4-1.5 3-6q-1-1-4-3-3-3-4-3 7 3 28.5-1.5T735 951q15 11 22-2 0-1-2.5-9.5T754 926q5 27 29 9 3 3 15.5 5t17.5 5q3 2 7 5.5t5.5 4.5 5-.5 8.5-6.5q10 14 12 24 11 40 19 44 7 3 11 2t4.5-9.5 0-14T887 982l-1-8v-18l-1-8q-15-3-18.5-12t1.5-18.5 15-18.5q1-1 8-3.5t15.5-6.5 12.5-8q21-19 15-35 7 0 11-9-1 0-5-3t-7.5-5-4.5-2q9-5 2-16 5-3 7.5-11t7.5-10q9 12 21 2 7-8 1-16 5-7 20.5-10.5t18.5-9.5q7 2 8-2t1-12 3-12q4-5 15-9t13-5l17-11q3-4 0-4 18 2 31-11 10-11-6-20 3-6-3-9.5t-15-5.5q3-1 11.5-.5t10.5-1.5q15-10-7-16-17-5-43 12zm-163 877q206-36 351-189-3-3-12.5-4.5t-12.5-3.5q-18-7-24-8 1-7-2.5-13t-8-9-12.5-8-11-7q-2-2-7-6t-7-5.5-7.5-4.5-8.5-2-10 1l-3 1q-3 1-5.5 2.5t-5.5 3-4 3 0 2.5q-21-17-36-22-5-1-11-5.5t-10.5-7-10-1.5-11.5 7q-5 5-6 15t-2 13q-7-5 0-17.5t2-18.5q-3-6-10.5-4.5t-12 4.5-11.5 8.5-9 6.5-8.5 5.5-8.5 7.5q-3 4-6 12t-5 11q-2-4-11.5-6.5t-9.5-5.5q2 10 4 35t5 38q7 31-12 48-27 25-29 40-4 22 12 26 0 7-8 20.5t-7 21.5q0 6 2 16z"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-              <div id="HEADLINE2335" class="ladi-element">
-                <h3 class="ladi-headline ladi-transition">
-                  <span style="color: rgb(0, 0, 0)">
-                    Website:&nbsp;<a href="https://www.viendong.edu.vn" style="font-weight: lighter; text-decoration: none; font-style: italic;"
-                      >www.viendong.edu.vn</a
-                    >
-                  </span>
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div id="GROUP3785" class="ladi-element">
-            <div class="ladi-group">
-              <div id="SHAPE2441" class="ladi-element">
-                <div class="ladi-shape ladi-transition">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="100%"
-                    height="100%"
-                    preserveAspectRatio="none"
-                    viewBox="0 0 1536 1896.0833"
-                    fill="rgba(255,255,255,1)"
-                  >
-                    <path
-                      d="M1248 128q119 0 203.5 84.5T1536 416v960q0 119-84.5 203.5T1248 1664h-188v-595h199l30-232h-229V689q0-56 23.5-84t91.5-28l122-1V369q-63-9-178-9-136 0-217.5 80T820 666v171H620v232h200v595H288q-119 0-203.5-84.5T0 1376V416q0-119 84.5-203.5T288 128h960z"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-              <div id="HEADLINE2442" class="ladi-element">
-                <h3 class="ladi-headline ladi-transition">
-                  Fanpage:&nbsp;<a href="https://www.facebook.com/DulichVienDong1"
-                    style="font-weight: lighter; text-decoration: none;  font-style: italic;"
-                    >Cao đẳng Viễn Đông</a
-                  >
-                  <br style="color: rgb(0, 0, 0)" />
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div id="GROUP3782" class="ladi-element">
-            <div class="ladi-group">
-              <div id="SHAPE2331" class="ladi-element">
-                <div class="ladi-shape ladi-transition">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink"
-                    width="100%"
-                    height="100%"
-                    viewBox="0 0 24 24"
-                    fill="rgba(255,255,255,1)"
-                  >
-                    <path
-                      d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"
-                    ></path>
-                  </svg>
-                </div>
-              </div>
-              <div id="HEADLINE2332" class="ladi-element">
-                <h3 class="ladi-headline ladi-transition">
-                  Hotline:&nbsp;<span
-                    style="font-weight: lighter;  font-style: italic;"
-                    >0922334400</span
-                  >
-                </h3>
-              </div>
-            </div>
-          </div>
           <div id="NOTIFY4015" class="ladi-element">
             <div class="ladi-notify ladi-hidden">
               <div class="ladi-notify-image">
@@ -14658,9 +14536,244 @@
               <div class="ladi-notify-time">Nội dung cột [Time]</div>
             </div>
           </div>
-          <div id="HEADLINE4053" class="ladi-element">
-            <img src="./assets/images/logo.svg" />
-          </div>
+
+          <footer id="footer" class="footer-wrapper">
+            <section class="section footer" id="section_957951271">
+              <div class="bg section-bg fill bg-fill bg-loaded bg-loaded"></div>
+    
+              <div class="section-content relative">
+                <div class="row" id="row-238426403">
+                  <div id="col-203838371" class="col medium-3 small-12 large-3">
+                    <div class="col-inner">
+                      <div
+                        class="img has-hover x md-x lg-x y md-y lg-y"
+                        id="image_1698846818"
+                      >
+                        <div class="img-inner dark">
+                          <img
+                            width="1"
+                            height="1"
+                            src="https://www.viendong.edu.vn/wp-content/uploads/2024/03/logo.svg"
+                            class="attachment-large size-large"
+                            alt=""
+                            decoding="async"
+                            loading="lazy"
+                          />
+                        </div>
+                        <iframe
+                          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3918.4696325119257!2d106.6281961!3d10.8518403!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752a2769eec849%3A0xc623b505cddae0bf!2zVHLGsOG7nW5nIENhbyDEkeG6s25nIFZp4buFbiDEkMO0bmc!5e0!3m2!1svi!2s!4v1745295849363!5m2!1svi!2s"
+                          height="200"
+                          style="border: 0; width: 100%; margin-top: 20px"
+                          allowfullscreen=""
+                          loading="lazy"
+                          referrerpolicy="no-referrer-when-downgrade"
+                        ></iframe>
+    
+                        <style>
+                          #image_1698846818 {
+                            width: 100%;
+                          }
+                        </style>
+                      </div>
+                    </div>
+                  </div>
+    
+                  <div id="col-121016399" class="col medium-5 small-12 large-4">
+                    <div class="col-inner">
+                      <div
+                        class="container section-title-container title_footer"
+                        style="margin-bottom: 0px"
+                      >
+                        <h4 class="section-title section-title-normal">
+                          <b></b><span class="section-title-main" style="font-size: 1.125em;">Liên hệ</span
+                          ><b></b>
+                        </h4>
+                      </div>
+    
+                      <div
+                        class="ux-menu stack stack-col justify-start menu_footer" style="margin: 20px 0px;"
+                      >
+                        <div class="ux-menu-link flex menu-item">
+                          <a
+                            class="ux-menu-link__link flex"
+                            href="javascript:void(0)"
+                            style="align-items: flex-start"
+                          >
+                            <img
+                              src="./assets/images/location.png"
+                              alt="location"
+                              width="24"
+                            />
+                            <span class="ux-menu-link__text">
+                              Trường Cao đẳng Viễn Đông, lô 2, đường số 16,
+                              &nbsp;Công viên phần mềm Quang Trung, P.Tân
+                              Chánh Hiệp, Q.12
+                            </span>
+                          </a>
+                        </div>
+    
+                        <div class="ux-menu-link flex menu-item">
+                          <a
+                            class="ux-menu-link__link flex"
+                            href="javascript:void(0)"
+                            style="align-items: center"
+                          >
+                            <img
+                              src="./assets/images/phone.png"
+                              alt="phone"
+                              width="24"
+                            />
+                            <span class="ux-menu-link__text"
+                              >&nbsp; 0922334400 - 02838911111
+                            </span>
+                          </a>
+                        </div>
+    
+                        <div class="ux-menu-link flex menu-item">
+                          <a
+                            class="ux-menu-link__link flex"
+                            href="javascript:void(0)"
+                            style="align-items: center"
+                          >
+                            <img
+                              src="./assets/images/email.png"
+                              alt="email"
+                              width="28"
+                            />
+                            <span class="ux-menu-link__text">
+                              &nbsp;contact@viendong.edu.vn
+                            </span>
+                          </a>
+                        </div>
+                      </div>
+
+                      <style>
+                        .menu_footer {
+                          display: flex;
+                          flex-direction: column;
+                          text-align: left;
+                        }
+
+                        .ux-menu-link {
+                          margin-bottom: 12px;
+                        }
+
+                        .ux-menu-link__link {
+                          display: flex;
+                          text-decoration: none;
+                          color: inherit;
+                        }
+
+                        .ux-menu-link__link img {
+                          margin-right: 10px;
+                          display: inline-block;
+                        }
+
+                        .ux-menu-link__text {
+                          font-size: 15px;
+                          font-weight: 500;
+                          line-height: 1.4;
+                        }
+                      </style>
+                    </div>
+                  </div>
+    
+                  <div id="col-454271038" class="col medium-4 small-12 large-4">
+                    <div class="col-inner">
+                      <div
+                        class="container section-title-container title_footer"
+                        style="margin-bottom: 0px"
+                      >
+                        <h4 class="section-title section-title-normal">
+                          <b></b
+                          ><span class="section-title-main" style="font-size: 1.125em;"
+                            >Theo dõi Cao đẳng Viễn Đông</span
+                          ><b></b>
+                        </h4>
+                      </div>
+    
+                      <div
+                        class="social-icons follow-icons folow_footer"
+                        style="font-size: 75%; margin: 20px 0px 10px"
+                      >
+                        <a
+                          href="https://www.facebook.com/share/18y2dezfWx/"
+                          target="_blank"
+                          data-label="Facebook"
+                          rel="noopener noreferrer nofollow"
+                          class="icon primary button circle facebook tooltip"
+                          title="Follow on Facebook"
+                          aria-label="Follow on Facebook"
+                        >
+                          <img
+                            src="./assets/images/facebook.webp"
+                            alt="facebook"
+                            width="32"
+                          /> </a
+                        ><a
+                          href="https://www.tiktok.com/@caodangviendong?_t=ZS-8vn69jZBcvf&_r=1"
+                          target="_blank"
+                          rel="noopener noreferrer nofollow"
+                          data-label="TikTok"
+                          class="icon primary button circle tiktok tooltip"
+                          title="Follow on TikTok"
+                          aria-label="Follow on TikTok"
+                        >
+                          <img
+                            src="./assets/images/tiktok.webp"
+                            alt="tiktok"
+                            width="32"
+                          /> </a
+                        ><a
+                          href="https://www.youtube.com/@CaodangVienDong-TPHCM"
+                          target="_blank"
+                          rel="noopener noreferrer nofollow"
+                          data-label="YouTube"
+                          class="icon primary button circle youtube tooltip"
+                          title="Follow on YouTube"
+                          aria-label="Follow on YouTube"
+                        >
+                          <img
+                            src="./assets/images/youtube.png"
+                            alt="youtube"
+                            width="32"
+                          />
+                        </a>
+                      </div>
+                    </div>
+                    <div class="col-inner">
+                      <img
+                        src="https://www.viendong.edu.vn/wp-content/uploads/2024/02/qr-1.jpg"
+                        alt=""
+                        width="126"
+                      />
+                      <img
+                        src="https://www.viendong.edu.vn/wp-content/uploads/2024/02/qr-2.jpg"
+                        alt=""
+                        width="126"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+              <style>
+                #section_957951271 {
+                  padding-top: 30px;
+                  padding-bottom: 30px;
+                }
+                #section_957951271 .ux-shape-divider--top svg {
+                  height: 150px;
+                  --divider-top-width: 100%;
+                }
+                #section_957951271 .ux-shape-divider--bottom svg {
+                  height: 150px;
+                  --divider-width: 100%;
+                }
+              </style>
+            </section>
+            <link rel="stylesheet" href="assets/css/flatsome.css">
+          </footer>
         </div>
       </div>
       <div id="SECTION_POPUP" class="ladi-section">
@@ -15417,7 +15530,7 @@
         },
         "VIDEO3051": {
           "a": "video",
-          "ci": "https://www.youtube.com/embed/Y2biZlJeaFA?si=O9UzT3Y8yDBMEzpr",
+          "ci": "https://www.youtube.com/watch?v=VfkqxKUJh3E",
           "ch": "youtube",
           "cg": true
         },
