@@ -9416,7 +9416,6 @@ html {
     transition: height .8s
 }
 
-.stuck .header-inner,
 .stuck .logo,
 .stuck .logo img {
     padding-top: 0;
