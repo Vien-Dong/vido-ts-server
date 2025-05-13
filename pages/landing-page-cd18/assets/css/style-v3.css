@@ -223,7 +223,8 @@ html :where(.is-position-sticky) {
   height: 90px;
 }
 #logo img {
-  max-height: 90px;
+  width: 100%;
+  height: auto;
 }
 #logo {
   width: 400px;
@@ -423,7 +424,7 @@ blockquote,
   border-color: #002147;
 }
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif !important;
 }
 body {
   font-weight: 0;
