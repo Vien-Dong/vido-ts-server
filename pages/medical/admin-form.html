@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Builder</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .question-item {
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 10px;
+        background: #f9f9f9;
+      }
+      .section-item {
+        border: 2px solid #007bff;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 20px;
+        background: #f8f9fa;
+      }
+      .form-preview {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 20px;
+        margin-top: 20px;
+        background: #fff;
+      }
+      .preview-section {
+        border: 1px solid #eee;
+        border-radius: 3px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background: #fafafa;
+      }
+      .btn-group-custom {
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+      }
+      .form-mode-indicator {
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+      .create-mode {
+        background-color: #d1ecf1;
+        border: 1px solid #bee5eb;
+        color: #0c5460;
+      }
+      .edit-mode {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        color: #856404;
+      }
+      .option-item {
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        padding: 10px;
+        margin-bottom: 5px;
+        background: #f8f9fa;
+      }
+      .options-container {
+        max-height: 300px;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <div class="d-flex align-items-center">
+          <a class="navbar-brand" href="/medical">Trang chủ</a>
+          <a class="navbar-brand" href="/medical/mng/ad">Quản lý</a>
+        </div>
+
+        <!-- Nút toggle trên mobile -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Nội dung navbar -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <div class="ms-auto d-flex gap-2 mt-3 mt-lg-0">
+            <button
+              class="btn btn-outline-light btn-sm"
+              onclick="togglePreview()"
+            >
+              Xem trước
+            </button>
+            <button class="btn btn-outline-light btn-sm" onclick="exportForm()">
+              Xuất JSON
+            </button>
+            <button class="btn btn-outline-light btn-sm" onclick="importForm()">
+              Nhập JSON
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <!-- Loading indicator -->
+      <div id="loadingIndicator" class="loading">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Đang tải...</span>
+        </div>
+        <p class="mt-2">Đang tải dữ liệu form...</p>
+      </div>
+
+      <div class="row" id="mainContent">
+        <div class="col-md-12">
+          <!-- Form mode indicator -->
+          <div id="formModeIndicator" class="form-mode-indicator create-mode">
+            <i class="fas fa-plus-circle"></i>
+            <strong>Chế độ tạo mới:</strong> Bạn đang tạo một form mới
+          </div>
+
+          <h1 id="pageTitle">Tạo Form Mới</h1>
+
+          <form id="formBuilder">
+            <div class="mb-3">
+              <label for="title" class="form-label">Tiêu đề Form</label>
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="description" class="form-label">Mô tả</label>
+              <textarea
+                class="form-control"
+                id="description"
+                name="description"
+                rows="3"
+              ></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="category" class="form-label">Danh mục</label>
+              <input
+                type="text"
+                class="form-control"
+                id="category"
+                name="category"
+                placeholder="Ví dụ: Khám tổng quát, Tim mạch, Nhi khoa..."
+              />
+            </div>
+
+            <div id="sectionsContainer">
+              <div
+                class="d-flex justify-content-between align-items-center mb-3"
+              >
+                <h3>Các mục đánh giá</h3>
+                <div class="btn-group-custom d-flex">
+                  <button
+                    type="button"
+                    class="btn btn-primary"
+                    onclick="addSection()"
+                  >
+                    Thêm mục mới
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-3 d-flex flex-wrap gap-2">
+              <button
+                type="button"
+                class="btn btn-success"
+                id="saveBtn"
+                onclick="saveForm()"
+              >
+                Lưu Form
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning"
+                onclick="clearForm()"
+              >
+                Xóa tất cả
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="createNewForm()"
+                id="createNewBtn"
+                style="display: none"
+              >
+                Tạo form mới
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-12">
+          <div id="previewContainer" style="display: none">
+            <h3>Xem trước Form</h3>
+            <div id="formPreview" class="form-preview"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Nhập JSON Form</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <textarea
+              id="importJson"
+              class="form-control"
+              rows="10"
+              placeholder="Dán JSON form vào đây..."
+            ></textarea>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Hủy
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="processImport()"
+            >
+              Nhập
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      let sectionIndex = 0;
+      let currentFormId = null;
+      let isEditMode = false;
+      let formData = {
+        title: "",
+        description: "",
+        category: "",
+        sections: [],
+      };
+
+      // URL parameter handling
+      function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
+
+      function updateUrlParameter(key, value) {
+        const url = new URL(window.location);
+        if (value) {
+          url.searchParams.set(key, value);
+        } else {
+          url.searchParams.delete(key);
+        }
+        window.history.replaceState({}, "", url);
+      }
+
+      // Database simulation functions
+      async function fetchFormFromDatabase(formId) {
+        try {
+          const response = await axios.get(`/api/medical/forms/${formId}`);
+
+          if (response && response.data && response.data.status)
+            return response.data;
+
+          return null;
+        } catch (error) {
+          console.error(
+            "Error fetching forms:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
+      async function saveFormToDatabase(formData, formId = null) {
+        try {
+          const response = await axios.put(
+            `/api/medical/admin/forms/${formId}`,
+            formData
+          );
+
+          if (response && response.data && response.data.status)
+            return response.data;
+
+          return null;
+        } catch (error) {
+          console.error(
+            "Error updating forms:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
+      // UI update functions
+      function updateFormModeIndicator(editMode, formId = null) {
+        const indicator = document.getElementById("formModeIndicator");
+        const pageTitle = document.getElementById("pageTitle");
+        const saveBtn = document.getElementById("saveBtn");
+        const createNewBtn = document.getElementById("createNewBtn");
+
+        if (editMode) {
+          indicator.className = "form-mode-indicator edit-mode";
+          indicator.innerHTML = `
+            <i class="fas fa-edit"></i>
+            <strong>Chế độ chỉnh sửa:</strong> Bạn đang chỉnh sửa form ID: ${formId}
+          `;
+          pageTitle.textContent = "Chỉnh sửa Form";
+          saveBtn.textContent = "Cập nhật Form";
+          createNewBtn.style.display = "inline-block";
+        } else {
+          indicator.className = "form-mode-indicator create-mode";
+          indicator.innerHTML = `
+            <i class="fas fa-plus-circle"></i>
+            <strong>Chế độ tạo mới:</strong> Bạn đang tạo một form mới
+          `;
+          pageTitle.textContent = "Tạo Form Mới";
+          saveBtn.textContent = "Lưu Form";
+          createNewBtn.style.display = "none";
+        }
+      }
+
+      function showLoading(show = true) {
+        const loading = document.getElementById("loadingIndicator");
+        const content = document.getElementById("mainContent");
+
+        if (show) {
+          loading.style.display = "block";
+          content.style.display = "none";
+        } else {
+          loading.style.display = "none";
+          content.style.display = "block";
+        }
+      }
+
+      // Form initialization
+      async function initializeForm() {
+        const formId = getUrlParameter("id");
+
+        if (formId) {
+          // Edit mode
+          try {
+            showLoading(true);
+            const data = await fetchFormFromDatabase(formId);
+
+            if (!data || !data.status) {
+              showToast("Form không tồn tại", "info");
+              showLoading(false);
+              return;
+            }
+
+            currentFormId = formId;
+            isEditMode = true;
+            updateFormModeIndicator(true, formId);
+
+            loadFormData(data.payload);
+            showLoading(false);
+          } catch (error) {
+            showLoading(false);
+            alert("Không thể tải dữ liệu form: " + error.message);
+            // Switch to create mode on error
+            createNewForm();
+          }
+        } else {
+          // Create mode
+          currentFormId = null;
+          isEditMode = false;
+          updateFormModeIndicator(false);
+          addSection(); // Initialize with one section
+        }
+      }
+
+      function createNewForm() {
+        // Clear URL parameter
+        updateUrlParameter("id", null);
+
+        // Reset form state
+        currentFormId = null;
+        isEditMode = false;
+        updateFormModeIndicator(false);
+
+        // Clear and initialize form
+        clearForm();
+        addSection();
+      }
+
+      // Section and question management
+      function addSection() {
+        const container = document.getElementById("sectionsContainer");
+        const sectionHTML = `
+                <div class="section-item" data-section-index="${sectionIndex}">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4>Mục ${sectionIndex + 1}</h4>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeSection(this)">Xóa mục</button>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tiêu đề mục</label>
+                        <input type="text" class="form-control section-title" 
+                               name="sections[${sectionIndex}][title]" 
+                               onchange="updatePreview()" required>
+                    </div>
+                    <div class="questions-container"></div>
+                    <button type="button" class="btn btn-secondary" onclick="addQuestion(this)">Thêm câu hỏi</button>
+                </div>
+            `;
+        container.insertAdjacentHTML("beforeend", sectionHTML);
+        sectionIndex++;
+        updatePreview();
+      }
+
+      function removeSection(button) {
+        button.closest(".section-item").remove();
+        updatePreview();
+      }
+
+      function addQuestion(button) {
+        const section = button.closest(".section-item");
+        const sectionIdx = section.dataset.sectionIndex;
+        const questionsContainer = section.querySelector(
+          ".questions-container"
+        );
+        const questionIdx = questionsContainer.children.length;
+
+        const questionHTML = `
+                <div class="question-item">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6>Câu hỏi ${questionIdx + 1}</h6>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeQuestion(this)">Xóa</button>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="form-label">Loại câu hỏi</label>
+                            <select class="form-select question-type" 
+                                    name="sections[${sectionIdx}][questions][${questionIdx}][type]"
+                                    onchange="toggleOptionsContainer(this); updatePreview()">
+                                <option value="text">Text</option>
+                                <option value="number">Number</option>
+                                <option value="date">Date</option>
+                                <option value="checkbox">Checkbox</option>
+                                <option value="radio">Radio</option>
+                                <option value="dropdown">Dropdown</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <label class="form-label">Nội dung câu hỏi</label>
+                        <textarea class="form-control question-text" 
+                                  name="sections[${sectionIdx}][questions][${questionIdx}][question]" 
+                                  rows="2" onchange="updatePreview()" required></textarea>
+                    </div>
+                    <div class="options-section mt-2" style="display: none;">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="form-label">Các lựa chọn</label>
+                            <button type="button" class="btn btn-primary btn-sm" onclick="addOption(this)">Thêm lựa chọn</button>
+                        </div>
+                        <div class="options-container"></div>
+                    </div>
+                </div>
+            `;
+        questionsContainer.insertAdjacentHTML("beforeend", questionHTML);
+        updatePreview();
+      }
+
+      function removeQuestion(button) {
+        button.closest(".question-item").remove();
+        updatePreview();
+      }
+
+      function toggleOptionsContainer(selectElement) {
+        const questionItem = selectElement.closest(".question-item");
+        const optionsSection = questionItem.querySelector(".options-section");
+        const questionType = selectElement.value;
+
+        if (["checkbox", "radio", "dropdown"].includes(questionType)) {
+          optionsSection.style.display = "block";
+          // Add default option if none exist
+          const optionsContainer =
+            optionsSection.querySelector(".options-container");
+          if (optionsContainer.children.length === 0) {
+            addOption(
+              optionsSection.querySelector('button[onclick*="addOption"]')
+            );
+          }
+        } else {
+          optionsSection.style.display = "none";
+        }
+      }
+
+      function addOption(button) {
+        const optionsContainer = button
+          .closest(".options-section")
+          .querySelector(".options-container");
+        const optionIndex = optionsContainer.children.length;
+
+        const optionHTML = `
+          <div class="option-item">
+            <div class="row align-items-center">
+              <div class="col-md-5">
+                <label class="form-label">Nhãn hiển thị</label>
+                <input type="text" class="form-control option-label" 
+                       placeholder="Ví dụ: Rất tốt" 
+                       onchange="updatePreview()" required>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label">Giá trị</label>
+                <input type="text" class="form-control option-value" 
+                       placeholder="Ví dụ: excellent" 
+                       onchange="updatePreview()" required>
+              </div>
+              <div class="col-md-2">
+                <label class="form-label">Điểm</label>
+                <input type="number" class="form-control option-points" 
+                       value="0" min="0" 
+                       onchange="updatePreview()">
+              </div>
+              <div class="col-md-2">
+                <label class="form-label">&nbsp;</label>
+                <button type="button" class="btn btn-danger btn-sm d-block" onclick="removeOption(this)">Xóa</button>
+              </div>
+            </div>
+          </div>
+        `;
+        optionsContainer.insertAdjacentHTML("beforeend", optionHTML);
+        updatePreview();
+      }
+
+      function removeOption(button) {
+        button.closest(".option-item").remove();
+        updatePreview();
+      }
+
+      // Data collection and management
+      function collectFormData() {
+        const title = document.getElementById("title").value;
+        const description = document.getElementById("description").value;
+        const category = document.getElementById("category").value;
+        const sections = [];
+
+        document.querySelectorAll(".section-item").forEach((sectionEl) => {
+          const sectionTitle = sectionEl.querySelector(".section-title").value;
+          const questions = [];
+
+          sectionEl.querySelectorAll(".question-item").forEach((questionEl) => {
+            const type = questionEl.querySelector(".question-type").value;
+            const question = questionEl.querySelector(".question-text").value;
+            const options = [];
+
+            // Collect options for checkbox, radio, dropdown
+            if (["checkbox", "radio", "dropdown"].includes(type)) {
+              questionEl
+                .querySelectorAll(".option-item")
+                .forEach((optionEl) => {
+                  const label = optionEl.querySelector(".option-label").value;
+                  const value = optionEl.querySelector(".option-value").value;
+                  const points =
+                    parseInt(optionEl.querySelector(".option-points").value) ||
+                    0;
+
+                  if (label.trim() && value.trim()) {
+                    options.push({
+                      label: label.trim(),
+                      value: value.trim(),
+                      points: points,
+                    });
+                  }
+                });
+            }
+
+            questions.push({
+              type,
+              question,
+              options: options.length > 0 ? options : undefined,
+            });
+          });
+
+          sections.push({
+            title: sectionTitle,
+            questions,
+          });
+        });
+
+        return { title, description, category, sections };
+      }
+
+      function loadFormData(data) {
+        // Clear existing form
+        clearForm();
+
+        // Set basic info
+        document.getElementById("title").value = data.title || "";
+        document.getElementById("description").value = data.description || "";
+        document.getElementById("category").value = data.category || "";
+
+        // Add sections
+        if (data.sections && data.sections.length > 0) {
+          data.sections.forEach((section, sIdx) => {
+            addSection();
+
+            const sectionEl = document.querySelector(
+              `[data-section-index="${sIdx}"]`
+            );
+            sectionEl.querySelector(".section-title").value =
+              section.title || "";
+
+            // Add questions
+            if (section.questions && section.questions.length > 0) {
+              section.questions.forEach((question, qIdx) => {
+                const addBtn = sectionEl.querySelector(
+                  'button[onclick*="addQuestion"]'
+                );
+                addQuestion(addBtn);
+
+                const questionEl =
+                  sectionEl.querySelectorAll(".question-item")[qIdx];
+                const typeSelect = questionEl.querySelector(".question-type");
+
+                typeSelect.value = question.type || "text";
+                questionEl.querySelector(".question-text").value =
+                  question.question || "";
+
+                // Trigger options container display
+                toggleOptionsContainer(typeSelect);
+
+                // Add options if they exist
+                if (question.options && question.options.length > 0) {
+                  const optionsContainer =
+                    questionEl.querySelector(".options-container");
+                  // Clear default option
+                  optionsContainer.innerHTML = "";
+
+                  question.options.forEach((option) => {
+                    const addOptionBtn = questionEl.querySelector(
+                      'button[onclick*="addOption"]'
+                    );
+                    addOption(addOptionBtn);
+
+                    const lastOption = optionsContainer.lastElementChild;
+                    lastOption.querySelector(".option-label").value =
+                      option.label || "";
+                    lastOption.querySelector(".option-value").value =
+                      option.value || "";
+                    lastOption.querySelector(".option-points").value =
+                      option.points || 0;
+                  });
+                }
+              });
+            }
+          });
+        }
+
+        updatePreview();
+      }
+
+      // Form operations
+      async function saveForm() {
+        const formData = collectFormData();
+
+        if (!formData.title.trim()) {
+          alert("Vui lòng nhập tiêu đề form!");
+          return;
+        }
+
+        // Validate that all questions have content
+        let hasError = false;
+        formData.sections.forEach((section, sIdx) => {
+          section.questions.forEach((question, qIdx) => {
+            if (!question.question.trim()) {
+              alert(
+                `Vui lòng nhập nội dung cho câu hỏi ${qIdx + 1} trong mục ${
+                  sIdx + 1
+                }!`
+              );
+              hasError = true;
+              return;
+            }
+
+            // Validate options for multi-choice questions
+            if (["checkbox", "radio", "dropdown"].includes(question.type)) {
+              if (!question.options || question.options.length === 0) {
+                alert(
+                  `Vui lòng thêm ít nhất một lựa chọn cho câu hỏi "${question.question}"!`
+                );
+                hasError = true;
+                return;
+              }
+            }
+          });
+        });
+
+        if (hasError) return;
+
+        try {
+          // Show loading state
+          const saveBtn = document.getElementById("saveBtn");
+          const originalText = saveBtn.textContent;
+          saveBtn.disabled = true;
+          saveBtn.textContent = "Đang lưu...";
+
+          const result = await saveFormToDatabase(formData, currentFormId);
+
+          if (result && result.status) {
+            alert(result.message);
+            window.location.href = "/medical/mng/ad";
+          } else {
+            alert("Có lỗi khi lưu form!");
+          }
+        } catch (error) {
+          alert("Lỗi khi lưu form: " + error.message);
+        } finally {
+          // Reset button state
+          const saveBtn = document.getElementById("saveBtn");
+          saveBtn.disabled = false;
+          saveBtn.textContent = isEditMode ? "Cập nhật Form" : "Lưu Form";
+        }
+      }
+
+      function clearForm() {
+        document.getElementById("title").value = "";
+        document.getElementById("description").value = "";
+        document.getElementById("category").value = "";
+        document.getElementById("sectionsContainer").innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3>Các mục đánh giá</h3>
+                    <div class="btn-group-custom d-flex">
+                        <button type="button" class="btn btn-primary" onclick="addSection()">Thêm mục mới</button>
+                    </div>
+                </div>
+            `;
+        sectionIndex = 0;
+        updatePreview();
+      }
+
+      // Preview functionality
+      function updatePreview() {
+        const formData = collectFormData();
+        const previewContainer = document.getElementById("formPreview");
+
+        let previewHTML = `
+                <h4>${formData.title || "Tiêu đề form"}</h4>
+                <p class="text-muted">${
+                  formData.description || "Mô tả form"
+                }</p>
+                ${
+                  formData.category
+                    ? `<p class="text-info"><strong>Danh mục:</strong> ${formData.category}</p>`
+                    : ""
+                }
+            `;
+
+        formData.sections.forEach((section, sIdx) => {
+          previewHTML += `
+                    <div class="preview-section">
+                        <h5>${section.title || `Mục ${sIdx + 1}`}</h5>
+                `;
+
+          section.questions.forEach((question, qIdx) => {
+            previewHTML += `<div class="mb-3">`;
+            previewHTML += `<label class="form-label"><strong>${
+              question.question || `Câu hỏi ${qIdx + 1}`
+            }</strong></label>`;
+
+            if (question.type === "text") {
+              previewHTML += `<input type="text" class="form-control" placeholder="Nhập câu trả lời...">`;
+            } else if (question.type === "number") {
+              previewHTML += `<input type="number" class="form-control" placeholder="Nhập số...">`;
+            } else if (question.type === "date") {
+              previewHTML += `<input type="date" class="form-control">`;
+            } else if (question.type === "dropdown") {
+              previewHTML += `<select class="form-select">`;
+              previewHTML += `<option value="">Chọn...</option>`;
+              if (question.options) {
+                question.options.forEach((option) => {
+                  previewHTML += `<option value="${option.value}">${
+                    option.label
+                  } ${
+                    option.points > 0 ? `(${option.points} điểm)` : ""
+                  }</option>`;
+                });
+              }
+              previewHTML += `</select>`;
+            } else if (question.options && question.options.length > 0) {
+              question.options.forEach((option, optIdx) => {
+                const inputType =
+                  question.type === "checkbox" ? "checkbox" : "radio";
+                const name =
+                  question.type === "radio"
+                    ? `q_${sIdx}_${qIdx}`
+                    : `q_${sIdx}_${qIdx}_${optIdx}`;
+                previewHTML += `
+                                <div class="form-check">
+                                    <input class="form-check-input" type="${inputType}" name="${name}" id="${name}" value="${
+                  option.value
+                }">
+                                    <label class="form-check-label" for="${name}">
+                                        ${option.label} ${
+                  option.points > 0
+                    ? `<span class="badge bg-primary">${option.points} điểm</span>`
+                    : ""
+                }
+                                    </label>
+                                </div>
+                            `;
+              });
+            }
+            previewHTML += `</div>`;
+          });
+
+          previewHTML += `</div>`;
+        });
+
+        previewContainer.innerHTML = previewHTML;
+      }
+
+      function togglePreview() {
+        const container = document.getElementById("previewContainer");
+        if (container.style.display === "none") {
+          container.style.display = "block";
+          updatePreview();
+        } else {
+          container.style.display = "none";
+        }
+      }
+
+      // Export/Import functionality
+      function exportForm() {
+        const formData = collectFormData();
+        const json = JSON.stringify(formData, null, 2);
+
+        const blob = new Blob([json], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `form_${currentFormId || Date.now()}.json`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function importForm() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("importModal")
+        );
+        modal.show();
+      }
+
+      function processImport() {
+        const jsonText = document.getElementById("importJson").value.trim();
+
+        try {
+          const formData = JSON.parse(jsonText);
+          loadFormData(formData);
+
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById("importModal")
+          );
+          modal.hide();
+
+          alert("Form đã được nhập thành công!");
+        } catch (error) {
+          alert("JSON không hợp lệ. Vui lòng kiểm tra lại!");
+        }
+      }
+
+      // Event listeners
+      document.getElementById("title").addEventListener("input", updatePreview);
+      document
+        .getElementById("description")
+        .addEventListener("input", updatePreview);
+      document
+        .getElementById("category")
+        .addEventListener("input", updatePreview);
+
+      // Initialize form when page loads
+      window.addEventListener("load", function () {
+        initializeForm();
+      });
+
+      function showToast(message, type = "info") {
+        // Create toast element
+        const toastHtml = `
+                <div class="toast align-items-center text-white bg-${
+                  type === "success" ? "success" : "info"
+                } border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            ${message}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            `;
+
+        // Create toast container if it doesn't exist
+        let toastContainer = document.getElementById("toastContainer");
+        if (!toastContainer) {
+          toastContainer = document.createElement("div");
+          toastContainer.id = "toastContainer";
+          toastContainer.className =
+            "toast-container position-fixed bottom-0 end-0 p-3";
+          document.body.appendChild(toastContainer);
+        }
+
+        // Add toast to container
+        toastContainer.insertAdjacentHTML("beforeend", toastHtml);
+
+        // Initialize and show toast
+        const toastElement = toastContainer.lastElementChild;
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+
+        // Remove toast element after it's hidden
+        toastElement.addEventListener("hidden.bs.toast", () => {
+          toastElement.remove();
+        });
+      }
+    </script>
+  </body>
+</html>
