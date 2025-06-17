@@ -113,7 +113,9 @@
         <div class="collapse navbar-collapse" id="navbarMedical">
           <div class="navbar-nav ms-auto">
             <a class="nav-link text-white" href="/medical">Trang chủ</a>
-            <a class="nav-link text-white" href="/medical/patient/search">Tra cứu</a>
+            <a class="nav-link text-white" href="/medical/patient/search"
+              >Tra cứu</a
+            >
           </div>
         </div>
       </div>
@@ -408,7 +410,9 @@
           section.questions.forEach((question, questionIndex) => {
             const questionId = `section_${sectionIndex}_question_${questionIndex}`;
             sectionHTML += `<div class="question-item">`;
-            sectionHTML += `<label class="form-label fw-bold">${question.question}</label>`;
+            sectionHTML += question.image
+              ? `<img class="w-full" width="100%" src=${question.image} alt="" />`
+              : `<label class="form-label fw-bold">${question.question}</label>`;
             sectionHTML += `<div class="mt-2">`;
 
             switch (question.type) {
