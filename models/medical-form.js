@@ -9,6 +9,7 @@ const medicalFormSchema = new mongoose.Schema({
         questions: [{
             type: { type: String, enum: ['checkbox', 'radio', 'text', 'number', 'date', 'dropdown'] },
             question: String,
+            image: String,
             options: [{
                 label: String,
                 value: String,
