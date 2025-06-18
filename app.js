@@ -49,6 +49,7 @@ app.use('/api/book', require("./routes/api/book"));
 app.use('/api/diploma', require("./routes/api/diploma"));
 app.use('/api/check', require("./routes/api/check"));
 app.use('/api/medical', require("./routes/api/medical"));
+app.use('/api/crawler', require("./routes/api/crawler"));
 
 app.get('/delete-account', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/index.html'));
@@ -95,6 +96,12 @@ app.get('/medical/patient/form', function (req, res) {
 app.get('/medical/patient/search', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/medical/search.html'));
 });
+app.get('/shs-ges', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/admission-result/graduation.html'));
+});
+app.get('/jhs-ges', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/admission-result/highschool.html'));
+});
 app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/lucky'));
 app.use(express.static(__dirname + '/pages/landing-page'));
@@ -105,6 +112,7 @@ app.use(express.static(__dirname + '/pages/career'));
 app.use(express.static(__dirname + '/pages/management'));
 app.use(express.static(__dirname + '/pages/library'));
 app.use(express.static(__dirname + '/pages/medical'));
+app.use(express.static(__dirname + '/pages/admission-result'));
 app.use(express.static(path.join(__dirname, 'pages')));
 
 const server = app.listen(port, () => {
