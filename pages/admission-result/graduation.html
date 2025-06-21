@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tra Cứu Điểm Thi THPT 2024</title>
+    <title>Tra Cứu Điểm Thi THPT 2025</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
@@ -268,7 +268,7 @@
       <!-- Home Page -->
       <div id="homePage">
         <br />
-        <h2>Tra Cứu Điểm Thi THPT năm 2024</h2>
+        <h2>Tra Cứu Điểm Thi THPT năm <span id="year"></span></h2>
 
         <form id="examForm" class="was-validated">
           <div class="form-group">
@@ -301,7 +301,7 @@
 
       <!-- Result Page -->
       <div id="resultPage" class="hidden">
-        <h2 class="mb-5">Kết Quả Tra Cứu Điểm Thi THPT năm 2024</h2>
+        <h2 class="mb-5">Kết Quả Tra Cứu Điểm Thi THPT năm 2025</h2>
 
         <div class="result-section">
           <div class="resultSearch__left">
@@ -389,6 +389,9 @@
       const studentIdInput = document.getElementById("studentId");
       const displayStudentId = document.getElementById("displayStudentId");
       const resultsBody = document.getElementById("resultsBody");
+
+      const yearSpan = document.getElementById("year");
+      yearSpan.innerText = new Date().getFullYear();
 
       // Form submission handler
       examForm.addEventListener("submit", async function (e) {

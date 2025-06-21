@@ -319,7 +319,7 @@
 <body>
     <div class="container">
         <br>
-        <h2>Tra Cứu Điểm Thi lớp 10 năm 2024</h2>
+        <h2>Tra Cứu Điểm Thi lớp 10 năm <span id="year"></span></h2>
 
         <form id="searchForm">
             <div class="form-group">
@@ -563,6 +563,9 @@
 
             return isValid;
         }
+
+        const yearSpan = document.getElementById("year");
+        yearSpan.innerText = new Date().getFullYear()
 
         // Search function
         async function getResult(e) {
