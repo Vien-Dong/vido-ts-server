@@ -584,7 +584,7 @@
             resultsDiv.style.display = 'none';
 
             const toastId = toast.loading('Vui lòng chờ...');
-            const searchUrl = `/api/crawler/crawl/highschool?name=${encodeURIComponent(name)}&sbd=${encodeURIComponent(id)}&birth=${encodeURIComponent(birth)}`;
+            const searchUrl = `/api/crawler/crawl-highschool?name=${encodeURIComponent(name)}&sbd=${encodeURIComponent(id)}&birth=${encodeURIComponent(birth)}`;
 
             try {
                 const response = await axios.get(searchUrl);
