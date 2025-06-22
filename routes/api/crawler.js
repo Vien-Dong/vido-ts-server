@@ -37,14 +37,13 @@ router.get('/crawl/:id', async (req, res) => {
     return res.json(list);
 });
 
-router.get('/crawl/highschool', async (req, res) => {
+router.get('/crawl-highschool', async (req, res) => {
     const { name, sbd, birth } = req.query;
 
     const list = [];
 
     try {
-        const url = `https://vietnamnet.vn/newsapi-edu/EducationStudentScore/CheckCandidateNumber?ComponentId=COMPONENT002297&PageId=95be1729ac2745ba9e873ef1f8f66254&birthDate=${encodeURIComponent(birth)}&fullName=${encodeURIComponent(name)}&sbd=${encodeURIComponent(sbd)}&type=1&year=2024`;
-
+        const url = `https://vietnamnet.vn/newsapi-edu/EducationStudentScore/CheckCandidateNumber?ComponentId=COMPONENT002297&PageId=95be1729ac2745ba9e873ef1f8f66254&birthDate=${encodeURIComponent(birth)}&fullName=${encodeURIComponent(name)}&sbd=${encodeURIComponent(sbd)}&type=1&year=2025`;
         const response = await axios.get(url);
         return res.json(response.data);
     } catch (error) {
