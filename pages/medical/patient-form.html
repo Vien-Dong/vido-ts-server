@@ -261,6 +261,11 @@
             <h2 class="h4 mb-4">II. PHẦN LƯỢNG GIÁ</h2>
             <div id="dynamicSections"></div>
 
+            <div class="assessment-section">
+              <h3 class="h5 mb-4 text-danger">* Lưu ý</h3>
+              <p id="formNote"></p>
+            </div>
+
             <!-- Result Section -->
             <div class="assessment-section">
               <h3 class="h5 mb-4">KẾT QUẢ</h3>
@@ -352,6 +357,7 @@
       let currentScore = 0;
       let data = null;
       let formId = null;
+      let question = null;
 
       // Get form ID from URL parameters
       function getFormIdFromUrl() {
@@ -602,14 +608,12 @@
       // Get score interpretation (customize based on your needs)
       function getScoreInterpretation(score) {
         // This is a generic interpretation - you should customize based on your form type
-        if (score >= 80) {
-          return "Mức độ hoạt động tốt - Độc lập cao";
-        } else if (score >= 60) {
-          return "Mức độ hoạt động trung bình - Cần hỗ trợ ít";
-        } else if (score >= 40) {
-          return "Mức độ hoạt động hạn chế - Cần hỗ trợ nhiều";
+        if (score >= question?.standardPoint?.value) {
+          return (
+            question?.standardPoint?.greaterMessage ?? "Không có lời khuyên"
+          );
         } else {
-          return "Cần hỗ trợ toàn diện - Phụ thuộc cao";
+          return question?.standardPoint?.lessMessage ?? "Không có lời khuyên";
         }
       }
 
@@ -619,6 +623,13 @@
         overlay.style.display = "flex";
 
         const form = document.getElementById("patientForm");
+
+        if (!form.checkValidity()) {
+          alert("Vui lòng nhập đầy đủ thông tin.");
+          overlay.style.display = "none";
+          return;
+        }
+
         const formDataObj = new FormData(form);
 
         // Convert FormData to regular object
@@ -749,6 +760,7 @@
 
           if (data && data.status) {
             const formData = data.payload;
+            question = formData;
             // Update form title and description
             document.getElementById("formTitle").textContent = formData.title;
             document.getElementById("formDescription").textContent =
@@ -756,6 +768,7 @@
             document.getElementById(
               "resultTitle"
             ).textContent = `Tổng điểm ${formData.title}`;
+            document.getElementById("formNote").textContent = formData.note;
 
             // Render dynamic sections
             renderFormSections(formData.sections);

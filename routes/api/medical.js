@@ -132,7 +132,8 @@ router.post('/admin/forms', upload.array('questionImages', 20), async (req, res)
                 description: req.body.description || null,
                 category: req.body.category,
                 createdAt: req.body.createdAt || new Date(),
-                sections: [] // Initialize with empty sections array
+                sections: [], // Initialize with empty sections array,
+                note: req.body.note || null
             };
         }
 

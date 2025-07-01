@@ -17,7 +17,18 @@ const medicalFormSchema = new mongoose.Schema({
             }]
         }]
     }],
-    createdAt: { type: Date, default: Date.now }
+    // criteria: [{
+    //     min: Number,
+    //     max: Number,
+    //     message: String
+    // }],
+    standardPoint: {
+        value: { type: Number, required: true },
+        lessMessage: String,
+        greaterMessage: String
+    },
+    createdAt: { type: Date, default: Date.now },
+    note: String
 });
 
 const MedicalForm = mongoose.model("MedicalForm", medicalFormSchema);
