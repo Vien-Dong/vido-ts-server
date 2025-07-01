@@ -257,7 +257,8 @@ router.post('/forms/:id/submit', async (req, res) => {
             salaryDate: req.body.salaryDate,
             salaryTime: req.body.salaryTime,
             responses: req.body.responses,
-            totalScore: req.body.totalScore
+            totalScore: req.body.totalScore,
+            advice: req.body.advice
         });
 
         await patientResponse.save();

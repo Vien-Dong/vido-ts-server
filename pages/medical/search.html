@@ -765,6 +765,7 @@
             <div class="score-display">
               <div class="score-number" id="modalTotalScore">85</div>
               <div class="score-label">Tổng điểm đánh giá</div>
+              <div id="advice" style="margin-top: 5px; font-size: 13px;"></div>
             </div>
 
             <div class="info-grid">
@@ -1125,6 +1126,7 @@
             : form.status === "Pending Review"
             ? "Chờ xem xét"
             : "Nháp";
+        document.getElementById("advice").textContent = `Kết quả: ${form.advice}` ?? "";
 
         // Show modal
         const modal = new bootstrap.Modal(

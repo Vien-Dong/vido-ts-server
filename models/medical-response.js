@@ -17,6 +17,7 @@ const medicalResponseSchema = new mongoose.Schema({
         points: Number
     }],
     totalScore: Number,
+    advice: String,
     submittedAt: { type: Date, default: Date.now }
 });
 

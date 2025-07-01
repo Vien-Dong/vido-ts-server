@@ -646,6 +646,7 @@
           salaryTime: formDataObj.get("assessmentTime"),
           responses: {},
           totalScore: currentScore,
+          advice: getScoreInterpretation(currentScore)
         };
 
         const responsesMap = new Map();
