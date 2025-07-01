@@ -410,6 +410,53 @@
               ></textarea>
             </div>
 
+            <div class="mb-4">
+              <label for="note" class="form-label fw-bold">
+                <i class="fas fa-align-left me-2"></i>Lưu ý
+              </label>
+              <textarea
+                class="form-control"
+                id="note"
+                name="note"
+                rows="3"
+                placeholder="Nhập lưu ý cho người dùng biết..."
+              ></textarea>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold">
+                <i class="fas fa-feather-pointed me-2"></i>Điểm tiêu chuẩn *
+              </label>
+              <div class="row m-0 gap-3">
+                <input
+                  type="text"
+                  class="form-control col"
+                  name="standard"
+                  id="standard"
+                  placeholder="Nhập điểm tiêu chuẩn..."
+                  required
+                />
+
+                <input
+                  type="text"
+                  class="form-control col"
+                  name="minstandard"
+                  id="minstandard"
+                  placeholder="Khi nhỏ hơn..."
+                  required
+                />
+
+                <input
+                  type="text"
+                  class="form-control col"
+                  name="maxstandard"
+                  id="maxstandard"
+                  placeholder="Khi lớn hơn..."
+                  required
+                />
+              </div>
+            </div>
+
             <!-- Sections container -->
             <div id="sectionsContainer">
               <div
@@ -533,6 +580,7 @@
         description: "",
         category: "",
         sections: [],
+        note: "",
       };
 
       // Utility functions
@@ -963,6 +1011,12 @@
         const formData = {
           title: form.querySelector("#title").value,
           description: form.querySelector("#description").value,
+          note: form.querySelector("#note").value,
+          standardPoint: {
+            value: form.querySelector("#standard").value,
+            lessMessage: form.querySelector("#minstandard").value,
+            greaterMessage: form.querySelector("#maxstandard").value
+          },
           category: form.querySelector("#category").value,
           sections: [],
         };
@@ -1139,6 +1193,13 @@
 
           previewHTML += `</div>`;
         });
+
+        previewHTML += `
+                <div class="mb-4">
+                  <p class="text-danger">* Lưu ý</p>
+                  ${formData.note ? `<p class="mb-4">${formData.note}</p>` : ""}
+                </div>
+              `;
 
         previewContainer.innerHTML = previewHTML;
       }
@@ -1385,6 +1446,10 @@
         document.getElementById("title").value = data.title || "";
         document.getElementById("description").value = data.description || "";
         document.getElementById("category").value = data.category || "";
+        document.getElementById("note").value = data.note || "";
+        document.getElementById("standard").value = data.standardPoint?.value || "";
+        document.getElementById("minstandard").value = data.standardPoint?.lessMessage || "";
+        document.getElementById("maxstandard").value = data.standardPoint?.greaterMessage || "";
 
         // Load sections
         if (data.sections && data.sections.length > 0) {
