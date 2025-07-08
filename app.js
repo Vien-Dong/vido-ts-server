@@ -87,6 +87,15 @@ app.get('/medical', function (req, res) {
 app.get('/medical/mng/ad', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/medical/admin.html'));
 });
+app.get('/medical/mng/ad/blog', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/blog-manager.html'));
+});
+app.get('/medical/mng/ad/blog/detail', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/blog-detail.html'));
+});
+app.get('/medical/mng/ad/category', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/category-manager.html'));
+});
 app.get('/medical/mng/ad/form', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/medical/admin-form.html'));
 });
@@ -95,6 +104,9 @@ app.get('/medical/patient/form', function (req, res) {
 });
 app.get('/medical/patient/search', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/medical/search.html'));
+});
+app.get('/medical/blog', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/blog.html'));
 });
 app.get('/shs-ges', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/admission-result/graduation.html'));

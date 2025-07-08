@@ -655,80 +655,7 @@
     <section class="features-section" id="features">
       <div class="container">
         <h2 class="section-title fade-in">Tính năng vượt trội</h2>
-        <div class="row">
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="feature-card fade-in">
-              <div class="feature-icon">
-                <i class="fas fa-user-md"></i>
-              </div>
-              <h5 class="text-center mb-3">Thang điểm hệ thần kinh</h5>
-              <p class="text-center text-muted">
-                Hệ thống đánh giá đa chiều với các thang điểm chuẩn quốc tế, hỗ
-                trợ chẩn đoán chính xác và theo dõi tiến trình điều trị.
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="feature-card fade-in">
-              <div class="feature-icon">
-                <i class="fas fa-chart-line"></i>
-              </div>
-              <h5 class="text-center mb-3">Thang điểm hệ tuần hoàn - hô hấp</h5>
-              <p class="text-center text-muted">
-                Tạo báo cáo tự động với phân tích chi tiết, biểu đồ trực quan và
-                khuyến nghị điều trị cá nhân hóa.
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="feature-card fade-in">
-              <div class="feature-icon">
-                <i class="fas fa-cogs"></i>
-              </div>
-              <h5 class="text-center mb-3">Thang điểm đánh giá đau</h5>
-              <p class="text-center text-muted">
-                Tạo và tùy chỉnh các form đánh giá một cách dễ dàng, phù hợp với
-                mọi chuyên khoa y tế.
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="feature-card fade-in">
-              <div class="feature-icon">
-                <i class="fas fa-shield-alt"></i>
-              </div>
-              <h5 class="text-center mb-3">Thang điểm đánh giá các vấn đề về chăm sóc</h5>
-              <p class="text-center text-muted">
-                Mã hóa dữ liệu end-to-end, tuân thủ chuẩn HIPAA và các quy định
-                bảo mật y tế quốc tế.
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="feature-card fade-in">
-              <div class="feature-icon">
-                <i class="fas fa-mobile-alt"></i>
-              </div>
-              <h5 class="text-center mb-3">Các chỉ số xét nghiệm cận lâm sàng</h5>
-              <p class="text-center text-muted">
-                Tương thích hoàn hảo trên mọi thiết bị - máy tính, tablet, điện
-                thoại với giao diện responsive hiện đại.
-              </p>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="feature-card fade-in">
-              <div class="feature-icon">
-                <i class="fas fa-cloud"></i>
-              </div>
-              <h5 class="text-center mb-3">Câu hỏi lượng giá lâm sàn</h5>
-              <p class="text-center text-muted">
-                Lưu trữ và đồng bộ dữ liệu trên cloud với khả năng truy cập mọi
-                lúc, mọi nơi một cách an toàn.
-              </p>
-            </div>
-          </div>
-        </div>
+        <div class="row" id="categoriesContainer"></div>
       </div>
     </section>
 
@@ -874,6 +801,21 @@
         }
       }
 
+      async function getCategories() {
+        try {
+          const response = await axios.get("/api/medical/categories");
+          if (response && response.data && response.data.status)
+            return response.data;
+          return null;
+        } catch (error) {
+          console.error(
+            "Error fetching categories:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
       // Populate Dropdowns
       function populateDropdowns(forms) {
         const navDropdown = document.getElementById("navFormsDropdown");
@@ -967,6 +909,39 @@
         }
       }
 
+      function categoriesSection(categories) {
+        const formsContainer = document.getElementById("categoriesContainer");
+        if (categories.length > 0) {
+          categories.forEach((category, index) => {
+            const formCard = document.createElement("div");
+            formCard.className = "col-lg-4 col-md-6 mb-4";
+            formCard.innerHTML = `
+              <div class="feature-card fade-in">
+                  ${
+                    category.type === "blog" ?
+                    `<a href="/medical/blog?id=${category._id}&title=${category.title}" class="text-decoration-none text-dark">
+                      <div class="feature-icon">
+                        <i class="${category.iconUrl}"></i>
+                      </div>
+                      <h5 class="text-center mb-3">${category.title}</h5>
+                      <p class="text-center text-muted">${category.description}</p>
+                    </a>`
+                    :
+                    `<div class="text-decoration-none text-dark">
+                      <div class="feature-icon">
+                        <i class="${category.iconUrl}"></i>
+                      </div>
+                      <h5 class="text-center mb-3">${category.title}</h5>
+                      <p class="text-center text-muted">${category.description}</p>
+                    </div>`
+                  }
+              </div>
+            `;
+            formsContainer.appendChild(formCard);
+          });
+        }
+      }
+
       // Utility Functions
       function startAssessment(formId) {
         window.location.href = `/medical/patient/form?id=${formId}`;
@@ -1029,11 +1004,19 @@
 
         try {
           // Fetch forms data
-          const data = await getForms();
+          const [data, categoryData] = await Promise.all([
+            getForms(),
+            getCategories()
+          ]);
 
           if (data && data.status) {
             populateDropdowns(data.payload);
             populateFormsSection(data.payload);
+          }
+
+          if (categoryData && categoryData.status) {
+            console.log(categoryData);
+            categoriesSection(categoryData.payload);
           }
 
           // Initialize animations and effects
