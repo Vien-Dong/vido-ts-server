@@ -4,6 +4,8 @@ const MedicalResponse = require("../../models/medical-response");
 const mongoose = require("mongoose");
 const upload = require('../../middleware/upload');
 const cloudinary = require('../../config/cloudinary');
+const MedicalCategory = require("../../models/medical-category");
+const MedicalBlog = require("../../models/medical-blog");
 
 const router = express.Router();
 
@@ -306,6 +308,278 @@ router.get('/responses', async (req, res) => {
         res.status(200).send({
             status: false,
             message: "Lấy kết quả thất bại",
+            payload: error.message
+        });
+    }
+});
+
+router.get('/category/:id', async (req, res) => {
+    try {
+        const categoryId = req.params.id;
+        const category = await MedicalCategory.findById(categoryId);
+
+        res.status(200).send({
+            status: true,
+            message: "Lấy danh mục thành công",
+            payload: category
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            message: "Lấy danh mục thất bại",
+            payload: {}
+        });
+    }
+});
+
+router.get('/categories', async (req, res) => {
+    try {
+        const forms = await MedicalCategory.find().sort({ createdAt: -1 });
+        res.status(200).send({
+            status: true,
+            message: "Lấy danh sách danh mục thành công",
+            payload: forms
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            message: "Lấy danh sách danh mục thất bại",
+            payload: []
+        });
+    }
+});
+
+router.post('/admin/categories', async (req, res) => {
+    try {
+        let categoryData;
+
+        categoryData = {
+            title: req.body.title,
+            description: req.body.description || null,
+            url: req.body.url,
+            iconUrl: req.body.iconUrl,
+            type: req.body.type,
+            createdAt: req.body.createdAt || new Date(),
+        };
+
+        const category = new MedicalCategory(categoryData);
+        await category.save();
+
+        res.status(200).send({
+            status: true,
+            message: "Tạo danh mục thành công",
+            payload: category
+        });
+    } catch (error) {
+        console.error('Error creating category:', error);
+        res.status(400).send({
+            status: false,
+            message: "Tạo danh mục thất bại",
+            payload: error.message
+        });
+    }
+});
+
+// Updated route handler
+router.put('/admin/categories/:id', async (req, res) => {
+    try {
+        const categoryId = req.params.id;
+
+        // Process the category data and handle base64 images
+        const existingCategory = await MedicalCategory.findById(categoryId);
+
+        if (!existingCategory) throw new Error("Danh mục không tồn tại");
+
+        // Update the category in database
+        const updatedCategory = await MedicalCategory.findByIdAndUpdate(
+            categoryId,
+            req.body,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedCategory) {
+            return res.status(404).send({
+                status: false,
+                message: "Danh mục không tồn tại",
+                payload: null
+            });
+        }
+
+        res.status(200).send({
+            status: true,
+            message: "Cập nhật danh mục thành công",
+            payload: categoryId
+        });
+    } catch (error) {
+        console.error('Error updating category:', error);
+        res.status(400).send({
+            status: false,
+            message: "Cập nhật danh mục thất bại",
+            payload: error.message
+        });
+    }
+});
+
+router.delete('/admin/categories/:id', async (req, res) => {
+    try {
+        await MedicalCategory.findByIdAndDelete(req.params.id);
+        res.status(200).send({
+            status: true,
+            message: "Xóa danh mục thành công",
+            payload: req.params.id
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            message: "Xóa danh mục thất bại",
+            payload: error.message
+        });
+    }
+});
+
+router.get('/blogs/:id', async (req, res) => {
+    try {
+        const categoryId = req.params.id;
+        const blogs = await MedicalBlog.find({
+            categoryId
+        }).sort({ createdAt: -1 });
+
+        res.status(200).send({
+            status: true,
+            message: "Lấy danh sách bài viết thành công",
+            payload: blogs
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            message: "Lấy danh sách bài viết thất bại",
+            payload: []
+        });
+    }
+});
+
+router.get('/blog/:id', async (req, res) => {
+    try {
+        const blogId = req.params.id;
+        const blog = await MedicalBlog.findById(blogId);
+
+        res.status(200).send({
+            status: true,
+            message: "Lấy bài viết thành công",
+            payload: blog
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            message: "Lấy bài viết thất bại",
+            payload: {}
+        });
+    }
+});
+
+router.get('/admin/blogs', async (req, res) => {
+    try {
+        const blogs = await MedicalBlog.find().sort({ createdAt: -1 });
+
+        res.status(200).send({
+            status: true,
+            message: "Lấy danh sách bài viết thành công",
+            payload: blogs
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            message: "Lấy danh sách bài viết thất bại",
+            payload: []
+        });
+    }
+});
+
+
+router.post('/admin/blogs', async (req, res) => {
+    try {
+        let blogData;
+
+        blogData = {
+            author: req.body.author,
+            categoryId: req.body.categoryId,
+            content: req.body.content,
+            createdAt: req.body.createdAt || new Date(),
+            excerpt: req.body.excerpt,
+            tags: req.body.tags || [],
+            title: req.body.title
+        };
+
+        const blog = new MedicalBlog(blogData);
+        await blog.save();
+
+        res.status(200).send({
+            status: true,
+            message: "Tạo blog thành công",
+            payload: blog
+        });
+    } catch (error) {
+        console.error('Error creating blog:', error);
+        res.status(400).send({
+            status: false,
+            message: "Tạo blog thất bại",
+            payload: error.message
+        });
+    }
+});
+
+// Updated route handler
+router.put('/admin/blogs/:id', async (req, res) => {
+    try {
+        const blogId = req.params.id;
+
+        // Process the blog data and handle base64 images
+        const existingBlog = await MedicalBlog.findById(blogId);
+
+        if (!existingBlog) throw new Error("Blog không tồn tại");
+
+        // Update the blog in database
+        const updatedBlog = await MedicalBlog.findByIdAndUpdate(
+            blogId,
+            req.body,
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedBlog) {
+            return res.status(404).send({
+                status: false,
+                message: "Blog không tồn tại",
+                payload: null
+            });
+        }
+
+        res.status(200).send({
+            status: true,
+            message: "Cập nhật blog thành công",
+            payload: blogId
+        });
+    } catch (error) {
+        console.error('Error updating blog:', error);
+        res.status(400).send({
+            status: false,
+            message: "Cập nhật blog thất bại",
+            payload: error.message
+        });
+    }
+});
+
+router.delete('/admin/blogs/:id', async (req, res) => {
+    try {
+        await MedicalBlog.findByIdAndDelete(req.params.id);
+        res.status(200).send({
+            status: true,
+            message: "Xóa blog thành công",
+            payload: req.params.id
+        });
+    } catch (error) {
+        res.status(400).send({
+            status: false,
+            message: "Xóa blog thất bại",
             payload: error.message
         });
     }

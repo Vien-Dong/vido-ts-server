@@ -49,7 +49,15 @@
           >Admin Dashboard</a
         >
         <div class="navbar-nav ms-auto">
-          <a class="nav-link text-white" href="#" onclick="goToHome()">Về trang chủ</a>
+          <a class="nav-link text-white" href="/medical/mng/ad/category" onclick="goToHome()"
+            >Danh mục</a
+          >
+          <a class="nav-link text-white" href="/medical/mng/ad/blog" onclick="goToHome()"
+            >Bài viết</a
+          >
+          <a class="nav-link text-white" href="#" onclick="goToHome()"
+            >Về trang chủ</a
+          >
         </div>
       </div>
     </nav>
@@ -57,10 +65,16 @@
     <div class="container mt-4">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h1>Quản lý Form Đánh giá</h1>
-        <button class="btn btn-primary" onclick="createNewForm()">
-          <i class="bi bi-plus-circle"></i> 
-          <span class="d-none d-sm-inline-flex">Tạo Form Mới</span>
-        </button>
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-primary" onclick="createNewForm()">
+            <i class="bi bi-plus-circle"></i>
+            <span class="d-none d-sm-inline-flex">Tạo Form Mới</span>
+          </button>
+          <button class="btn btn-success" onclick="createNewCategory()">
+            <i class="bi bi-plus-circle"></i>
+            <span class="d-none d-sm-inline-flex">Tạo Danh Mục Mới</span>
+          </button>
+        </div>
       </div>
 
       <div id="loadingIndicator" class="text-center my-5" style="display: none">
@@ -229,11 +243,189 @@
       </div>
     </div>
 
+    <!-- Modal for creating new category -->
+    <div
+      class="modal fade"
+      id="newCategoryModal"
+      tabindex="-1"
+      aria-labelledby="newCategoryModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newCategoryModalLabel">
+              Tạo Danh Mục Mới
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="newCategoryForm">
+              <div class="mb-3">
+                <label for="categoryTitle" class="form-label"
+                  >Tiêu đề danh mục *</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="categoryTitle"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="categoryDescription" class="form-label"
+                  >Mô tả</label
+                >
+                <textarea
+                  class="form-control"
+                  id="categoryDescription"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="categoryIcon" class="form-label"
+                  >Đường dẫn icon *</label
+                >
+                <input type="text" class="form-control" id="categoryIcon" />
+              </div>
+              <div class="mb-3">
+                <label for="categoryUrl" class="form-label"
+                  >Đường dẫn đến trang *</label
+                >
+                <input type="text" class="form-control" id="categoryUrl" />
+              </div>
+              <div class="mb-3">
+                <label for="categoryType" class="form-label"
+                  >Loại danh mục *</label
+                >
+                <select class="form-select" id="categoryType" required>
+                  <option value="">-- Chọn loại --</option>
+                  <option value="dropdown">Dropdown</option>
+                  <option value="blog">Blog</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Hủy
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="saveNewCategory()"
+            >
+              Tạo Danh Mục
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for editing category -->
+    <div
+      class="modal fade"
+      id="editCategoryModal"
+      tabindex="-1"
+      aria-labelledby="editCategoryModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="editCategoryModalLabel">
+              Chỉnh sửa danh mục
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form id="editCategoryForm">
+              <input type="hidden" id="editCategoryId" />
+              <div class="mb-3">
+                <label for="editCategoryTitle" class="form-label"
+                  >Tiêu đề danh mục *</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="editCategoryTitle"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="editCategoryDescription" class="form-label"
+                  >Mô tả</label
+                >
+                <textarea
+                  class="form-control"
+                  id="editCategoryDescription"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="editCategoryIcon" class="form-label"
+                  >Đường dẫn icon *</label
+                >
+                <input type="text" class="form-control" id="editCategoryIcon" />
+              </div>
+              <div class="mb-3">
+                <label for="editCategoryUrl" class="form-label"
+                  >Đường dẫn đến trang *</label
+                >
+                <input type="text" class="form-control" id="editCategoryUrl" />
+              </div>
+              <div class="mb-3">
+                <label for="editCategoryType" class="form-label"
+                  >Loại danh mục *</label
+                >
+                <select class="form-select" id="editCategoryType" required>
+                  <option value="">-- Chọn loại --</option>
+                  <option value="dropdown">Dropdown</option>
+                  <option value="blog">Blog</option>
+                </select>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Hủy
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="saveEditCategory()"
+            >
+              Lưu thay đổi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
       // Sample data storage
       let forms = [];
+      let categories = [];
       let isCreating = false;
       let isUpdating = false;
       let isDeleting = false;
@@ -305,6 +497,65 @@
         } catch (error) {
           console.error(
             "Error deleting forms:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
+      async function createCategories(data) {
+        try {
+          const response = await axios.post(
+            "/api/medical/admin/categories",
+            data
+          );
+
+          if (response && response.data && response.data.status)
+            return response.data;
+
+          return null;
+        } catch (error) {
+          console.error(
+            "Error creating categories:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
+      async function updateCategories(data, categoryId) {
+        try {
+          const response = await axios.put(
+            `/api/medical/admin/categories/${categoryId}`,
+            data
+          );
+
+          if (response && response.data && response.data.status)
+            return response.data;
+
+          return null;
+        } catch (error) {
+          console.error(
+            "Error updating categories:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
+      async function deleteCategories(categoryId) {
+        try {
+          const response = await axios.delete(
+            `/api/medical/admin/categories/${categoryId}`
+          );
+
+          if (response && response.data && response.data.status)
+            return response.data;
+
+          return null;
+        } catch (error) {
+          console.error(
+            "Error deleting categories:",
             error.response?.data || error.message
           );
           return null;
@@ -409,6 +660,13 @@
       function createNewForm() {
         const modal = new bootstrap.Modal(
           document.getElementById("newFormModal")
+        );
+        modal.show();
+      }
+
+      function createNewCategory() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("newCategoryModal")
         );
         modal.show();
       }
@@ -550,6 +808,157 @@
             showToast("Form đã được xóa thành công!", "success");
           } else {
             showToast("Có lỗi xảy ra khi xóa form!", "info");
+          }
+        }
+      }
+
+      async function saveNewCategory() {
+        if (isCreating) return; // tránh double click
+        isCreating = true;
+
+        const btn = document.querySelector("#newCategoryModal .btn-primary");
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Đang tạo...`;
+
+        const title = document.getElementById("categoryTitle").value.trim();
+        const description = document
+          .getElementById("categoryDescription")
+          .value.trim();
+        const url = document.getElementById("categoryUrl").value;
+        const iconUrl = document.getElementById("categoryIcon").value;
+        const type = document.getElementById("categoryType").value;
+
+        if (!title) {
+          alert("Vui lòng nhập tiêu đề danh mục");
+          resetCreateButtonCategory();
+          return;
+        }
+
+        const newCategory = {
+          title: title,
+          description: description || null,
+          url: url,
+          iconUrl: iconUrl,
+          type: type,
+          createdAt: new Date(),
+        };
+
+        const data = await createCategories(newCategory);
+
+        if (data.status) {
+          loadForms();
+
+          // Clear category and close modal
+          document.getElementById("newCategoryForm").reset();
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById("newCategoryModal")
+          );
+          modal.hide();
+
+          showToast("Danh mục đã được tạo thành công!", "success");
+        } else {
+          showToast("Lỗi tạo danh mục!", "info");
+        }
+
+        resetCreateButtonCategory();
+      }
+
+      function resetCreateButtonCategory() {
+        isCreating = false;
+        const btn = document.querySelector("#newCategoryModal .btn-primary");
+        btn.disabled = false;
+        btn.innerHTML = `Tạo Danh Mục`;
+      }
+
+      function editCategory(categoryId) {
+        const category = categories.find((f) => f._id === categoryId);
+        if (!category) return;
+
+        document.getElementById("editCategoryId").value = category._id;
+        document.getElementById("editCategoryTitle").value = category.title;
+        document.getElementById("editCategoryDescription").value =
+          category.description || "";
+        document.getElementById("editCategoryUrl").value = category.url;
+        document.getElementById("editCategoryIcon").value = category.iconUrl;
+        document.getElementById("editCategoryType").value = category.type;
+
+        const modal = new bootstrap.Modal(
+          document.getElementById("editCategoryModal")
+        );
+        modal.show();
+      }
+
+      async function saveEditCategory() {
+        if (isUpdating) return;
+        isUpdating = true;
+
+        const btn = document.querySelector("#editCategoryModal .btn-primary");
+        btn.disabled = true;
+        btn.innerHTML = `<span class="spinner-border spinner-border-sm me-1"></span> Đang lưu...`;
+
+        const categoryId = document.getElementById("editCategoryId").value;
+        const title = document.getElementById("editCategoryTitle").value.trim();
+        const description = document
+          .getElementById("editCategoryDescription")
+          .value.trim();
+        const url = document.getElementById("editCategoryUrl").value;
+        const iconUrl = document.getElementById("editCategoryIcon").value;
+        const type = document.getElementById("editCategoryType").value;
+
+        if (!title) {
+          alert("Vui lòng nhập tiêu đề danh mục");
+          resetEditButtonCategory();
+          return;
+        }
+
+        const categoryIndex = categories.findIndex((f) => f._id === categoryId);
+        if (categoryIndex !== -1) {
+          const body = {
+            ...categorys[categoryIndex],
+            title: title,
+            description: description || null,
+            url: url,
+            iconUrl: iconUrl,
+            type: type,
+          };
+
+          const data = await updateCategories(body, categoryId);
+
+          if (data.status) {
+            loadCategories();
+
+            const modal = bootstrap.Modal.getInstance(
+              document.getElementById("editCategoryModal")
+            );
+            modal.hide();
+
+            showToast("Danh mục đã được cập nhật thành công!", "success");
+          } else {
+            showToast("Danh mục xảy ra lỗi khi cập nhật!", "info");
+          }
+        }
+
+        resetEditButtonCategory();
+      }
+
+      function resetEditButtonCategory() {
+        isUpdating = false;
+        const btn = document.querySelector("#editCategoryModal .btn-primary");
+        btn.disabled = false;
+        btn.innerHTML = `Lưu thay đổi`;
+      }
+
+      async function deleteCategory(categoryId) {
+        const category = categories.find((f) => f._id === categoryId);
+        if (!category) return;
+
+        if (confirm(`Bạn có chắc muốn xóa danh mục "${category.title}"?`)) {
+          const data = await deleteCategories(categoryId);
+          if (data.status) {
+            loadCategories();
+            showToast("Danh mục đã được xóa thành công!", "success");
+          } else {
+            showToast("Có lỗi xảy ra khi xóa danh mục!", "info");
           }
         }
       }
