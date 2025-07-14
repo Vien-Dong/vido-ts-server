@@ -11,7 +11,7 @@ router.get('/crawl/:id', async (req, res) => {
     const list = [];
 
     try {
-        const response = await axios.get(`https://vietnamnet.vn/giao-duc/diem-thi/tra-cuu-diem-thi-tot-nghiep-thpt/2024/${id}.html`);
+        const response = await axios.get(`https://vietnamnet.vn/giao-duc/diem-thi/tra-cuu-diem-thi-tot-nghiep-thpt/2025/${id}.html`);
         const html = response.data;
 
         const $ = cheerio.load(html);
