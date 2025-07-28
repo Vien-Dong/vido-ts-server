@@ -8,6 +8,13 @@ const baseUrl = "http://ims-api.viendong.edu.vn/api/v1";
 router.post("/login", async (req, res) => {
     try {
         const response = await axios.post(`${baseUrl}/login`, req.body);
+        if (response.data.success) {
+            res.cookie('authToken', response.data.token, {
+                httpOnly: true,     // Not accessible via JavaScript
+                secure: true,       // HTTPS only
+                sameSite: 'strict', // CSRF protection
+            });
+        }
         res.json(response.data);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -17,7 +24,7 @@ router.post("/login", async (req, res) => {
 router.get("/tkb", async (req, res) => {
     try {
         const { ngay } = req.query;
-        const token = req.headers.token;
+        const token = req.cookies.authToken;
 
         const response = await axios.get(`${baseUrl}/giangvien/tkbtheongay?ngay=${ngay}`, {
             headers: {
@@ -32,7 +39,7 @@ router.get("/tkb", async (req, res) => {
 
 router.post("/studentList", async (req, res) => {
     try {
-        const token = req.headers.token;
+        const token = req.cookies.authToken;
 
         const response = await axios.post(`${baseUrl}/giangvien/diemdanh/danhsach`, req.body, {
             headers: {
@@ -47,7 +54,7 @@ router.post("/studentList", async (req, res) => {
 
 router.post("/save", async (req, res) => {
     try {
-        const token = req.headers.token;
+        const token = req.cookies.authToken;
 
         const response = await axios.post(`${baseUrl}/giangvien/diemdanh/luu`, req.body, {
             headers: {
