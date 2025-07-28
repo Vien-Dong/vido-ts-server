@@ -60,7 +60,7 @@ const getAccessToken = async () => {
     }
 }
 
-const postParticipant = async (data) => {
+const    postParticipant = async (data) => {
     // Hàm đệ quy để lấy access token
     const response = await getAccessToken();
 
