@@ -114,6 +114,10 @@ app.get('/shs-ges', function (req, res) {
 app.get('/jhs-ges', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/admission-result/highschool.html'));
 });
+app.get('/school', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/school/index.html'));
+});
+
 app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/lucky'));
 app.use(express.static(__dirname + '/pages/landing-page'));
@@ -125,6 +129,7 @@ app.use(express.static(__dirname + '/pages/management'));
 app.use(express.static(__dirname + '/pages/library'));
 app.use(express.static(__dirname + '/pages/medical'));
 app.use(express.static(__dirname + '/pages/admission-result'));
+app.use(express.static(__dirname + '/pages/school'));
 app.use(express.static(path.join(__dirname, 'pages')));
 
 const server = app.listen(port, () => {
