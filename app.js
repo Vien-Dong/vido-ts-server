@@ -14,9 +14,18 @@ var socketIO = require("socket.io");
 var port = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({
+    limit: '50mb',
+    parameterLimit: 50000,
+    extended: true
+}));
+app.use(express.urlencoded({
+    limit: '50mb',
+    extended: true,
+    parameterLimit: 50000
+}));
 app.use(express.static('js'));
+app.set('view engine', 'ejs');
 
 mongoose.connect("mongodb+srv://administrator:admin123456@cluster.jh4lmtx.mongodb.net/").then(() => {
     console.log("Connected to mongodb");
@@ -39,6 +48,8 @@ app.use('/api/website', require("./routes/api/website"));
 app.use('/api/book', require("./routes/api/book"));
 app.use('/api/diploma', require("./routes/api/diploma"));
 app.use('/api/check', require("./routes/api/check"));
+app.use('/api/medical', require("./routes/api/medical"));
+app.use('/api/crawler', require("./routes/api/crawler"));
 
 app.get('/delete-account', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/index.html'));
@@ -70,6 +81,43 @@ app.get('/landing-page', function (req, res) {
 app.get('/landing-page-cd18', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/landing-page-cd18/index.html'));
 });
+app.get('/medical', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/index.html'));
+});
+app.get('/medical/mng/ad', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/admin.html'));
+});
+app.get('/medical/mng/ad/blog', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/blog-manager.html'));
+});
+app.get('/medical/mng/ad/blog/detail', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/blog-detail.html'));
+});
+app.get('/medical/mng/ad/category', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/category-manager.html'));
+});
+app.get('/medical/mng/ad/form', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/admin-form.html'));
+});
+app.get('/medical/patient/form', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/patient-form.html'));
+});
+app.get('/medical/patient/search', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/search.html'));
+});
+app.get('/medical/blog', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/medical/blog.html'));
+});
+app.get('/shs-ges', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/admission-result/graduation.html'));
+});
+app.get('/jhs-ges', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/admission-result/highschool.html'));
+});
+app.get('/school', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/school/index.html'));
+});
+
 app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/lucky'));
 app.use(express.static(__dirname + '/pages/landing-page'));
@@ -79,6 +127,9 @@ app.use(express.static(__dirname + '/pages/contact'));
 app.use(express.static(__dirname + '/pages/career'));
 app.use(express.static(__dirname + '/pages/management'));
 app.use(express.static(__dirname + '/pages/library'));
+app.use(express.static(__dirname + '/pages/medical'));
+app.use(express.static(__dirname + '/pages/admission-result'));
+app.use(express.static(__dirname + '/pages/school'));
 app.use(express.static(path.join(__dirname, 'pages')));
 
 const server = app.listen(port, () => {

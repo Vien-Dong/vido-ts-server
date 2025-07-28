@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form Builder</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #007bff;
+        --secondary-color: #6c757d;
+        --success-color: #28a745;
+        --danger-color: #dc3545;
+        --warning-color: #ffc107;
+        --light-bg: #f8f9fa;
+        --border-color: #dee2e6;
+        --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      body {
+        background-color: #f5f5f5;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      /* Navigation */
+      .navbar {
+        box-shadow: var(--shadow);
+      }
+
+      /* Main content */
+      .main-content {
+        background: white;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        padding: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      /* Form mode indicator */
+      .form-mode-indicator {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        border-left: 4px solid;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .create-mode {
+        background-color: #e8f5e8;
+        border-left-color: var(--success-color);
+        color: #155724;
+      }
+
+      .edit-mode {
+        background-color: #fff3cd;
+        border-left-color: var(--warning-color);
+        color: #856404;
+      }
+
+      /* Section styling */
+      .section-item {
+        border: 2px solid var(--primary-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        background: linear-gradient(135deg, #f8f9ff 0%, #fff 100%);
+        transition: all 0.3s ease;
+      }
+
+      .section-item:hover {
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.15);
+        transform: translateY(-2px);
+      }
+
+      .section-header {
+        background: var(--primary-color);
+        color: white;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Question styling */
+      .question-item {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 1.25rem;
+        margin-bottom: 1rem;
+        background: white;
+        transition: all 0.2s ease;
+      }
+
+      .question-item:hover {
+        border-color: var(--primary-color);
+        box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
+      }
+
+      .question-header {
+        background: var(--light-bg);
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        margin-bottom: 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Option styling */
+      .option-item {
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        padding: 1rem;
+        margin-bottom: 0.75rem;
+        background: #fdfdfd;
+        transition: border-color 0.2s ease;
+      }
+
+      .option-item:hover {
+        border-color: var(--primary-color);
+      }
+
+      .options-container {
+        max-height: 400px;
+        overflow-y: auto;
+        padding-right: 0.5rem;
+      }
+
+      /* Image upload styling */
+      .image-upload-container {
+        background: #f8f9fa;
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-top: 0.75rem;
+        transition: all 0.2s ease;
+      }
+
+      .image-upload-container:hover {
+        border-color: var(--primary-color);
+        background: #e3f2fd;
+      }
+
+      .image-preview {
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 0.5rem;
+        min-height: 100px;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .image-preview img {
+        max-width: 100%;
+        max-height: 150px;
+        border-radius: 4px;
+      }
+
+      /* Preview styling */
+      .form-preview {
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        padding: 2rem;
+        margin-top: 1.5rem;
+        background: white;
+        box-shadow: var(--shadow);
+      }
+
+      .preview-section {
+        border: 1px solid #e9ecef;
+        border-radius: 6px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        background: #fafafa;
+      }
+
+      /* Button styling */
+      .btn {
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .btn-group-custom {
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Loading indicator */
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 3rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+
+      /* Form controls */
+      .form-control,
+      .form-select {
+        border-radius: 6px;
+        border: 1px solid #ced4da;
+        transition: all 0.2s ease;
+      }
+
+      .form-control:focus,
+      .form-select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+
+      /* Toast container */
+      .toast-container {
+        z-index: 1055;
+      }
+
+      /* Enhanced option styling */
+      .option-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr 100px 60px;
+        gap: 0.75rem;
+        align-items: end;
+      }
+
+      .option-field-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--secondary-color);
+        margin-bottom: 0.25rem;
+      }
+
+      .points-input {
+        text-align: center;
+      }
+
+      /* Responsive design */
+      @media (max-width: 768px) {
+        .main-content {
+          padding: 1rem;
+          margin: 1rem;
+        }
+
+        .section-item {
+          padding: 1rem;
+        }
+
+        .question-item {
+          padding: 1rem;
+        }
+
+        .btn-group-custom {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+          margin-bottom: 0.5rem;
+        }
+
+        .option-fields {
+          grid-template-columns: 1fr;
+          gap: 0.5rem;
+        }
+      }
+
+      /* Utility classes */
+      .text-gradient {
+        background: linear-gradient(45deg, var(--primary-color), #0056b3);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .border-gradient {
+        border: 2px solid;
+        border-image: linear-gradient(45deg, var(--primary-color), #0056b3) 1;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container">
+        <div class="d-flex align-items-center">
+          <a class="navbar-brand" href="/medical">
+            <i class="fas fa-home me-2"></i>Trang chủ
+          </a>
+          <a class="navbar-brand" href="/medical/mng/ad">
+            <i class="fas fa-cog me-2"></i>Quản lý
+          </a>
+        </div>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <div class="ms-auto d-flex gap-2 mt-3 mt-lg-0">
+            <button
+              class="btn btn-outline-light btn-sm"
+              onclick="togglePreview()"
+            >
+              <i class="fas fa-eye me-1"></i>Xem trước
+            </button>
+            <button class="btn btn-outline-light btn-sm" onclick="exportForm()">
+              <i class="fas fa-download me-1"></i>Xuất JSON
+            </button>
+            <button class="btn btn-outline-light btn-sm" onclick="importForm()">
+              <i class="fas fa-upload me-1"></i>Nhập JSON
+            </button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid px-3 px-md-4 mt-4">
+      <!-- Loading indicator -->
+      <div id="loadingIndicator" class="loading">
+        <div
+          class="spinner-border text-primary mb-3"
+          role="status"
+          style="width: 3rem; height: 3rem"
+        >
+          <span class="visually-hidden">Đang tải...</span>
+        </div>
+        <h5>Đang tải dữ liệu form...</h5>
+        <p class="text-muted">Vui lòng đợi trong giây lát</p>
+      </div>
+
+      <!-- Main content -->
+      <div id="mainContent">
+        <div class="main-content">
+          <!-- Form mode indicator -->
+          <div id="formModeIndicator" class="form-mode-indicator create-mode">
+            <i class="fas fa-plus-circle fs-5"></i>
+            <div>
+              <strong>Chế độ tạo mới:</strong> Bạn đang tạo một form mới
+            </div>
+          </div>
+
+          <h1 id="pageTitle" class="text-gradient mb-4">Tạo Form Mới</h1>
+
+          <!-- Form builder -->
+          <form id="formBuilder">
+            <!-- Basic information -->
+            <div class="row mb-4">
+              <div class="col-md-6">
+                <label for="title" class="form-label fw-bold">
+                  <i class="fas fa-heading me-2"></i>Tiêu đề Form *
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  name="title"
+                  required
+                  placeholder="Nhập tiêu đề form..."
+                />
+              </div>
+              <div class="col-md-6">
+                <label for="category" class="form-label fw-bold">
+                  <i class="fas fa-tag me-2"></i>Danh mục
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="category"
+                  name="category"
+                  placeholder="VD: Khám tổng quát, Tim mạch, Nhi khoa..."
+                />
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <label for="description" class="form-label fw-bold">
+                <i class="fas fa-align-left me-2"></i>Mô tả
+              </label>
+              <textarea
+                class="form-control"
+                id="description"
+                name="description"
+                rows="3"
+                placeholder="Nhập mô tả chi tiết về form..."
+              ></textarea>
+            </div>
+
+            <div class="mb-4">
+              <label for="note" class="form-label fw-bold">
+                <i class="fas fa-align-left me-2"></i>Lưu ý
+              </label>
+              <textarea
+                class="form-control"
+                id="note"
+                name="note"
+                rows="3"
+                placeholder="Nhập lưu ý cho người dùng biết..."
+              ></textarea>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-bold">
+                <i class="fas fa-feather-pointed me-2"></i>Điểm tiêu chuẩn *
+              </label>
+              <div class="row m-0 gap-3">
+                <input
+                  type="text"
+                  class="form-control col"
+                  name="standard"
+                  id="standard"
+                  placeholder="Nhập điểm tiêu chuẩn..."
+                  required
+                />
+
+                <input
+                  type="text"
+                  class="form-control col"
+                  name="minstandard"
+                  id="minstandard"
+                  placeholder="Khi nhỏ hơn..."
+                  required
+                />
+
+                <input
+                  type="text"
+                  class="form-control col"
+                  name="maxstandard"
+                  id="maxstandard"
+                  placeholder="Khi lớn hơn..."
+                  required
+                />
+              </div>
+            </div>
+
+            <!-- Sections container -->
+            <div id="sectionsContainer">
+              <div
+                class="d-flex justify-content-between align-items-center mb-4"
+              >
+                <h3 class="text-gradient">
+                  <i class="fas fa-list-ul me-2"></i>Các mục đánh giá
+                </h3>
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  onclick="addSection()"
+                >
+                  <i class="fas fa-plus me-1"></i>Thêm mục mới
+                </button>
+              </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="d-flex flex-wrap gap-3 mt-4">
+              <button
+                type="button"
+                class="btn btn-success btn-lg"
+                id="saveBtn"
+                onclick="saveForm()"
+              >
+                <i class="fas fa-save me-2"></i>Lưu Form
+              </button>
+              <button
+                type="button"
+                class="btn btn-warning"
+                onclick="clearForm()"
+              >
+                <i class="fas fa-trash-alt me-2"></i>Xóa tất cả
+              </button>
+              <button
+                type="button"
+                class="btn btn-secondary"
+                onclick="createNewForm()"
+                id="createNewBtn"
+                style="display: none"
+              >
+                <i class="fas fa-file-plus me-2"></i>Tạo form mới
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Preview container -->
+        <div id="previewContainer" style="display: none" class="main-content">
+          <h3 class="text-gradient mb-3">
+            <i class="fas fa-eye me-2"></i>Xem trước Form
+          </h3>
+          <div id="formPreview" class="form-preview"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header bg-primary text-white">
+            <h5 class="modal-title">
+              <i class="fas fa-upload me-2"></i>Nhập JSON Form
+            </h5>
+            <button
+              type="button"
+              class="btn-close btn-close-white"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="importJson" class="form-label fw-bold">
+                Dán nội dung JSON vào đây:
+              </label>
+              <textarea
+                id="importJson"
+                class="form-control"
+                rows="12"
+                placeholder="Dán JSON form vào đây..."
+              ></textarea>
+            </div>
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle me-2"></i>
+              <strong>Lưu ý:</strong> JSON phải có định dạng hợp lệ và chứa đầy
+              đủ thông tin form.
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              <i class="fas fa-times me-1"></i>Hủy
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="processImport()"
+            >
+              <i class="fas fa-check me-1"></i>Nhập
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // Global variables
+      let sectionIndex = 0;
+      let currentFormId = null;
+      let isEditMode = false;
+      let formData = {
+        title: "",
+        description: "",
+        category: "",
+        sections: [],
+        note: "",
+      };
+
+      // Utility functions
+      function getUrlParameter(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+      }
+
+      function updateUrlParameter(key, value) {
+        const url = new URL(window.location);
+        if (value) {
+          url.searchParams.set(key, value);
+        } else {
+          url.searchParams.delete(key);
+        }
+        window.history.replaceState({}, "", url);
+      }
+
+      function showToast(message, type = "info") {
+        const toastHtml = `
+                      <div class="toast align-items-center text-white bg-${
+                        type === "success" ? "success" : "info"
+                      } border-0" role="alert">
+                          <div class="d-flex">
+                              <div class="toast-body">
+                                  <i class="fas fa-${
+                                    type === "success"
+                                      ? "check-circle"
+                                      : "info-circle"
+                                  } me-2"></i>
+                                  ${message}
+                              </div>
+                              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+                          </div>
+                      </div>
+                  `;
+
+        let toastContainer = document.getElementById("toastContainer");
+        if (!toastContainer) {
+          toastContainer = document.createElement("div");
+          toastContainer.id = "toastContainer";
+          toastContainer.className =
+            "toast-container position-fixed bottom-0 end-0 p-3";
+          document.body.appendChild(toastContainer);
+        }
+
+        toastContainer.insertAdjacentHTML("beforeend", toastHtml);
+        const toastElement = toastContainer.lastElementChild;
+        const toast = new bootstrap.Toast(toastElement);
+        toast.show();
+
+        toastElement.addEventListener("hidden.bs.toast", () => {
+          toastElement.remove();
+        });
+      }
+
+      // Database functions
+      async function fetchFormFromDatabase(formId) {
+        try {
+          const response = await axios.get(`/api/medical/forms/${formId}`);
+          return response?.data?.status ? response.data : null;
+        } catch (error) {
+          console.error(
+            "Error fetching forms:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
+      async function saveFormToDatabase(formData, formId = null) {
+        try {
+          const response = await axios.put(
+            `/api/medical/admin/forms/${formId}`,
+            formData
+          );
+          return response?.data?.status ? response.data : null;
+        } catch (error) {
+          console.error(
+            "Error updating forms:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
+      // UI functions
+      function updateFormModeIndicator(editMode, formId = null) {
+        const indicator = document.getElementById("formModeIndicator");
+        const pageTitle = document.getElementById("pageTitle");
+        const saveBtn = document.getElementById("saveBtn");
+        const createNewBtn = document.getElementById("createNewBtn");
+
+        if (editMode) {
+          indicator.className = "form-mode-indicator edit-mode";
+          indicator.innerHTML = `
+                          <i class="fas fa-edit fs-5"></i>
+                          <div>
+                              <strong>Chế độ chỉnh sửa:</strong> Bạn đang chỉnh sửa form ID: ${formId}
+                          </div>
+                      `;
+          pageTitle.textContent = "Chỉnh sửa Form";
+          saveBtn.innerHTML = '<i class="fas fa-save me-2"></i>Cập nhật Form';
+          createNewBtn.style.display = "inline-block";
+        } else {
+          indicator.className = "form-mode-indicator create-mode";
+          indicator.innerHTML = `
+                          <i class="fas fa-plus-circle fs-5"></i>
+                          <div>
+                              <strong>Chế độ tạo mới:</strong> Bạn đang tạo một form mới
+                          </div>
+                      `;
+          pageTitle.textContent = "Tạo Form Mới";
+          saveBtn.innerHTML = '<i class="fas fa-save me-2"></i>Lưu Form';
+          createNewBtn.style.display = "none";
+        }
+      }
+
+      function showLoading(show = true) {
+        const loading = document.getElementById("loadingIndicator");
+        const content = document.getElementById("mainContent");
+
+        if (show) {
+          loading.style.display = "block";
+          content.style.display = "none";
+        } else {
+          loading.style.display = "none";
+          content.style.display = "block";
+        }
+      }
+
+      // Section management
+      function addSection() {
+        const container = document.getElementById("sectionsContainer");
+        const sectionHTML = `
+                      <div class="section-item" data-section-index="${sectionIndex}">
+                          <div class="section-header">
+                              <h4 class="mb-0">
+                                  <i class="fas fa-folder me-2"></i>Mục ${
+                                    sectionIndex + 1
+                                  }
+                              </h4>
+                              <button type="button" class="btn btn-danger btn-sm" onclick="removeSection(this)">
+                                  <i class="fas fa-trash me-1"></i>Xóa mục
+                              </button>
+                          </div>
+
+                          <div class="mb-3">
+                              <label class="form-label fw-bold">
+                                  <i class="fas fa-heading me-2"></i>Tiêu đề mục *
+                              </label>
+                              <input type="text" class="form-control section-title"
+                                     name="sections[${sectionIndex}][title]"
+                                     onchange="updatePreview()"
+                                     placeholder="Nhập tiêu đề mục..." required>
+                          </div>
+
+                          <div class="questions-container mb-3"></div>
+
+                          <button type="button" class="btn btn-secondary" onclick="addQuestion(this)">
+                              <i class="fas fa-plus me-1"></i>Thêm câu hỏi
+                          </button>
+                      </div>
+                  `;
+        container.insertAdjacentHTML("beforeend", sectionHTML);
+        sectionIndex++;
+        updatePreview();
+      }
+
+      function removeSection(button) {
+        if (confirm("Bạn có chắc chắn muốn xóa mục này?")) {
+          button.closest(".section-item").remove();
+          updatePreview();
+        }
+      }
+
+      // Question management
+      function addQuestion(button) {
+        const section = button.closest(".section-item");
+        const sectionIdx = section.dataset.sectionIndex;
+        const questionsContainer = section.querySelector(
+          ".questions-container"
+        );
+        const questionIdx = questionsContainer.children.length;
+
+        const questionHTML = `
+                      <div class="question-item">
+                          <div class="question-header">
+                              <h6 class="mb-0">
+                                  <i class="fas fa-question-circle me-2"></i>Câu hỏi ${
+                                    questionIdx + 1
+                                  }
+                              </h6>
+                              <button type="button" class="btn btn-danger btn-sm" onclick="removeQuestion(this)">
+                                  <i class="fas fa-trash me-1"></i>Xóa
+                              </button>
+                          </div>
+
+                          <div class="row mb-3">
+                              <div class="col-md-6">
+                                  <label class="form-label fw-bold">
+                                      <i class="fas fa-list me-2"></i>Loại câu hỏi
+                                  </label>
+                                  <select class="form-select question-type"
+                                          name="sections[${sectionIdx}][questions][${questionIdx}][type]"
+                                          onchange="toggleOptionsContainer(this); updatePreview()">
+                                      <option value="text">Văn bản</option>
+                                      <option value="number">Số</option>
+                                      <option value="date">Ngày tháng</option>
+                                      <option value="checkbox">Checkbox (nhiều lựa chọn)</option>
+                                      <option value="radio">Radio (một lựa chọn)</option>
+                                      <option value="dropdown">Dropdown (danh sách)</option>
+                                  </select>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="form-check">
+                                      <input class="form-check-input enable-image-checkbox" type="checkbox"
+                                            id="enableImage_${sectionIdx}_${questionIdx}"
+                                            onchange="toggleImageUpload(this, ${sectionIdx}, ${questionIdx})">
+                                      <label class="form-check-label fw-bold" for="enableImage_${sectionIdx}_${questionIdx}">
+                                          <i class="fas fa-image me-2"></i>Sử dụng hình ảnh
+                                      </label>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="mb-3">
+                              <label class="form-label fw-bold">
+                                  <i class="fas fa-question me-2"></i>Nội dung câu hỏi *
+                              </label>
+                              <textarea class="form-control question-text"
+                                        name="sections[${sectionIdx}][questions][${questionIdx}][question]"
+                                        rows="2" onchange="updatePreview()"
+                                        placeholder="Nhập nội dung câu hỏi..." required></textarea>
+                          </div>
+
+                          <div class="image-upload-container" id="imageContainer_${sectionIdx}_${questionIdx}" style="display: none;">
+                              <div class="row">
+                                  <div class="col-md-6">
+                                      <label class="form-label fw-bold">
+                                          <i class="fas fa-upload me-2"></i>Chọn hình ảnh
+                                      </label>
+                                      <input type="file" class="form-control question-image"
+                                            accept="image/*"
+                                            onchange="previewImage(this, ${sectionIdx}, ${questionIdx})">
+                                      <small class="text-muted">
+                                          <i class="fas fa-info-circle me-1"></i>
+                                          Chấp nhận: JPG, PNG, GIF (tối đa 5MB)
+                                      </small>
+                                  </div>
+                                  <div class="col-md-6">
+                                      <label class="form-label fw-bold">Xem trước</label>
+                                      <div class="image-preview" id="imagePreview_${sectionIdx}_${questionIdx}">
+                                          <span class="text-muted">
+                                              <i class="fas fa-image fs-2"></i><br>
+                                              Chưa có hình ảnh
+                                          </span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <div class="options-section" style="display: none;">
+                              <div class="d-flex justify-content-between align-items-center mb-3">
+                                  <label class="form-label fw-bold mb-0">
+                                      <i class="fas fa-list-ol me-2"></i>Các lựa chọn
+                                  </label>
+                                  <button type="button" class="btn btn-primary btn-sm" onclick="addOption(this)">
+                                      <i class="fas fa-plus me-1"></i>Thêm lựa chọn
+                                  </button>
+                              </div>
+                              <div class="options-container"></div>
+                          </div>
+                      </div>
+                  `;
+        questionsContainer.insertAdjacentHTML("beforeend", questionHTML);
+        updatePreview();
+      }
+
+      function removeQuestion(button) {
+        if (confirm("Bạn có chắc chắn muốn xóa câu hỏi này?")) {
+          button.closest(".question-item").remove();
+          updatePreview();
+        }
+      }
+
+      function toggleOptionsContainer(selectElement) {
+        const questionItem = selectElement.closest(".question-item");
+        const optionsSection = questionItem.querySelector(".options-section");
+        const questionType = selectElement.value;
+
+        if (["checkbox", "radio", "dropdown"].includes(questionType)) {
+          optionsSection.style.display = "block";
+          const optionsContainer =
+            optionsSection.querySelector(".options-container");
+          if (optionsContainer.children.length === 0) {
+            addOption(
+              optionsSection.querySelector('button[onclick*="addOption"]')
+            );
+          }
+        } else {
+          optionsSection.style.display = "none";
+        }
+      }
+
+      function toggleImageUpload(checkbox, sectionIdx, questionIdx) {
+        const container = document.getElementById(
+          `imageContainer_${sectionIdx}_${questionIdx}`
+        );
+        const preview = document.getElementById(
+          `imagePreview_${sectionIdx}_${questionIdx}`
+        );
+
+        if (checkbox.checked) {
+          container.style.display = "block";
+        } else {
+          container.style.display = "none";
+          // Clear the image when disabled
+          const imageInput = container.querySelector('input[type="file"]');
+          if (imageInput) {
+            imageInput.value = "";
+          }
+          preview.innerHTML = `
+                  <span class="text-muted">
+                    <i class="fas fa-image fs-2"></i><br>
+                    Chưa có hình ảnh
+                  </span>
+                `;
+        }
+        updatePreview();
+      }
+
+      function previewImage(input, sectionIdx, questionIdx) {
+        const preview = document.getElementById(
+          `imagePreview_${sectionIdx}_${questionIdx}`
+        );
+        const file = input.files[0];
+
+        if (file) {
+          // Check file size (5MB limit)
+          if (file.size > 5 * 1024 * 1024) {
+            showToast(
+              "Kích thước file quá lớn. Vui lòng chọn file nhỏ hơn 5MB.",
+              "error"
+            );
+            input.value = "";
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            preview.innerHTML = `<img src="${e.target.result}" alt="Preview">`;
+            updatePreview();
+          };
+          reader.readAsDataURL(file);
+        } else {
+          preview.innerHTML = `
+                  <span class="text-muted">
+                    <i class="fas fa-image fs-2"></i><br>
+                    Chưa có hình ảnh
+                  </span>
+                `;
+        }
+      }
+
+      // Option management
+      function addOption(button) {
+        const optionsContainer = button
+          .closest(".options-section")
+          .querySelector(".options-container");
+        const questionItem = button.closest(".question-item");
+        const sectionIdx =
+          questionItem.closest(".section-item").dataset.sectionIndex;
+        const questionIdx = Array.from(
+          questionItem.parentNode.children
+        ).indexOf(questionItem);
+        const optionIdx = optionsContainer.children.length;
+
+        const optionHTML = `
+                <div class="option-item">
+                  <div class="option-fields">
+                    <div>
+                      <div class="option-field-label">Nội dung lựa chọn</div>
+                      <input type="text" class="form-control option-text"
+                             name="sections[${sectionIdx}][questions][${questionIdx}][options][${optionIdx}][text]"
+                             onchange="updatePreview()"
+                             placeholder="Nhập nội dung lựa chọn..." required>
+                    </div>
+                    <div>
+                      <div class="option-field-label">Giá trị</div>
+                      <input type="text" class="form-control option-value"
+                             name="sections[${sectionIdx}][questions][${questionIdx}][options][${optionIdx}][value]"
+                             onchange="updatePreview()"
+                             placeholder="Giá trị...">
+                    </div>
+                    <div>
+                      <div class="option-field-label">Điểm</div>
+                      <input type="number" class="form-control points-input option-points"
+                             name="sections[${sectionIdx}][questions][${questionIdx}][options][${optionIdx}][points]"
+                             onchange="updatePreview()"
+                             placeholder="0" min="0" max="100">
+                    </div>
+                    <div>
+                      <button type="button" class="btn btn-danger btn-sm" onclick="removeOption(this)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              `;
+        optionsContainer.insertAdjacentHTML("beforeend", optionHTML);
+        updatePreview();
+      }
+
+      function removeOption(button) {
+        const optionsContainer = button.closest(".options-container");
+        if (optionsContainer.children.length > 1) {
+          button.closest(".option-item").remove();
+          updatePreview();
+        } else {
+          showToast("Phải có ít nhất một lựa chọn!", "error");
+        }
+      }
+
+      // Form data collection
+      async function collectFormData() {
+        const form = document.getElementById("formBuilder");
+        const formData = {
+          title: form.querySelector("#title").value,
+          description: form.querySelector("#description").value,
+          note: form.querySelector("#note").value,
+          standardPoint: {
+            value: form.querySelector("#standard").value,
+            lessMessage: form.querySelector("#minstandard").value,
+            greaterMessage: form.querySelector("#maxstandard").value
+          },
+          category: form.querySelector("#category").value,
+          sections: [],
+        };
+
+        const sections = document.querySelectorAll(".section-item");
+        for (const section of sections) {
+          const sectionData = {
+            title: section.querySelector(".section-title").value,
+            questions: [],
+          };
+
+          const questions = section.querySelectorAll(".question-item");
+          for (const question of questions) {
+            const questionData = {
+              type: question.querySelector(".question-type").value,
+              question: question.querySelector(".question-text").value,
+              image: null,
+              options: [],
+            };
+
+            // Handle image if enabled
+            const imageCheckbox = question.querySelector(
+              ".enable-image-checkbox"
+            );
+            if (imageCheckbox && imageCheckbox.checked) {
+              const imageInput = question.querySelector(".question-image");
+              if (imageInput && imageInput.files[0]) {
+                questionData.image = await readFileAsBase64(
+                  imageInput.files[0]
+                );
+              }
+            }
+
+            // Handle options for multiple choice questions
+            const optionsContainer =
+              question.querySelector(".options-container");
+            if (optionsContainer) {
+              const options = optionsContainer.querySelectorAll(".option-item");
+              for (const option of options) {
+                const optionData = {
+                  label: option.querySelector(".option-text").value,
+                  value: option.querySelector(".option-value").value,
+                  points:
+                    parseInt(option.querySelector(".option-points").value) || 0,
+                };
+                questionData.options.push(optionData);
+              }
+            }
+
+            sectionData.questions.push(questionData);
+          }
+
+          formData.sections.push(sectionData);
+        }
+
+        return formData;
+      }
+
+      function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (e) => resolve(e.target.result); // base64 string
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      }
+
+      // Preview functionality
+      async function updatePreview() {
+        const previewContainer = document.getElementById("formPreview");
+        const formData = await collectFormData();
+
+        let previewHTML = `
+                <div class="mb-4">
+                  <h2 class="text-primary">${
+                    formData.title || "Tiêu đề form"
+                  }</h2>
+                  ${
+                    formData.category
+                      ? `<p class="text-muted"><i class="fas fa-tag me-2"></i>${formData.category}</p>`
+                      : ""
+                  }
+                  ${
+                    formData.description
+                      ? `<p class="mb-4">${formData.description}</p>`
+                      : ""
+                  }
+                </div>
+              `;
+
+        formData.sections.forEach((section, sectionIdx) => {
+          previewHTML += `
+                  <div class="preview-section">
+                    <h4 class="text-primary mb-3">${
+                      section.title || `Mục ${sectionIdx + 1}`
+                    }</h4>
+                `;
+
+          section.questions.forEach((question, questionIdx) => {
+            previewHTML += `
+                    <div class="mb-4">
+                      <label class="form-label fw-bold">${
+                        question.question || `Câu hỏi ${questionIdx + 1}`
+                      }</label>
+                      ${
+                        question.image
+                          ? `<div class="mb-2"><img src="${question.image}" class="img-fluid rounded" style="max-height: 200px;"></div>`
+                          : ""
+                      }
+                  `;
+
+            switch (question.type) {
+              case "text":
+                previewHTML += `<input type="text" class="form-control" placeholder="Nhập câu trả lời...">`;
+                break;
+              case "number":
+                previewHTML += `<input type="number" class="form-control" placeholder="Nhập số...">`;
+                break;
+              case "date":
+                previewHTML += `<input type="date" class="form-control">`;
+                break;
+              case "checkbox":
+                question.options.forEach((option) => {
+                  previewHTML += `
+                          <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="preview_${sectionIdx}_${questionIdx}_${
+                    option.value
+                  }">
+                            <label class="form-check-label" for="preview_${sectionIdx}_${questionIdx}_${
+                    option.value
+                  }">
+                              ${option.text} ${
+                    option.points > 0 ? `(${option.points} điểm)` : ""
+                  }
+                            </label>
+                          </div>
+                        `;
+                });
+                break;
+              case "radio":
+                question.options.forEach((option) => {
+                  previewHTML += `
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="preview_${sectionIdx}_${questionIdx}" id="preview_${sectionIdx}_${questionIdx}_${
+                    option.value
+                  }">
+                            <label class="form-check-label" for="preview_${sectionIdx}_${questionIdx}_${
+                    option.value
+                  }">
+                              ${option.text} ${
+                    option.points > 0 ? `(${option.points} điểm)` : ""
+                  }
+                            </label>
+                          </div>
+                        `;
+                });
+                break;
+              case "dropdown":
+                previewHTML += `<select class="form-select">`;
+                previewHTML += `<option value="">Chọn một lựa chọn...</option>`;
+                question.options.forEach((option) => {
+                  previewHTML += `<option value="${option.value}">${
+                    option.text
+                  } ${
+                    option.points > 0 ? `(${option.points} điểm)` : ""
+                  }</option>`;
+                });
+                previewHTML += `</select>`;
+                break;
+            }
+
+            previewHTML += `</div>`;
+          });
+
+          previewHTML += `</div>`;
+        });
+
+        previewHTML += `
+                <div class="mb-4">
+                  <p class="text-danger">* Lưu ý</p>
+                  ${formData.note ? `<p class="mb-4">${formData.note}</p>` : ""}
+                </div>
+              `;
+
+        previewContainer.innerHTML = previewHTML;
+      }
+
+      function togglePreview() {
+        const previewContainer = document.getElementById("previewContainer");
+        const isVisible = previewContainer.style.display !== "none";
+
+        if (isVisible) {
+          previewContainer.style.display = "none";
+        } else {
+          updatePreview();
+          previewContainer.style.display = "block";
+          previewContainer.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+
+      // Form operations
+      async function saveForm() {
+        const formData = await collectFormData();
+
+        // Validation
+        if (!formData.title.trim()) {
+          showToast("Vui lòng nhập tiêu đề form!", "error");
+          return;
+        }
+
+        if (formData.sections.length === 0) {
+          showToast("Vui lòng thêm ít nhất một mục!", "error");
+          return;
+        }
+
+        // Validate sections
+        for (let i = 0; i < formData.sections.length; i++) {
+          const section = formData.sections[i];
+          if (!section.title.trim()) {
+            showToast(`Vui lòng nhập tiêu đề cho mục ${i + 1}!`, "error");
+            return;
+          }
+
+          if (section.questions.length === 0) {
+            showToast(
+              `Mục "${section.title}" phải có ít nhất một câu hỏi!`,
+              "error"
+            );
+            return;
+          }
+
+          // Validate questions
+          for (let j = 0; j < section.questions.length; j++) {
+            const question = section.questions[j];
+            if (!question.question.trim()) {
+              showToast(
+                `Vui lòng nhập nội dung cho câu hỏi ${j + 1} trong mục "${
+                  section.title
+                }"!`,
+                "error"
+              );
+              return;
+            }
+
+            // Validate options for multiple choice questions
+            if (["checkbox", "radio", "dropdown"].includes(question.type)) {
+              if (question.options.length === 0) {
+                showToast(
+                  `Câu hỏi "${question.question}" phải có ít nhất một lựa chọn!`,
+                  "error"
+                );
+                return;
+              }
+
+              for (let k = 0; k < question.options.length; k++) {
+                const option = question.options[k];
+                if (!option.label.trim()) {
+                  showToast(
+                    `Vui lòng nhập nội dung cho lựa chọn ${
+                      k + 1
+                    } trong câu hỏi "${question.question}"!`,
+                    "error"
+                  );
+                  return;
+                }
+              }
+            }
+          }
+        }
+
+        try {
+          const saveBtn = document.getElementById("saveBtn");
+          const originalText = saveBtn.innerHTML;
+          saveBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin me-2"></i>Đang lưu...';
+          saveBtn.disabled = true;
+
+          let result;
+          if (isEditMode && currentFormId) {
+            result = await saveFormToDatabase(formData, currentFormId);
+          } else {
+            result = await saveFormToDatabase(formData);
+          }
+
+          if (result && result.status) {
+            showToast(
+              `Form đã được ${isEditMode ? "cập nhật" : "lưu"} thành công!`,
+              "success"
+            );
+
+            if (!isEditMode && result.data && result.data.id) {
+              // Switch to edit mode
+              currentFormId = result.data.id;
+              isEditMode = true;
+              updateFormModeIndicator(true, currentFormId);
+              updateUrlParameter("id", currentFormId);
+            }
+          } else {
+            showToast(
+              `Lỗi khi ${isEditMode ? "cập nhật" : "lưu"} form!`,
+              "error"
+            );
+          }
+        } catch (error) {
+          console.error("Save error:", error);
+          showToast("Có lỗi xảy ra khi lưu form!", "error");
+        } finally {
+          const saveBtn = document.getElementById("saveBtn");
+          saveBtn.innerHTML = isEditMode
+            ? '<i class="fas fa-save me-2"></i>Cập nhật Form'
+            : '<i class="fas fa-save me-2"></i>Lưu Form';
+          saveBtn.disabled = false;
+        }
+      }
+
+      function clearForm() {
+        if (confirm("Bạn có chắc chắn muốn xóa tất cả dữ liệu?")) {
+          document.getElementById("formBuilder").reset();
+          document.getElementById("sectionsContainer").innerHTML = `
+                  <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="text-gradient">
+                      <i class="fas fa-list-ul me-2"></i>Các mục đánh giá
+                    </h3>
+                    <button type="button" class="btn btn-primary" onclick="addSection()">
+                      <i class="fas fa-plus me-1"></i>Thêm mục mới
+                    </button>
+                  </div>
+                `;
+          sectionIndex = 0;
+          updatePreview();
+          showToast("Đã xóa tất cả dữ liệu!", "success");
+        }
+      }
+
+      function createNewForm() {
+        if (
+          confirm(
+            "Bạn có chắc chắn muốn tạo form mới? Tất cả dữ liệu hiện tại sẽ bị xóa."
+          )
+        ) {
+          // Reset form state
+          currentFormId = null;
+          isEditMode = false;
+
+          // Clear URL parameter
+          updateUrlParameter("id", null);
+
+          // Update UI
+          updateFormModeIndicator(false);
+          clearForm();
+        }
+      }
+
+      // Import/Export functionality
+      async function exportForm() {
+        const formData = await collectFormData();
+        const dataStr = JSON.stringify(formData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: "application/json" });
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(dataBlob);
+        link.download = `form_${formData.title
+          .replace(/[^a-z0-9]/gi, "_")
+          .toLowerCase()}_${new Date().toISOString().split("T")[0]}.json`;
+        link.click();
+
+        showToast("Đã xuất form thành công!", "success");
+      }
+
+      function importForm() {
+        const modal = new bootstrap.Modal(
+          document.getElementById("importModal")
+        );
+        modal.show();
+      }
+
+      function processImport() {
+        const jsonText = document.getElementById("importJson").value.trim();
+
+        if (!jsonText) {
+          showToast("Vui lòng nhập nội dung JSON!", "error");
+          return;
+        }
+
+        try {
+          const formData = JSON.parse(jsonText);
+
+          // Validate imported data
+          if (!formData.title || !formData.sections) {
+            showToast("Định dạng JSON không hợp lệ!", "error");
+            return;
+          }
+
+          // Load the imported data
+          loadFormData(formData);
+
+          // Close modal
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById("importModal")
+          );
+          modal.hide();
+          document.getElementById("importJson").value = "";
+
+          showToast("Đã nhập form thành công!", "success");
+        } catch (error) {
+          console.error("Import error:", error);
+          showToast("Lỗi định dạng JSON!", "error");
+        }
+      }
+
+      function loadFormData(data) {
+        // Clear existing form
+        document.getElementById("formBuilder").reset();
+        document.getElementById("sectionsContainer").innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                  <h3 class="text-gradient">
+                    <i class="fas fa-list-ul me-2"></i>Các mục đánh giá
+                  </h3>
+                  <button type="button" class="btn btn-primary" onclick="addSection()">
+                    <i class="fas fa-plus me-1"></i>Thêm mục mới
+                  </button>
+                </div>
+              `;
+        sectionIndex = 0;
+
+        // Load basic info
+        document.getElementById("title").value = data.title || "";
+        document.getElementById("description").value = data.description || "";
+        document.getElementById("category").value = data.category || "";
+        document.getElementById("note").value = data.note || "";
+        document.getElementById("standard").value = data.standardPoint?.value || "";
+        document.getElementById("minstandard").value = data.standardPoint?.lessMessage || "";
+        document.getElementById("maxstandard").value = data.standardPoint?.greaterMessage || "";
+
+        // Load sections
+        if (data.sections && data.sections.length > 0) {
+          data.sections.forEach((sectionData, sectionIdx) => {
+            addSection();
+            const section = document.querySelector(
+              `[data-section-index="${sectionIdx}"]`
+            );
+            section.querySelector(".section-title").value =
+              sectionData.title || "";
+
+            // Load questions
+            if (sectionData.questions && sectionData.questions.length > 0) {
+              sectionData.questions.forEach((questionData, questionIdx) => {
+                const addQuestionBtn = section.querySelector(
+                  'button[onclick*="addQuestion"]'
+                );
+                addQuestion(addQuestionBtn);
+
+                const question =
+                  section.querySelectorAll(".question-item")[questionIdx];
+                question.querySelector(".question-type").value =
+                  questionData.type || "text";
+                question.querySelector(".question-text").value =
+                  questionData.question || "";
+
+                // Trigger question type change to show/hide options
+                const event = new Event("change");
+                question.querySelector(".question-type").dispatchEvent(event);
+
+                // Load image if exists
+                if (questionData.image) {
+                  const imageCheckbox = question.querySelector(
+                    ".enable-image-checkbox"
+                  );
+                  imageCheckbox.checked = true;
+                  toggleImageUpload(imageCheckbox, sectionIdx, questionIdx);
+
+                  // Set image preview
+                  const preview = question.querySelector(
+                    `#imagePreview_${sectionIdx}_${questionIdx}`
+                  );
+                  if (preview) {
+                    preview.innerHTML = `<img src="${questionData.image}" alt="Preview">`;
+                  }
+                }
+
+                // Load options
+                if (questionData.options && questionData.options.length > 0) {
+                  const optionsContainer =
+                    question.querySelector(".options-container");
+                  optionsContainer.innerHTML = ""; // Clear existing options
+
+                  questionData.options.forEach((optionData, optionIdx) => {
+                    const addOptionBtn = question.querySelector(
+                      'button[onclick*="addOption"]'
+                    );
+                    addOption(addOptionBtn);
+
+                    const option = optionsContainer.children[optionIdx];
+                    option.querySelector(".option-text").value =
+                      optionData.label || "";
+                    option.querySelector(".option-value").value =
+                      optionData.value || "";
+                    option.querySelector(".option-points").value =
+                      optionData.points || 0;
+                  });
+                }
+              });
+            }
+          });
+        }
+
+        updatePreview();
+      }
+
+      // Initialization
+      async function initializeForm() {
+        showLoading(true);
+
+        try {
+          const formId = getUrlParameter("id");
+
+          if (formId) {
+            // Edit mode - load existing form
+            const result = await fetchFormFromDatabase(formId);
+
+            if (result && result.status && result.payload) {
+              currentFormId = formId;
+              isEditMode = true;
+              updateFormModeIndicator(true, formId);
+              loadFormData(result.payload);
+              showToast("Đã tải form thành công!", "success");
+            } else {
+              showToast("Không tìm thấy form hoặc có lỗi khi tải!", "error");
+              updateFormModeIndicator(false);
+            }
+          } else {
+            // Create mode
+            updateFormModeIndicator(false);
+            addSection(); // Add initial section
+          }
+        } catch (error) {
+          console.error("Initialization error:", error);
+          showToast("Có lỗi xảy ra khi khởi tạo!", "error");
+          updateFormModeIndicator(false);
+          addSection(); // Add initial section as fallback
+        } finally {
+          showLoading(false);
+        }
+      }
+
+      // Event listeners
+      document.addEventListener("DOMContentLoaded", function () {
+        initializeForm();
+
+        // Auto-save functionality (optional)
+        let autoSaveTimer;
+        document
+          .getElementById("formBuilder")
+          .addEventListener("input", function () {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+              updatePreview();
+            }, 500);
+          });
+      });
+
+      // Keyboard shortcuts
+      document.addEventListener("keydown", function (e) {
+        // Ctrl+S to save
+        if (e.ctrlKey && e.key === "s") {
+          e.preventDefault();
+          saveForm();
+        }
+
+        // Ctrl+Shift+P to toggle preview
+        if (e.ctrlKey && e.shiftKey && e.key === "P") {
+          e.preventDefault();
+          togglePreview();
+        }
+      });
+
+      // Prevent accidental page leave
+      window.addEventListener("beforeunload", async function (e) {
+        const formData = await collectFormData();
+        if (formData.title || formData.sections.length > 0) {
+          e.preventDefault();
+          e.returnValue = "";
+        }
+      });
+    </script>
+  </body>
+</html>

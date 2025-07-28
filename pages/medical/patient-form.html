@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Thang đánh giá Y tế - Dynamic Medical Assessment</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      .patient-info-section {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+      .assessment-section {
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 25px;
+        background: white;
+      }
+      .question-item {
+        margin-bottom: 15px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 5px;
+      }
+      .result-modal {
+        backdrop-filter: blur(5px);
+      }
+      .score-display {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #007bff;
+      }
+      .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+      }
+      .error-container {
+        text-align: center;
+        padding: 40px;
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+        border-radius: 8px;
+        color: #721c24;
+        margin: 20px 0;
+      }
+
+      @media print {
+        .btn,
+        .modal,
+        nav,
+        .no-print {
+          display: none !important;
+        }
+        .container {
+          max-width: none !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        .assessment-section,
+        .patient-info-section {
+          page-break-inside: avoid;
+          margin-bottom: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="savingOverlay"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.7);
+        z-index: 5050;
+        justify-content: center;
+        align-items: center;
+      "
+    >
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Đang lưu kết quả...</span>
+      </div>
+    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container">
+        <a class="navbar-brand" href="/medical">Hệ thống Đánh giá Y tế</a>
+
+        <!-- Nút toggle cho mobile -->
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarMedical"
+          aria-controls="navbarMedical"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Menu items -->
+        <div class="collapse navbar-collapse" id="navbarMedical">
+          <div class="navbar-nav ms-auto">
+            <a class="nav-link text-white" href="/medical">Trang chủ</a>
+            <a class="nav-link text-white" href="/medical/patient/search"
+              >Tra cứu</a
+            >
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container mt-4">
+      <!-- Loading Spinner -->
+      <div id="loadingSpinner" class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Đang tải...</span>
+        </div>
+      </div>
+
+      <!-- Error Container -->
+      <div id="errorContainer" class="error-container" style="display: none">
+        <h3>❌ Lỗi</h3>
+        <p id="errorMessage">Không thể tải biểu mẫu. Vui lòng thử lại sau.</p>
+        <button class="btn btn-primary" onclick="goToHistory()">
+          Quay lại lịch sử
+        </button>
+      </div>
+
+      <!-- Main Form Container -->
+      <div id="formContainer" class="row" style="display: none">
+        <div class="col-lg-8 mx-auto">
+          <h1 id="formTitle" class="text-center mb-4">Thang đánh giá Y tế</h1>
+          <p id="formDescription" class="text-center text-muted mb-4">
+            Phiếu đánh giá chức năng
+          </p>
+
+          <form id="patientForm">
+            <!-- Patient Information Section -->
+            <h2 class="h4 mb-4">I. PHẦN HÀNH CHÍNH</h2>
+            <div class="patient-info-section">
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="patientName" class="form-label"
+                    >Tên bệnh nhân</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="patientName"
+                    name="patientName"
+                    required
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="age" class="form-label">Tuổi</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="age"
+                    name="age"
+                    required
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="gender" class="form-label">Giới tính</label>
+                  <select
+                    class="form-select"
+                    id="gender"
+                    name="gender"
+                    required
+                  >
+                    <option value="">Chọn...</option>
+                    <option value="Male">Nam</option>
+                    <option value="Female">Nữ</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="diagnosis" class="form-label">Chẩn đoán</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="diagnosis"
+                    name="diagnosis"
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="patientId" class="form-label">Mã Bệnh nhân</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="patientId"
+                    name="patientId"
+                  />
+                </div>
+                <div class="col-md-3 mb-3">
+                  <label for="phone" class="form-label">Số điện thoại</label>
+                  <input
+                    type="tel"
+                    class="form-control"
+                    id="phone"
+                    name="phone"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4 mb-3">
+                  <label for="guardian" class="form-label"
+                    >Người đánh giá</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="guardian"
+                    name="guardian"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="assessmentDate" class="form-label"
+                    >Ngày đánh giá</label
+                  >
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="assessmentDate"
+                    name="assessmentDate"
+                  />
+                </div>
+                <div class="col-md-4 mb-3">
+                  <label for="assessmentTime" class="form-label"
+                    >Thời điểm đánh giá</label
+                  >
+                  <select
+                    class="form-select"
+                    id="assessmentTime"
+                    name="assessmentTime"
+                  >
+                    <option value="">Chọn...</option>
+                    <option value="Nhập viện">Nhập viện</option>
+                    <option value="Xuất viện">Xuất viện</option>
+                    <option value="Theo dõi">Theo dõi</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dynamic Assessment Sections -->
+            <h2 class="h4 mb-4">II. PHẦN LƯỢNG GIÁ</h2>
+            <div id="dynamicSections"></div>
+
+            <div class="assessment-section">
+              <h3 class="h5 mb-4 text-danger">* Lưu ý</h3>
+              <p id="formNote"></p>
+            </div>
+
+            <!-- Result Section -->
+            <div class="assessment-section">
+              <h3 class="h5 mb-4">KẾT QUẢ</h3>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="totalScore" class="form-label">Tổng điểm</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="totalScore"
+                    name="totalScore"
+                    readonly
+                  />
+                </div>
+              </div>
+              <div class="mt-3">
+                <small class="text-muted">
+                  Designed and developed by Vien Dong College
+                </small>
+              </div>
+            </div>
+
+            <div class="text-center mb-4 d-flex flex-wrap gap-2">
+              <button
+                type="button"
+                class="btn btn-primary btn-lg me-lg-3"
+                onclick="calculateScore()"
+              >
+                Tính điểm
+              </button>
+              <button type="submit" class="btn btn-success btn-lg">
+                Gửi kết quả
+              </button>
+              <button
+                type="button"
+                class="btn btn-info btn-lg ms-lg-3"
+                onclick="printForm()"
+              >
+                In Phiếu (In hoặc lưu bằng pdf)
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div class="modal fade result-modal" id="resultModal" tabindex="-1">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Kết quả đánh giá</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+            ></button>
+          </div>
+          <div class="modal-body text-center">
+            <h3 id="resultTitle">Tổng điểm</h3>
+            <div class="score-display" id="modalScore">0</div>
+            <div class="mt-3">
+              <p id="scoreInterpretation" class="text-muted"></p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Đóng
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="saveResult()"
+            >
+              Lưu kết quả
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      let currentScore = 0;
+      let data = null;
+      let formId = null;
+      let question = null;
+
+      // Get form ID from URL parameters
+      function getFormIdFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get("id");
+      }
+
+      // Redirect to history page
+      function goToHistory() {
+        window.history.back();
+      }
+
+      // Show error message
+      function showError(message) {
+        document.getElementById("loadingSpinner").style.display = "none";
+        document.getElementById("formContainer").style.display = "none";
+        document.getElementById("errorContainer").style.display = "block";
+        document.getElementById("errorMessage").textContent = message;
+      }
+
+      // Show form
+      function showForm() {
+        document.getElementById("loadingSpinner").style.display = "none";
+        document.getElementById("errorContainer").style.display = "none";
+        document.getElementById("formContainer").style.display = "block";
+      }
+
+      // Fetch form data from API
+      async function fetchFormData(id) {
+        try {
+          const response = await axios.get(`/api/medical/forms/${id}`);
+
+          if (response && response.data && response.data.status)
+            return response.data;
+
+          return null;
+        } catch (error) {
+          console.error("Error fetching form data:", error);
+          throw error;
+        }
+      }
+
+      // Render dynamic form sections
+      function renderFormSections(sections) {
+        const container = document.getElementById("dynamicSections");
+        container.innerHTML = "";
+
+        sections.forEach((section, sectionIndex) => {
+          const sectionDiv = document.createElement("div");
+          sectionDiv.className = "assessment-section";
+
+          let sectionHTML = `<h3 class="h5 mb-4">Mục ${sectionIndex + 1}: ${
+            section.title
+          }</h3>`;
+
+          section.questions.forEach((question, questionIndex) => {
+            const questionId = `section_${sectionIndex}_question_${questionIndex}`;
+            sectionHTML += `<div class="question-item">`;
+            sectionHTML += question.image
+              ? `<img class="w-full" width="100%" src=${question.image} alt="" />`
+              : `<label class="form-label fw-bold">${question.question}</label>`;
+            sectionHTML += `<div class="mt-2">`;
+
+            switch (question.type) {
+              case "radio":
+                if (question.options && question.options.length > 0) {
+                  question.options.forEach((option, optionIndex) => {
+                    // Handle both object format {label, value, points} and string format
+                    let optionLabel, optionValue, optionPoints;
+
+                    if (typeof option === "object" && option !== null) {
+                      optionLabel = option.label || option.value || "";
+                      optionValue = option.value || "";
+                      optionPoints = option.points || 0;
+                    } else {
+                      // Fallback for string format "value - label"
+                      const [value, label] = option.includes(" - ")
+                        ? option.split(" - ")
+                        : [optionIndex.toString(), option];
+                      optionLabel = label || option;
+                      optionValue = value;
+                      optionPoints = parseInt(value) || 0;
+                    }
+
+                    sectionHTML += `
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" 
+                               name="responses[${questionId}]" 
+                               value="${optionValue}" 
+                               id="${questionId}_${optionIndex}"
+                               data-points="${optionPoints}" />
+                        <label class="form-check-label" for="${questionId}_${optionIndex}">
+                          ${optionLabel}
+                        </label>
+                      </div>`;
+                  });
+                }
+                break;
+
+              case "checkbox":
+                if (question.options && question.options.length > 0) {
+                  question.options.forEach((option, optionIndex) => {
+                    let optionLabel, optionValue, optionPoints;
+
+                    if (typeof option === "object" && option !== null) {
+                      optionLabel = option.label || option.value || "";
+                      optionValue = option.value || "";
+                      optionPoints = option.points || 0;
+                    } else {
+                      const [value, label] = option.includes(" - ")
+                        ? option.split(" - ")
+                        : [optionIndex.toString(), option];
+                      optionLabel = label || option;
+                      optionValue = value;
+                      optionPoints = parseInt(value) || 0;
+                    }
+
+                    sectionHTML += `
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" 
+                               name="responses[${questionId}][]" 
+                               value="${optionValue}" 
+                               id="${questionId}_${optionIndex}"
+                               data-points="${optionPoints}" />
+                        <label class="form-check-label" for="${questionId}_${optionIndex}">
+                          ${optionLabel}
+                        </label>
+                      </div>`;
+                  });
+                }
+                break;
+
+              case "dropdown":
+                sectionHTML += `<select class="form-select" name="responses[${questionId}]" id="${questionId}">`;
+                sectionHTML += `<option value="">Chọn...</option>`;
+                if (question.options && question.options.length > 0) {
+                  question.options.forEach((option, optionIndex) => {
+                    let optionLabel, optionValue, optionPoints;
+
+                    if (typeof option === "object" && option !== null) {
+                      optionLabel = option.label || option.value || "";
+                      optionValue = option.value || "";
+                      optionPoints = option.points || 0;
+                    } else {
+                      const [value, label] = option.includes(" - ")
+                        ? option.split(" - ")
+                        : [optionIndex.toString(), option];
+                      optionLabel = label || option;
+                      optionValue = value;
+                      optionPoints = parseInt(value) || 0;
+                    }
+
+                    sectionHTML += `<option value="${optionValue}" data-points="${optionPoints}">${optionLabel}</option>`;
+                  });
+                }
+                sectionHTML += `</select>`;
+                break;
+
+              case "text":
+                sectionHTML += `<input type="text" class="form-control" name="responses[${questionId}]" id="${questionId}" />`;
+                break;
+
+              case "number":
+                sectionHTML += `<input type="number" class="form-control" name="responses[${questionId}]" id="${questionId}" />`;
+                break;
+
+              case "date":
+                sectionHTML += `<input type="date" class="form-control" name="responses[${questionId}]" id="${questionId}" />`;
+                break;
+            }
+
+            sectionHTML += `</div></div>`;
+          });
+
+          sectionDiv.innerHTML = sectionHTML;
+          container.appendChild(sectionDiv);
+        });
+      }
+
+      // Calculate total score
+      function calculateScore() {
+        const form = document.getElementById("patientForm");
+        let totalScore = 0;
+
+        // Get all radio inputs that are checked
+        const checkedRadios = form.querySelectorAll(
+          'input[type="radio"]:checked'
+        );
+        checkedRadios.forEach((input) => {
+          const points =
+            parseInt(input.getAttribute("data-points")) ||
+            parseInt(input.value) ||
+            0;
+          totalScore += points;
+        });
+
+        // Get all checkbox inputs that are checked
+        const checkedCheckboxes = form.querySelectorAll(
+          'input[type="checkbox"]:checked'
+        );
+        checkedCheckboxes.forEach((input) => {
+          const points =
+            parseInt(input.getAttribute("data-points")) ||
+            parseInt(input.value) ||
+            0;
+          totalScore += points;
+        });
+
+        // Get all select inputs
+        const selects = form.querySelectorAll('select[name^="responses"]');
+        selects.forEach((select) => {
+          if (select.value) {
+            const selectedOption = select.options[select.selectedIndex];
+            const points =
+              parseInt(selectedOption.getAttribute("data-points")) ||
+              parseInt(select.value) ||
+              0;
+            totalScore += points;
+          }
+        });
+
+        // Get number inputs (in case they should contribute to score)
+        const numberInputs = form.querySelectorAll(
+          'input[type="number"][name^="responses"]'
+        );
+        numberInputs.forEach((input) => {
+          if (input.value) {
+            const points = parseInt(input.value) || 0;
+            totalScore += points;
+          }
+        });
+
+        currentScore = totalScore;
+        document.getElementById("totalScore").value = totalScore;
+        document.getElementById("modalScore").textContent = totalScore;
+
+        // Add score interpretation (you can customize this based on your form type)
+        let interpretation = getScoreInterpretation(totalScore);
+        document.getElementById("scoreInterpretation").textContent =
+          interpretation;
+
+        const modal = new bootstrap.Modal(
+          document.getElementById("resultModal")
+        );
+        modal.show();
+      }
+
+      // Get score interpretation (customize based on your needs)
+      function getScoreInterpretation(score) {
+        // This is a generic interpretation - you should customize based on your form type
+        if (score >= question?.standardPoint?.value) {
+          return (
+            question?.standardPoint?.greaterMessage ?? "Không có lời khuyên"
+          );
+        } else {
+          return question?.standardPoint?.lessMessage ?? "Không có lời khuyên";
+        }
+      }
+
+      // Save result
+      async function saveResult() {
+        const overlay = document.getElementById("savingOverlay");
+        overlay.style.display = "flex";
+
+        const form = document.getElementById("patientForm");
+
+        if (!form.checkValidity()) {
+          alert("Vui lòng nhập đầy đủ thông tin.");
+          overlay.style.display = "none";
+          return;
+        }
+
+        const formDataObj = new FormData(form);
+
+        // Convert FormData to regular object
+        const data = {
+          formId: formId,
+          patientName: formDataObj.get("patientName"),
+          age: Number(formDataObj.get("age") ?? 0),
+          gender: formDataObj.get("gender"),
+          diagnosis: formDataObj.get("diagnosis"),
+          patientId: formDataObj.get("patientId"),
+          phone: formDataObj.get("phone"),
+          guardian: formDataObj.get("guardian"),
+          salaryDate: formDataObj.get("assessmentDate"),
+          salaryTime: formDataObj.get("assessmentTime"),
+          responses: {},
+          totalScore: currentScore,
+          advice: getScoreInterpretation(currentScore)
+        };
+
+        const responsesMap = new Map();
+
+        for (let [key, value] of formDataObj.entries()) {
+          if (!key.startsWith("responses[")) continue;
+
+          const questionId = key.replace("responses[", "").replace("]", "");
+
+          // Select tất cả inputs có cùng name (checkbox/radio/dropdown)
+          const inputs = document.querySelectorAll(
+            `[name="${key}"], [name="${key}[]"]`
+          );
+
+          let points = 0;
+
+          // Tìm input phù hợp với value hiện tại
+          inputs.forEach((input) => {
+            if (input.type === "checkbox" || input.type === "radio") {
+              if (input.checked && input.value === value) {
+                points = parseInt(input.getAttribute("data-points")) || 0;
+              }
+            } else if (input.tagName === "SELECT") {
+              const selectedOption = input.options[input.selectedIndex];
+              if (selectedOption?.value === value) {
+                points =
+                  parseInt(selectedOption.getAttribute("data-points")) || 0;
+              }
+            } else if (
+              input.type === "number" ||
+              input.type === "text" ||
+              input.type === "date"
+            ) {
+              points = 0; // text/date không có points
+            }
+          });
+
+          // Gộp lại nếu checkbox
+          if (responsesMap.has(questionId)) {
+            const existing = responsesMap.get(questionId);
+            if (!Array.isArray(existing.answer)) {
+              existing.answer = [existing.answer];
+            }
+            existing.answer.push(value);
+            existing.points += points;
+          } else {
+            responsesMap.set(questionId, {
+              questionId,
+              answer: value,
+              points: points,
+            });
+          }
+        }
+
+        data.responses = Array.from(responsesMap.values());
+
+        try {
+          const response = await axios.post(
+            `/api/medical/forms/${formId}/submit`,
+            data
+          );
+
+          if (response && response.data && response.data.status) {
+            alert("Đã lưu kết quả thành công!");
+            bootstrap.Modal.getInstance(
+              document.getElementById("resultModal")
+            ).hide();
+            return;
+          }
+          alert("Có lỗi xảy ra khi lưu kết quả. Vui lòng thử lại.");
+        } catch (error) {
+          console.error("Error saving result:", error);
+          alert("Có lỗi xảy ra khi lưu kết quả. Vui lòng thử lại.");
+        } finally {
+          overlay.style.display = "none";
+        }
+      }
+
+      // Print form
+      function printForm() {
+        window.print();
+      }
+
+      // Handle form submission
+      document
+        .getElementById("patientForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (currentScore === 0) {
+            alert("Vui lòng tính điểm trước khi gửi!");
+            return;
+          }
+          saveResult();
+        });
+
+      // Initialize the form
+      async function initializeForm() {
+        formId = getFormIdFromUrl();
+
+        if (!formId) {
+          showError(
+            "Không có ID biểu mẫu. Vui lòng chọn biểu mẫu từ danh sách."
+          );
+          setTimeout(() => {
+            goToHistory();
+          }, 3000);
+          return;
+        }
+
+        try {
+          data = await fetchFormData(formId);
+
+          if (data && data.status) {
+            const formData = data.payload;
+            question = formData;
+            // Update form title and description
+            document.getElementById("formTitle").textContent = formData.title;
+            document.getElementById("formDescription").textContent =
+              formData.description || "Phiếu đánh giá chức năng";
+            document.getElementById(
+              "resultTitle"
+            ).textContent = `Tổng điểm ${formData.title}`;
+            document.getElementById("formNote").textContent = formData.note;
+
+            // Render dynamic sections
+            renderFormSections(formData.sections);
+
+            // Set current date
+            const today = new Date().toISOString().split("T")[0];
+            document.getElementById("assessmentDate").value = today;
+
+            showForm();
+          } else {
+            showError("Không thể tải dữ liệu biểu mẫu.");
+          }
+        } catch (error) {
+          console.error("Error initializing form:", error);
+          showError(
+            error.message || "Không thể tải biểu mẫu. Vui lòng thử lại sau."
+          );
+          setTimeout(() => {
+            goToHistory();
+          }, 5000);
+        }
+      }
+
+      // Start initialization when page loads
+      document.addEventListener("DOMContentLoaded", initializeForm);
+
+      // Optional: Auto-calculate score when answers change
+      document.addEventListener("change", function (e) {
+        if (e.target.name && e.target.name.startsWith("responses[")) {
+          // Uncomment the line below if you want auto-calculation
+          // calculateScore();
+        }
+      });
+    </script>
+  </body>
+</html>

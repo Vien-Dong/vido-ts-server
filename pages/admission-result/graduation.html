@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tra Cứu Điểm Thi THPT 2025</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #fff;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h2 {
+        color: #2c3e50;
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: bold;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-control {
+        border-radius: 8px;
+        border: 2px solid #e9ecef;
+        padding: 12px;
+        font-size: 16px;
+      }
+
+      .form-control:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+
+      .btn-primary {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        border: none;
+        padding: 12px 30px;
+        font-size: 16px;
+        font-weight: bold;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+      }
+
+      .result-section {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        margin-top: 30px;
+      }
+
+      .resultSearch__left {
+        margin-bottom: 30px;
+      }
+
+      .resultSearch__left-sbd {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #e3f2fd;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+      }
+
+      .resultSearch__left-sbd p:first-child {
+        margin: 0;
+        font-weight: 500;
+        color: #1976d2;
+      }
+
+      .font-bold {
+        font-weight: bold;
+        font-size: 18px;
+        color: #d32f2f;
+        margin: 0;
+      }
+
+      .edu-institution {
+        text-align: center;
+        color: #666;
+        font-style: italic;
+        margin-bottom: 20px;
+      }
+
+      .share-link {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
+
+      .newFeature__iconLink {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #f5f5f5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        transition: all 0.3s ease;
+      }
+
+      .newFeature__iconLink:hover {
+        transform: scale(1.1);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .img {
+        width: 20px;
+        height: 20px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        position: relative;
+      }
+
+      .img::after {
+        position: absolute;
+        color: white;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      .img-facebook {
+        background-color: #3b5998;
+        border-radius: 3px;
+      }
+      .img-twitter {
+        background-color: #1da1f2;
+        border-radius: 3px;
+      }
+      .img-email {
+        background-color: #ea4335;
+        border-radius: 3px;
+      }
+      .img-share {
+        background-color: #666;
+        border-radius: 3px;
+      }
+
+      .img-facebook::after {
+        content: "f";
+      }
+
+      .img-twitter::after {
+        content: "t";
+      }
+
+      .img-email::after {
+        content: "✉";
+      }
+
+      .img-share::after {
+        content: "🔗";
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      thead {
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        color: white;
+      }
+
+      th,
+      td {
+        padding: 15px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+      }
+
+      th {
+        font-weight: bold;
+        font-size: 16px;
+      }
+
+      tbody tr:hover {
+        background-color: #f8f9fa;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .loading {
+        display: none;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .loading.show {
+        display: block;
+      }
+
+      .spinner-border {
+        width: 3rem;
+        height: 3rem;
+      }
+
+      .image-links {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+        gap: 20px;
+      }
+
+      .image-links img {
+        border-radius: 8px;
+        transition: transform 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .image-links img:hover {
+        transform: scale(1.05);
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      @media (max-width: 768px) {
+        .image-links {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .image-links img {
+          width: 100%;
+          max-width: 300px;
+          height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Home Page -->
+      <div id="homePage">
+        <br />
+        <h2>Tra Cứu Điểm Thi THPT năm <span id="year"></span></h2>
+
+        <form id="examForm" class="was-validated">
+          <div class="form-group">
+            <label for="studentId" class="mb-1">Số Báo Danh:</label>
+            <br />
+            <input
+              type="text"
+              class="form-control"
+              id="studentId"
+              placeholder="Nhập số báo danh"
+              name="studentId"
+              required
+            />
+            <div class="valid-feedback">Hợp lệ</div>
+            <div class="invalid-feedback">Vui lòng nhập đầy đủ</div>
+          </div>
+          <br />
+          <button type="submit" class="btn btn-primary">
+            Tra cứu điểm thi
+          </button>
+        </form>
+
+        <div class="loading" id="loading">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Vui lòng chờ...</p>
+        </div>
+      </div>
+
+      <!-- Result Page -->
+      <div id="resultPage" class="hidden">
+        <h2 class="mb-5">Kết Quả Tra Cứu Điểm Thi THPT năm 2025</h2>
+
+        <div class="result-section">
+          <div class="resultSearch__left">
+            <div class="resultSearch__left-sbd">
+              <p>Số báo danh</p>
+              <p class="font-bold" id="displayStudentId"></p>
+            </div>
+            <div class="resultSearch__left-info">
+              <p class="edu-institution">Sở GD&ĐT Thành Phố Hồ Chí Minh</p>
+
+              <div class="controll__box share-link">
+                <a
+                  class="newFeature__iconLink"
+                  title="Chia sẻ bài viết lên facebook"
+                  href="javascript:void(0);"
+                >
+                  <span class="img img-facebook"></span>
+                </a>
+                <a
+                  class="newFeature__iconLink"
+                  title="Chia sẻ bài viết lên twitter"
+                  href="javascript:void(0);"
+                >
+                  <span class="img img-twitter"></span>
+                </a>
+                <a
+                  class="newFeature__iconLink"
+                  title="Chia sẻ bài viết lên email"
+                  href="javascript:void(0);"
+                >
+                  <span class="img img-email"></span>
+                </a>
+                <a
+                  class="newFeature__iconLink"
+                  title="Sao chép liên kết"
+                  href="javascript:void(0);"
+                  onclick="copyLink()"
+                >
+                  <span class="img img-share"></span>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="resultSearch__right">
+            <table id="resultsTable">
+              <thead>
+                <tr>
+                  <th>Môn</th>
+                  <th>Điểm</th>
+                </tr>
+              </thead>
+              <tbody id="resultsBody"></tbody>
+            </table>
+          </div>
+
+          <div class="text-center mt-4">
+            <button class="btn btn-secondary" onclick="goBack()">
+              Tra cứu lại
+            </button>
+          </div>
+        </div>
+
+        <br /><br />
+        <div class="image-links">
+          <a href="https://www.viendong.edu.vn"
+            >This form was created by Vien Dong College</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // Global variables
+      let currentStudentId = "";
+      let currentResults = [];
+
+      // DOM elements
+      const homePage = document.getElementById("homePage");
+      const resultPage = document.getElementById("resultPage");
+      const examForm = document.getElementById("examForm");
+      const loading = document.getElementById("loading");
+      const studentIdInput = document.getElementById("studentId");
+      const displayStudentId = document.getElementById("displayStudentId");
+      const resultsBody = document.getElementById("resultsBody");
+
+      const yearSpan = document.getElementById("year");
+      yearSpan.innerText = new Date().getFullYear();
+
+      // Form submission handler
+      examForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const studentId = studentIdInput.value.trim();
+        if (!studentId) {
+          showToast("Vui lòng nhập số báo danh", "error");
+          return;
+        }
+
+        await getResult(studentId);
+      });
+
+      // Get exam results
+      async function getResult(id) {
+        loading.classList.add("show");
+
+        const searchUrl = `/api/crawler/crawl/${id}`;
+
+        try {
+          const response = await axios.get(searchUrl);
+          const result = response.data;
+
+          if (result && result.length > 0) {
+            showToast("Đã xong", "success");
+            displayResults(id, result);
+          } else {
+            showToast("Không có dữ liệu", "error");
+          }
+        } catch (error) {
+          console.error("Error:", error);
+          showToast("Có lỗi xảy ra khi tra cứu", "error");
+        } finally {
+          loading.classList.remove("show");
+        }
+      }
+
+      // Display results
+      function displayResults(id, results) {
+        currentStudentId = id;
+        currentResults = results;
+
+        // Update display
+        displayStudentId.textContent = id;
+
+        // Clear previous results
+        resultsBody.innerHTML = "";
+
+        // Add new results
+        results.forEach((item) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+                    <td>${item.subject}</td>
+                    <td>${item.score}</td>
+                `;
+          resultsBody.appendChild(row);
+        });
+
+        // Switch to result page
+        homePage.classList.add("hidden");
+        resultPage.classList.remove("hidden");
+      }
+
+      // Go back to home page
+      function goBack() {
+        resultPage.classList.add("hidden");
+        homePage.classList.remove("hidden");
+        studentIdInput.value = "";
+        studentIdInput.focus();
+      }
+
+      // Copy link functionality
+      function copyLink() {
+        const url = window.location.href;
+        navigator.clipboard
+          .writeText(url)
+          .then(() => {
+            showToast("Đã sao chép liên kết", "success");
+          })
+          .catch(() => {
+            showToast("Không thể sao chép liên kết", "error");
+          });
+      }
+
+      // Toast notification helper
+      function showToast(message, type = "info") {
+        const backgroundColor = {
+          success: "#4CAF50",
+          error: "#f44336",
+          info: "#2196F3",
+        };
+
+        Toastify({
+          text: message,
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: backgroundColor[type] || backgroundColor.info,
+          stopOnFocus: true,
+        }).showToast();
+      }
+
+      // Initialize app
+      document.addEventListener("DOMContentLoaded", function () {
+        studentIdInput.focus();
+      });
+
+      // Handle browser back button
+      window.addEventListener("popstate", function () {
+        if (!resultPage.classList.contains("hidden")) {
+          goBack();
+        }
+      });
+    </script>
+  </body>
+</html>

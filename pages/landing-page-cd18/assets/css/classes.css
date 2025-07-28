@@ -1,0 +1,40 @@
+/*Cáº§n thÃªm tháº» span .checkmark vÃ o trong label sau input*/
+.vno_fake_checkbox{
+	margin-bottom: 1em;
+}
+.vno_fake_checkbox input[type=checkbox]{
+	display: none;
+}
+.vno_fake_checkbox .checkmark{
+	content: "";
+	background: white;
+	border: 1px solid #232323;
+	border-radius: 3px;
+    width: 1em;
+    height: 1em;
+    display: inline-block;
+    position: relative;
+    margin-bottom: -2px;
+	margin-right: 0.5em;    		
+}
+.vno_fake_checkbox:hover +.checkmark:after,
+.vno_fake_checkbox input +.checkmark:after{
+	display: block;
+    content: "";
+    left: 4px;
+    top: 1px;
+    width: 5px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    position: absolute;
+}
+
+.vno_fake_checkbox:hover .checkmark,
+.vno_fake_checkbox input:checked + .checkmark{
+	background: var(--primary-color);
+
+}

@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Medical Form Search</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #2c5aa0;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #27ae60;
+        --warning-color: #f39c12;
+        --danger-color: #e74c3c;
+        --light-bg: #f8fafc;
+        --card-bg: #ffffff;
+        --text-primary: #2c3e50;
+        --text-secondary: #5a6c7d;
+        --border-color: #e1e8ed;
+        --shadow-light: 0 2px 12px rgba(0, 0, 0, 0.04);
+        --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --shadow-strong: 0 8px 32px rgba(0, 0, 0, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        color: var(--text-primary);
+        line-height: 1.6;
+      }
+
+      .main-container {
+        padding: 3rem 1rem;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .search-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-medium);
+        border-radius: 16px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .search-card:hover {
+        box-shadow: var(--shadow-strong);
+      }
+
+      .card-header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          var(--accent-color) 100%
+        );
+        border: none;
+        color: white;
+        text-align: center;
+        padding: 2.5rem 2rem;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .card-header h1 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.02em;
+        position: relative;
+        z-index: 1;
+      }
+
+      .card-header p {
+        opacity: 0.95;
+        font-size: 1.125rem;
+        margin-bottom: 0;
+        font-weight: 400;
+        position: relative;
+        z-index: 1;
+      }
+
+      .card-header .fa-hospital-alt {
+        font-size: 2rem;
+        margin-right: 1rem;
+        opacity: 0.9;
+      }
+
+      .card-body {
+        padding: 2.5rem;
+      }
+
+      .form-label {
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.75rem;
+        font-size: 0.95rem;
+        letter-spacing: 0.01em;
+      }
+
+      .form-label i {
+        color: var(--accent-color);
+        margin-right: 0.5rem;
+      }
+
+      .form-control {
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        padding: 0.875rem 1.125rem;
+        font-size: 1rem;
+        transition: all 0.2s ease;
+        background: #fafbfc;
+      }
+
+      .form-control:focus {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 0.125rem rgba(52, 152, 219, 0.15);
+        background: white;
+        outline: none;
+      }
+
+      .form-control::placeholder {
+        color: #a0aec0;
+        font-weight: 400;
+      }
+
+      .btn-primary {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          var(--accent-color) 100%
+        );
+        border: none;
+        padding: 0.875rem 2rem;
+        font-weight: 600;
+        font-size: 1rem;
+        letter-spacing: 0.025em;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .btn-primary::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.5s;
+      }
+
+      .btn-primary:hover::before {
+        left: 100%;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(44, 90, 160, 0.3);
+        background: linear-gradient(135deg, #2448a0 0%, #2e8fd9 100%);
+      }
+
+      .btn-primary:active {
+        transform: translateY(0);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.7;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .results-section {
+        margin-top: 2.5rem;
+      }
+
+      .results-header {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .results-header h4 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: 0;
+        font-size: 1.25rem;
+      }
+
+      .results-header .badge {
+        background: var(--primary-color);
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+      }
+
+      .result-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 16px;
+        margin-bottom: 1.25rem;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .result-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          var(--accent-color) 100%
+        );
+      }
+
+      .result-card:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-strong);
+        border-color: var(--accent-color);
+      }
+
+      .result-card .card-body {
+        padding: 1.75rem;
+      }
+
+      .form-id-badge {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          var(--accent-color) 100%
+        );
+        color: white;
+        font-weight: 600;
+        padding: 0.5rem 1.125rem;
+        border-radius: 25px;
+        font-size: 0.9rem;
+        letter-spacing: 0.025em;
+      }
+
+      .patient-id-text {
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        font-weight: 500;
+      }
+
+      .status-badge {
+        font-size: 0.8rem;
+        font-weight: 600;
+        padding: 0.375rem 0.875rem;
+        border-radius: 20px;
+        letter-spacing: 0.025em;
+      }
+
+      .status-completed {
+        background: rgba(39, 174, 96, 0.1);
+        color: var(--success-color);
+        border: 1px solid rgba(39, 174, 96, 0.2);
+      }
+
+      .status-pending {
+        background: rgba(243, 156, 18, 0.1);
+        color: var(--warning-color);
+        border: 1px solid rgba(243, 156, 18, 0.2);
+      }
+
+      .status-draft {
+        background: rgba(149, 165, 166, 0.1);
+        color: var(--secondary-color);
+        border: 1px solid rgba(149, 165, 166, 0.2);
+      }
+
+      .detail-label {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.075em;
+        font-weight: 600;
+        margin-bottom: 0.25rem;
+      }
+
+      .detail-value {
+        font-weight: 500;
+        color: var(--text-primary);
+        font-size: 0.95rem;
+      }
+
+      .detail-value i {
+        color: var(--text-secondary);
+        margin-right: 0.5rem;
+        width: 14px;
+      }
+
+      .action-buttons .btn {
+        border-radius: 8px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        padding: 0.5rem 1rem;
+        transition: all 0.2s ease;
+      }
+
+      .btn-outline-primary {
+        border-color: var(--accent-color);
+        color: var(--accent-color);
+      }
+
+      .btn-outline-primary:hover {
+        background-color: var(--accent-color);
+        border-color: var(--accent-color);
+        transform: translateY(-1px);
+      }
+
+      .btn-outline-secondary {
+        border-color: var(--text-secondary);
+        color: var(--text-secondary);
+      }
+
+      .btn-outline-secondary:hover {
+        background-color: var(--text-secondary);
+        border-color: var(--text-secondary);
+        transform: translateY(-1px);
+      }
+
+      .btn-outline-info {
+        border-color: #17a2b8;
+        color: #17a2b8;
+      }
+
+      .btn-outline-info:hover {
+        background-color: #17a2b8;
+        border-color: #17a2b8;
+        transform: translateY(-1px);
+      }
+
+      .loading-spinner {
+        text-align: center;
+        padding: 3rem;
+      }
+
+      .spinner-border {
+        color: var(--accent-color);
+      }
+
+      .no-results {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+      }
+
+      .no-results i {
+        font-size: 4rem;
+        color: #cbd5e0;
+        margin-bottom: 1.5rem;
+      }
+
+      .no-results h5 {
+        color: var(--text-primary);
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+      }
+
+      .alert {
+        border: none;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        font-weight: 500;
+      }
+
+      .alert-warning {
+        background: rgba(243, 156, 18, 0.1);
+        color: #d68910;
+        border-left: 4px solid var(--warning-color);
+      }
+
+      .alert-danger {
+        background: rgba(231, 76, 60, 0.1);
+        color: #c0392b;
+        border-left: 4px solid var(--danger-color);
+      }
+
+      /* Modal Styles */
+      .modal-content {
+        border: none;
+        border-radius: 16px;
+        box-shadow: var(--shadow-strong);
+      }
+
+      .modal-header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          var(--accent-color) 100%
+        );
+        color: white;
+        border: none;
+        border-radius: 16px 16px 0 0;
+        padding: 1.5rem 2rem;
+      }
+
+      .modal-title {
+        font-weight: 600;
+        font-size: 1.25rem;
+      }
+
+      .btn-close {
+        filter: brightness(0) invert(1);
+        opacity: 0.8;
+      }
+
+      .btn-close:hover {
+        opacity: 1;
+      }
+
+      .modal-body {
+        padding: 2rem;
+      }
+
+      .modal-footer {
+        border: none;
+        padding: 1rem 2rem 2rem;
+        background: #f8f9fa;
+        border-radius: 0 0 16px 16px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .info-item {
+        background: #f8f9fa;
+        padding: 1.25rem;
+        border-radius: 12px;
+        border: 1px solid var(--border-color);
+      }
+
+      .info-item-label {
+        font-size: 0.8rem;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.075em;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+      }
+
+      .info-item-value {
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: 1rem;
+      }
+
+      .info-item-value i {
+        color: var(--accent-color);
+        margin-right: 0.5rem;
+        width: 16px;
+      }
+
+      .score-display {
+        background: linear-gradient(135deg, #e8f5e8 0%, #f0f8f0 100%);
+        border: 2px solid var(--success-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        margin: 1.5rem 0;
+      }
+
+      .score-number {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--success-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .score-label {
+        color: var(--text-secondary);
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 0.9rem;
+      }
+
+      .download-options {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      .download-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        background: white;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.2s ease;
+      }
+
+      .download-btn:hover {
+        border-color: var(--accent-color);
+        background: var(--accent-color);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-medium);
+        text-decoration: none;
+      }
+
+      .download-btn i {
+        margin-right: 0.5rem;
+        font-size: 1.1rem;
+      }
+
+      .breadcrumb-nav {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+
+      .breadcrumb {
+        margin-bottom: 0;
+        background: none;
+      }
+
+      .breadcrumb-item a {
+        color: var(--accent-color);
+        text-decoration: none;
+      }
+
+      .breadcrumb-item a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 768px) {
+        .main-container {
+          padding: 1.5rem 1rem;
+        }
+
+        .card-header {
+          padding: 2rem 1.5rem;
+        }
+
+        .card-header h1 {
+          font-size: 1.875rem;
+        }
+
+        .card-body {
+          padding: 1.5rem;
+        }
+
+        .result-card .card-body {
+          padding: 1.25rem;
+        }
+
+        .action-buttons {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 0.5rem;
+        }
+
+        .modal-body {
+          padding: 1.5rem;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+          gap: 1rem;
+        }
+
+        .download-options {
+          grid-template-columns: 1fr;
+        }
+
+        .score-number {
+          font-size: 2rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        .card-header h1 {
+          font-size: 1.625rem;
+        }
+
+        .card-header p {
+          font-size: 1rem;
+        }
+
+        .action-buttons {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 0.5rem;
+        }
+
+        .modal-header {
+          padding: 1.25rem 1.5rem;
+        }
+
+        .modal-body {
+          padding: 1.25rem;
+        }
+
+        .modal-footer {
+          padding: 1rem 1.5rem 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <div class="card search-card">
+            <div class="card-header">
+              <h1><i class="fas fa-hospital-alt me-2"></i>Tra cứu kết quả</h1>
+              <p>Tìm kiếm kết quả dựa trên mã hoặc số điện thoại của bạn</p>
+              <a href="/medical" class="btn btn-outline-primary btn-sm mt-2 text-white">
+                <i class="fas fa-home me-1"></i> Quay về Trang chủ
+              </a>
+            </div>
+
+            <div class="card-body">
+              <form id="searchForm">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="idInput" class="form-label">
+                      <i class="fas fa-id-card"></i>Mã bệnh nhân hoặc Mã biểu
+                      mẫu
+                    </label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="idInput"
+                      placeholder="Nhập mã bệnh nhân hoặc mã biểu mẫu"
+                      required
+                    />
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label for="phoneInput" class="form-label">
+                      <i class="fas fa-phone"></i>Số điện thoại
+                      <small class="text-muted">(Không bắt buộc)</small>
+                    </label>
+                    <input
+                      type="tel"
+                      class="form-control"
+                      id="phoneInput"
+                      placeholder="Nhập số điện thoại"
+                    />
+                  </div>
+                </div>
+
+                <div class="d-grid">
+                  <button type="submit" class="btn btn-primary" id="searchBtn">
+                    <i class="fas fa-search me-2"></i>Tìm kiếm
+                  </button>
+                </div>
+              </form>
+
+              <div
+                id="resultsSection"
+                class="results-section"
+                style="display: none"
+              >
+                <div class="results-header mb-3">
+                  <div
+                    class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2"
+                  >
+                    <h4 class="mb-0">
+                      <i class="fas fa-file-medical me-2"></i>Kết quả tìm kiếm
+                    </h4>
+                    <span class="badge bg-primary text-white" id="resultsCount">
+                      0 kết quả được tìm thấy
+                    </span>
+                  </div>
+                </div>
+                <div id="resultsContainer"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div
+      class="modal fade"
+      id="detailModal"
+      tabindex="-1"
+      aria-labelledby="detailModalLabel"
+      aria-hidden="true"
+    >
+      <div
+        class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <div class="d-flex align-items-center">
+              <i
+                class="fas fa-file-medical-alt me-3"
+                style="font-size: 1.5rem"
+              ></i>
+              <div>
+                <h5 class="modal-title mb-0" id="detailModalLabel">
+                  Chi tiết biểu mẫu
+                </h5>
+                <small class="opacity-75" id="modalFormId">Form ID</small>
+              </div>
+            </div>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="breadcrumb-nav">
+              <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                  <li class="breadcrumb-item">
+                    <a href="#" onclick="closeModal()">Kết quả tìm kiếm</a>
+                  </li>
+                  <li class="breadcrumb-item active" aria-current="page">
+                    Chi tiết biểu mẫu
+                  </li>
+                </ol>
+              </nav>
+            </div>
+
+            <div class="score-display">
+              <div class="score-number" id="modalTotalScore">85</div>
+              <div class="score-label">Tổng điểm đánh giá</div>
+              <div id="advice" style="margin-top: 5px; font-size: 13px;"></div>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-item">
+                <div class="info-item-label">Tên bệnh nhân</div>
+                <div class="info-item-value">
+                  <i class="fas fa-user"></i>
+                  <span id="modalPatientName">-</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-item-label">Mã bệnh nhân</div>
+                <div class="info-item-value">
+                  <i class="fas fa-id-badge"></i>
+                  <span id="modalPatientId">-</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-item-label">Tuổi</div>
+                <div class="info-item-value">
+                  <i class="fas fa-birthday-cake"></i>
+                  <span id="modalAge">-</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-item-label">Giới tính</div>
+                <div class="info-item-value">
+                  <i class="fas fa-venus-mars"></i>
+                  <span id="modalGender">-</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-item-label">Số điện thoại</div>
+                <div class="info-item-value">
+                  <i class="fas fa-phone"></i>
+                  <span id="modalPhone">-</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-item-label">Ngày xác nhận</div>
+                <div class="info-item-value">
+                  <i class="fas fa-calendar-check"></i>
+                  <span id="modalSubmittedAt">-</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-item-label">Thời gian lương</div>
+                <div class="info-item-value">
+                  <i class="fas fa-clock"></i>
+                  <span id="modalSalaryTime">-</span>
+                </div>
+              </div>
+              <div class="info-item">
+                <div class="info-item-label">Trạng thái</div>
+                <div class="info-item-value">
+                  <i class="fas fa-check-circle"></i>
+                  <span id="modalStatus">-</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-4">
+              <h6 class="mb-3">
+                <i class="fas fa-download me-2"></i>Tải xuống biểu mẫu
+              </h6>
+              <div class="download-options">
+                <a href="#" class="download-btn" onclick="downloadForm('pdf')">
+                  <i class="fas fa-file-pdf"></i>
+                  Tải PDF
+                </a>
+                <a
+                  href="#"
+                  class="download-btn"
+                  onclick="downloadForm('excel')"
+                >
+                  <i class="fas fa-file-excel"></i>
+                  Tải Excel
+                </a>
+                <a href="#" class="download-btn" onclick="downloadForm('word')">
+                  <i class="fas fa-file-word"></i>
+                  Tải Word
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              <i class="fas fa-times me-2"></i>Đóng
+            </button>
+            <button type="button" class="btn btn-primary" onclick="printForm()">
+              <i class="fas fa-print me-2"></i>In biểu mẫu
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      let searchResults = [];
+      let currentForm = null;
+
+      document
+        .getElementById("searchForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const idInput = document.getElementById("idInput").value.trim();
+          const phoneInput = document.getElementById("phoneInput").value.trim();
+          const searchBtn = document.getElementById("searchBtn");
+          const resultsSection = document.getElementById("resultsSection");
+          const resultsContainer = document.getElementById("resultsContainer");
+          const resultsCount = document.getElementById("resultsCount");
+
+          if (!idInput) {
+            showAlert("Vui lòng nhập mã biểu mẫu hoặc mã bệnh nhân", "warning");
+            return;
+          }
+
+          // Show loading state
+          searchBtn.disabled = true;
+          searchBtn.innerHTML =
+            '<span class="spinner-border spinner-border-sm me-2"></span>Đang tìm kiếm...';
+          resultsSection.style.display = "block";
+          resultsContainer.innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Đang tải...</span>
+                    </div>
+                    <div class="mt-3 text-muted">Đang tìm kiếm kết quả...</div>
+                </div>
+            `;
+
+          try {
+            const searchData = {
+              id: idInput,
+              phone: phoneInput || null,
+            };
+
+            // Simulate API call for demo purposes
+            await simulateApiCall(searchData);
+          } catch (error) {
+            console.error("Search error:", error);
+            showAlert("Lỗi tìm kiếm, vui lòng thử lại.", "danger");
+            resultsContainer.innerHTML = "";
+          } finally {
+            // Reset button state
+            searchBtn.disabled = false;
+            searchBtn.innerHTML =
+              '<i class="fas fa-search me-2"></i>Tìm kiếm kết quả';
+          }
+        });
+
+      function showAlert(message, type) {
+        const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    <i class="fas fa-${
+                      type === "danger"
+                        ? "exclamation-triangle"
+                        : "exclamation-circle"
+                    } me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+        document.getElementById("resultsContainer").innerHTML = alertHtml;
+      }
+
+      // Simulate API call with mock data
+      async function simulateApiCall(searchData) {
+        const response = await axios.get("/api/medical/responses", {
+          params: searchData,
+        });
+
+        if (response && response.data && response.data.status) {
+          const data = response.data;
+
+          // Filter results based on search criteria
+          let filteredResults = data.payload ?? [];
+
+          if (searchData.id) {
+            filteredResults = filteredResults.filter(
+              (form) =>
+                form.formId
+                  .toLowerCase()
+                  .includes(searchData.id.toLowerCase()) ||
+                form.patientId
+                  .toLowerCase()
+                  .includes(searchData.id.toLowerCase())
+            );
+          }
+
+          if (searchData.phone) {
+            const cleanPhone = searchData.phone.replace(/\D/g, "");
+            filteredResults = filteredResults.filter((form) =>
+              form.phone.replace(/\D/g, "").includes(cleanPhone)
+            );
+          }
+
+          displayResults(filteredResults);
+        }
+      }
+
+      function displayResults(results) {
+        const resultsContainer = document.getElementById("resultsContainer");
+        const resultsCount = document.getElementById("resultsCount");
+
+        searchResults = results;
+
+        if (results.length === 0) {
+          resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <i class="fas fa-file-medical-alt"></i>
+                        <h5 class="mt-3">Không có kết quả nào được tìm thấy</h5>
+                        <p class="text-muted">Vui lòng kiếm tra lại mã của bạn để tìm kiếm chính xác.</p>
+                    </div>
+                `;
+          resultsCount.textContent = "0 kết quả được tìm thấy";
+          return;
+        }
+
+        resultsCount.textContent = `${results.length} kết quả được tìm thấy`;
+
+        const resultsHtml = results
+          .map((form, index) => {
+            const statusClass =
+              form.status === "Completed"
+                ? "status-completed"
+                : form.status === "Pending Review"
+                ? "status-pending"
+                : "status-draft";
+
+            return `
+                    <div class="card result-card mb-4">
+                      <div class="card-body">
+                        <!-- Header -->
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2">
+                          <div>
+                            <span class="form-id-badge d-block mb-1">#${
+                              form.formId
+                            }</span>
+                            <div class="patient-id-text">Mã bệnh nhân: ${
+                              form.patientId
+                            }</div>
+                          </div>
+                          <span class="status-badge ${statusClass}">${
+              form.salaryTime
+            }</span>
+                        </div>
+
+                        <!-- Thông tin -->
+                        <div class="row">
+                          <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <div class="detail-label">Tên bệnh nhân</div>
+                            <div class="detail-value">
+                              <i class="fas fa-user me-1"></i>${
+                                form.patientName
+                              }
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <div class="detail-label">Tuổi</div>
+                            <div class="detail-value">
+                              <i class="fas fa-birthday-cake me-1"></i>${
+                                form.age
+                              }
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <div class="detail-label">Giới tính</div>
+                            <div class="detail-value">
+                              <i class="fas fa-venus-mars me-1"></i>${
+                                form.gender === "Male" ? " Nam" : " Nữ"
+                              }
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <div class="detail-label">Số điện thoại</div>
+                            <div class="detail-value">
+                              <i class="fas fa-phone me-1"></i>${form.phone}
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <div class="detail-label">Tổng điểm</div>
+                            <div class="detail-value">
+                              <i class="fas fa-calculator me-1"></i>${
+                                form.totalScore
+                              }
+                            </div>
+                          </div>
+                          <div class="col-12 col-md-6 col-lg-4 mb-3">
+                            <div class="detail-label">Ngày xác nhận</div>
+                            <div class="detail-value">
+                              <i class="fas fa-clock me-1"></i>${new Date(
+                                form.submittedAt
+                              ).toLocaleDateString("vi-VN", {
+                                year: "numeric",
+                                month: "2-digit",
+                                day: "2-digit",
+                              })}
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex flex-column flex-sm-row gap-2 mt-3 action-buttons">
+                          <button class="btn btn-outline-primary btn-sm" onclick="viewDetails(${index})">
+                            <i class="fas fa-eye me-1"></i> Xem chi tiết
+                          </button>
+                          <button class="btn btn-outline-secondary btn-sm" onclick="quickDownload(${index})">
+                            <i class="fas fa-download me-1"></i> Tải xuống
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                `;
+          })
+          .join("");
+
+        resultsContainer.innerHTML = resultsHtml;
+      }
+
+      // Modal functions
+      function viewDetails(index) {
+        const form = searchResults[index];
+        currentForm = form;
+
+        // Populate modal with form data
+        document.getElementById("modalFormId").textContent = `#${form.formId}`;
+        document.getElementById("modalTotalScore").textContent =
+          form.totalScore;
+        document.getElementById("modalPatientName").textContent =
+          form.patientName;
+        document.getElementById("modalPatientId").textContent = form.patientId;
+        document.getElementById("modalAge").textContent = form.age;
+        document.getElementById("modalGender").textContent =
+          form.gender === "Male" ? "Nam" : "Nữ";
+        document.getElementById("modalPhone").textContent = form.phone;
+        document.getElementById("modalSubmittedAt").textContent = new Date(
+          form.submittedAt
+        ).toLocaleDateString("vi-VN", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+        });
+        document.getElementById("modalSalaryTime").textContent =
+          form.salaryTime;
+        document.getElementById("modalStatus").textContent =
+          form.status === "Completed"
+            ? "Hoàn thành"
+            : form.status === "Pending Review"
+            ? "Chờ xem xét"
+            : "Nháp";
+        document.getElementById("advice").textContent = `Kết quả: ${form.advice}` ?? "";
+
+        // Show modal
+        const modal = new bootstrap.Modal(
+          document.getElementById("detailModal")
+        );
+        modal.show();
+      }
+
+      function closeModal() {
+        const modal = bootstrap.Modal.getInstance(
+          document.getElementById("detailModal")
+        );
+        if (modal) {
+          modal.hide();
+        }
+      }
+
+      function quickDownload(index) {
+        const form = searchResults[index];
+        showDownloadToast(`Đang tải xuống biểu mẫu #${form.formId}...`);
+
+        // Simulate download
+        setTimeout(() => {
+          showDownloadToast(
+            `Biểu mẫu #${form.formId} đã được tải xuống thành công!`,
+            "success"
+          );
+        }, 2000);
+      }
+
+      function downloadForm(format) {
+        if (!currentForm) return;
+
+        const formatNames = {
+          pdf: "PDF",
+          excel: "Excel",
+          word: "Word",
+        };
+
+        showDownloadToast(
+          `Đang tải xuống biểu mẫu #${currentForm.formId} dưới dạng ${formatNames[format]}...`
+        );
+
+        // Simulate download with specific format
+        setTimeout(() => {
+          showDownloadToast(
+            `Biểu mẫu #${currentForm.formId} (${formatNames[format]}) đã được tải xuống thành công!`,
+            "success"
+          );
+
+          // Simulate file download
+          const link = document.createElement("a");
+          link.href = "#";
+          link.download = `medical_form_${currentForm.formId}.${
+            format === "excel" ? "xlsx" : format === "word" ? "docx" : "pdf"
+          }`;
+          link.click();
+        }, 2000);
+      }
+
+      function printForm() {
+        if (!currentForm) return;
+
+        showDownloadToast(
+          `Đang chuẩn bị in biểu mẫu #${currentForm.formId}...`
+        );
+
+        // Simulate print preparation
+        setTimeout(() => {
+          window.print();
+          showDownloadToast(
+            `Biểu mẫu #${currentForm.formId} đã sẵn sàng để in!`,
+            "success"
+          );
+        }, 1500);
+      }
+
+      function showDownloadToast(message, type = "info") {
+        // Create toast element
+        const toastHtml = `
+          <div class="toast align-items-center text-white bg-${
+            type === "success" ? "success" : "primary"
+          } border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+              <div class="toast-body">
+                <i class="fas fa-${
+                  type === "success" ? "check-circle" : "info-circle"
+                } me-2"></i>
+                ${message}
+              </div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+          </div>
+        `;
+
+        // Create toast container if it doesn't exist
+        let toastContainer = document.getElementById("toastContainer");
+        if (!toastContainer) {
+          toastContainer = document.createElement("div");
+          toastContainer.id = "toastContainer";
+          toastContainer.className =
+            "toast-container position-fixed bottom-0 end-0 p-3";
+          toastContainer.style.zIndex = "1050";
+          document.body.appendChild(toastContainer);
+        }
+
+        // Add toast to container
+        const toastElement = document.createElement("div");
+        toastElement.innerHTML = toastHtml;
+        toastContainer.appendChild(toastElement.firstElementChild);
+
+        // Show toast
+        const toast = new bootstrap.Toast(toastContainer.lastElementChild, {
+          autohide: true,
+          delay: type === "success" ? 3000 : 5000,
+        });
+        toast.show();
+
+        // Remove toast element after it's hidden
+        toastContainer.lastElementChild.addEventListener(
+          "hidden.bs.toast",
+          function () {
+            this.remove();
+          }
+        );
+      }
+
+      // Enhanced form input handling
+      document
+        .getElementById("idInput")
+        .addEventListener("input", function (e) {
+          const value = e.target.value.trim();
+
+          if (/^[fF]\d*$/.test(value)) {
+            e.target.value = value.toUpperCase();
+          }
+        });
+
+      document
+        .getElementById("phoneInput")
+        .addEventListener("input", function (e) {
+          let value = e.target.value.replace(/\D/g, "");
+
+          if (value.length >= 6) {
+            value = `(${value.slice(0, 3)}) ${value.slice(3, 6)}-${value.slice(
+              6,
+              10
+            )}`;
+          } else if (value.length >= 3) {
+            value = `(${value.slice(0, 3)}) ${value.slice(3)}`;
+          }
+
+          e.target.value = value;
+        });
+
+      // Keyboard shortcuts
+      document.addEventListener("keydown", function (e) {
+        // ESC to close modal
+        if (e.key === "Escape") {
+          const modal = bootstrap.Modal.getInstance(
+            document.getElementById("detailModal")
+          );
+          if (modal) {
+            modal.hide();
+          }
+        }
+
+        // Ctrl+P to print when modal is open
+        if (e.ctrlKey && e.key === "p" && currentForm) {
+          e.preventDefault();
+          printForm();
+        }
+      });
+    </script>
+  </body>
+</html>

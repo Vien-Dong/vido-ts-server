@@ -3,7 +3,7 @@ const Participant = require("../models/participant");
 const Device = require("../models/device");
 const Redis = require("ioredis");
 
-const redis = new Redis("rediss://default:ATvjAAIjcDExYmUyZWM1NWJlMTE0Y2RkYjY4ODMyMzliZDQ1ZTk2OHAxMA@game-martin-15331.upstash.io:6379");
+const redis = new Redis("rediss://default:AeDjAAIjcDFmZTlhMTFhMjIwNzg0NDY2YmRmNmUyMjJhYzRjZGIxZnAxMA@pleasant-panther-57571.upstash.io:6379");
 
 // Cache trên server
 let cachedToken = null;

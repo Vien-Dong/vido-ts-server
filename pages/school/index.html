@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Attendance System</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --primary: #1a202c;
+        --secondary: #2d3748;
+        --accent: #4299e1;
+        --success: #48bb78;
+        --warning: #ed8936;
+        --danger: #f56565;
+        --text-primary: #2d3748;
+        --text-secondary: #718096;
+        --bg-light: #f7fafc;
+        --border: #e2e8f0;
+        --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1),
+          0 1px 2px 0 rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
+          0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, sans-serif;
+        background: var(--bg-light);
+        color: var(--text-primary);
+        line-height: 1.5;
+      }
+
+      /* Login Page */
+      .login-container {
+        display: flex;
+        min-height: 100vh;
+        background: linear-gradient(
+          135deg,
+          var(--primary) 0%,
+          var(--secondary) 100%
+        );
+      }
+
+      .login-form {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: var(--shadow-lg);
+        width: 100%;
+        max-width: 400px;
+        margin: auto;
+      }
+
+      .login-form h2 {
+        color: var(--primary);
+        margin-bottom: 1.5rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        font-weight: 500;
+        font-size: 0.875rem;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        font-size: 0.875rem;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+      }
+
+      .login-btn {
+        width: 100%;
+        padding: 0.75rem;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .login-btn:hover {
+        background: #3182ce;
+      }
+
+      /* Main Dashboard Layout */
+      .dashboard {
+        display: none;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 240px;
+        height: 100vh;
+        background: var(--primary);
+        color: white;
+        overflow-y: auto;
+        z-index: 1000;
+        transition: transform 0.3s;
+      }
+
+      .sidebar-header {
+        padding: 1rem;
+        border-bottom: 1px solid var(--secondary);
+      }
+
+      .sidebar-title {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: white;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .sidebar-title img {
+        width: 10%;
+        height: auto;
+      }
+
+      .sidebar-nav {
+        padding: 1rem 0;
+      }
+
+      .nav-item {
+        display: block;
+        padding: 0.75rem 1rem;
+        color: #cbd5e0;
+        text-decoration: none;
+        transition: all 0.2s;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .nav-item:hover {
+        background: var(--secondary);
+        color: white;
+      }
+
+      .nav-item.active {
+        background: var(--accent);
+        color: white;
+      }
+
+      .nav-item i {
+        width: 20px;
+        margin-right: 0.75rem;
+      }
+
+      .main-content {
+        margin-left: 240px;
+        background: var(--bg-light);
+        min-height: 100vh;
+      }
+
+      .topbar {
+        background: white;
+        border-bottom: 1px solid var(--border);
+        padding: 0 1.5rem;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      .topbar-left {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .menu-toggle {
+        display: none;
+        background: none;
+        border: none;
+        font-size: 1.25rem;
+        cursor: pointer;
+        color: var(--text-primary);
+      }
+
+      .page-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .logout-btn {
+        padding: 0.5rem 1rem;
+        background: var(--danger);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: background-color 0.2s;
+      }
+
+      .logout-btn:hover {
+        background: #e53e3e;
+      }
+
+      .content-area {
+        padding: 1.5rem;
+      }
+
+      /* Week Navigation - Compact */
+      .week-nav {
+        background: white;
+        border-radius: 6px;
+        box-shadow: var(--shadow);
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+
+      .nav-controls {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .nav-btn {
+        padding: 0.5rem 0.75rem;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition: background-color 0.2s;
+      }
+
+      .nav-btn:hover {
+        background: #3182ce;
+      }
+
+      .day-buttons {
+        display: flex;
+        gap: 1.5rem;
+        flex: 1;
+        justify-content: center;
+      }
+
+      .day-btn {
+        padding: 0.5rem 0.75rem;
+        background: var(--bg-light);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.75rem;
+        font-weight: 500;
+        transition: all 0.2s;
+        text-align: center;
+        min-width: 60px;
+      }
+
+      .day-btn:hover {
+        background: #edf2f7;
+        border-color: var(--accent);
+      }
+
+      .day-btn.active {
+        background: var(--accent);
+        color: white;
+        border-color: var(--accent);
+      }
+
+      /* Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .stat-card {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 6px;
+        box-shadow: var(--shadow);
+        border-left: 4px solid var(--accent);
+      }
+
+      .stat-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--text-primary);
+      }
+
+      .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+      }
+
+      /* Subjects Grid - Compact */
+      .subjects-container {
+        background: white;
+        border-radius: 6px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .subjects-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        background: var(--bg-light);
+      }
+
+      .subjects-header h3 {
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .subjects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1px;
+        background: var(--border);
+      }
+
+      .subject-card {
+        background: white;
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        border-left: 3px solid var(--accent);
+      }
+
+      .subject-card:hover {
+        background: var(--bg-light);
+      }
+
+      .subject-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+        white-space: nowrap;     
+        overflow: hidden;         
+        text-overflow: ellipsis;    
+        display: flex;          
+        align-items: center;
+        gap: 8px;              
+        max-width: 100%;     
+      }
+
+      .subject-meta {
+        display: flex;
+        gap: 1rem;
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+      }
+
+      .subject-meta span {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      /* Student List - Compact */
+      .student-list-container {
+        display: none;
+      }
+
+      .list-header {
+        background: white;
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: between;
+        align-items: center;
+        box-shadow: var(--shadow);
+      }
+
+      .list-header h3 {
+        font-weight: 600;
+        color: var(--text-primary);
+        flex: 1;
+        margin: 0 1rem;
+      }
+
+      .back-btn {
+        padding: 0.5rem 1rem;
+        background: var(--text-secondary);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 0.875rem;
+        transition: background-color 0.2s;
+      }
+
+      .back-btn:hover {
+        background: var(--text-primary);
+      }
+
+      .attendance-panel {
+        background: white;
+        border-radius: 6px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .attendance-stats {
+        display: flex;
+        background: var(--bg-light);
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .stat-item {
+        flex: 1;
+        text-align: center;
+      }
+
+      .stat-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .stat-number.total {
+        color: var(--accent);
+      }
+      .stat-number.present {
+        color: var(--success);
+      }
+      .stat-number.absent {
+        color: var(--danger);
+      }
+
+      .stat-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-top: 0.25rem;
+      }
+
+      .action-buttons {
+        padding: 1rem 1.5rem;
+        background: var(--bg-light);
+        display: flex;
+        gap: 1rem;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .select-all-btn,
+      .remove-all-btn,
+      .save-btn {
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        font-size: 0.875rem;
+        transition: background-color 0.2s;
+      }
+
+      .select-all-btn {
+        background: var(--warning);
+        color: white;
+      }
+
+      .remove-all-btn {
+        background: var(--success);
+        color: white;
+      }
+
+      .select-all-btn:hover {
+        background: #38a169;
+      }
+
+      .remove-all-btn:hover {
+        background: #8de727;
+      }
+
+      .save-btn {
+        background: var(--accent);
+        color: white;
+        margin-left: auto;
+      }
+
+      .save-btn:hover {
+        background: #3182ce;
+      }
+
+      .student-list {
+        max-height: 500px;
+        overflow-y: auto;
+      }
+
+      .student-item {
+        padding: 0.75rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .student-item:hover {
+        background: var(--bg-light);
+      }
+
+      .student-item.present {
+        background: #f0fff4;
+        border-left: 3px solid var(--success);
+      }
+
+      .student-info h4 {
+        color: var(--text-primary);
+        margin-bottom: 0.25rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+      }
+
+      .student-info p {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+      }
+
+      .attendance-status {
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+      }
+
+      .status-present {
+        background: var(--success);
+        color: white;
+      }
+
+      .status-absent {
+        background: var(--danger);
+        color: white;
+      }
+
+      .loading,
+      .no-subjects {
+        text-align: center;
+        padding: 2rem;
+        color: var(--text-secondary);
+      }
+
+      .no-subjects i {
+        font-size: 3rem;
+        color: var(--border);
+        margin-bottom: 1rem;
+      }
+
+      .subject-tag {
+        padding: 2px 6px;
+        font-size: 12px;
+        border-radius: 6px;
+        color: white;
+      }
+
+      .tag-sang {
+        background-color: #10b981;
+      }
+
+      .tag-chieu {
+        background-color: #3b82f6;
+      }
+
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .sidebar {
+          transform: translateX(-100%);
+        }
+
+        .sidebar.open {
+          transform: translateX(0);
+        }
+
+        .main-content {
+          margin-left: 0;
+        }
+
+        .menu-toggle {
+          display: block;
+        }
+
+        .week-nav {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .day-buttons {
+          justify-content: space-between;
+        }
+
+        .day-btn {
+          min-width: 40px;
+          padding: 0.5rem 0.25rem;
+        }
+
+        .subjects-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .attendance-stats {
+          flex-direction: column;
+          gap: 1rem;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+      <div class="login-form">
+        <h2><i class="fas fa-user-shield"></i> Xác thực</h2>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="username">Tên đăng nhập</label>
+            <input type="text" id="username" name="username" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Mật khẩu</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <button type="submit" class="login-btn" id="login-btn">
+            <i class="fas fa-sign-in-alt"></i>
+            <i class="fas fa-spinner fa-spin" style="display: none"></i>
+            Đăng nhập
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="dashboard">
+      <!-- Sidebar -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+          <div class="sidebar-title">
+            <img src="./assets/images/logo-viendong.png" alt="logo" /> Cao đẳng
+            Viễn Đông
+          </div>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active">
+            <i class="fas fa-calendar-check"></i> Điểm danh
+          </a>
+          <a href="#" class="nav-item">
+            <i class="fas fa-users"></i> Sinh viên
+          </a>
+          <a href="#" class="nav-item"> <i class="fas fa-book"></i> Môn học </a>
+          <a href="#" class="nav-item">
+            <i class="fas fa-chart-bar"></i> Báo cáo
+          </a>
+          <a href="#" class="nav-item"> <i class="fas fa-cog"></i> Cài đặt </a>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Top Bar -->
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="menu-toggle" id="menuToggle">
+              <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="page-title">Quản lý điểm danh</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="logout-btn" onclick="logout()">
+              <i class="fas fa-sign-out-alt"></i> Đăng xuất
+            </button>
+          </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-area">
+          <!-- Week Navigation -->
+          <div class="week-nav">
+            <div class="nav-controls">
+              <button class="nav-btn" onclick="changeWeek(-1)">
+                <i class="fas fa-chevron-left"></i>
+              </button>
+            </div>
+
+            <div class="day-buttons" id="dayButtons">
+              <!-- Day buttons will be generated here -->
+            </div>
+
+            <div class="nav-controls">
+              <button class="nav-btn" onclick="changeWeek(1)">
+                <i class="fas fa-chevron-right"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Subjects View -->
+          <div id="subjectsView">
+            <div class="subjects-container">
+              <div class="subjects-header">
+                <h3>Lớp hôm nay</h3>
+              </div>
+              <div id="subjectsContainer">
+                <div class="loading">
+                  <i class="fas fa-spinner fa-spin"></i> Đang tải môn học...
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="loadingSpinner" style="display: none; text-align: center; padding: 16px;">
+            <i class="fas fa-spinner fa-spin fa-2x"></i>
+          </div>
+
+          <!-- Student List View -->
+          <div id="studentListView" class="student-list-container">
+            <div class="list-header">
+              <button class="back-btn" onclick="backToSubjects()">
+                <i class="fas fa-arrow-left"></i> Quay lại
+              </button>
+              <h3 id="subjectTitle">Tên môn</h3>
+              <div></div>
+            </div>
+
+            <div class="attendance-panel">
+              <div class="attendance-stats">
+                <div class="stat-item">
+                  <div class="stat-number total" id="totalStudents">0</div>
+                  <div class="stat-label">Tổng cộng</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number present" id="presentCount">0</div>
+                  <div class="stat-label">Hiện diện</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number absent" id="absentCount">0</div>
+                  <div class="stat-label">Vắng</div>
+                </div>
+              </div>
+
+              <div class="action-buttons">
+                <button class="select-all-btn" onclick="selectAllStudents()">
+                  <i class="fas fa-check-double"></i> Chọn tất cả
+                </button>
+                <button class="remove-all-btn" onclick="removeAllStudents()">
+                  <i class="fas fa-xmark"></i> Xóa tất cả
+                </button>
+                <button class="save-btn" onclick="openStudentList(`${encodeURIComponent(JSON.stringify(currentSubject))}`)">
+                  <i class="fas fa-rotate-right"></i> Tải lại
+                </button>
+                <button class="save-btn" id="save-btn" onclick="saveAttendance()">
+                  <i class="fas fa-save"></i> 
+                  <i class="fas fa-spinner fa-spin" style="display: none;"></i> 
+                  Lưu điểm danh
+                </button>
+              </div>
+
+              <div class="student-list" id="studentList">
+                <!-- Students will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
+
+    <script>
+      // Global variables
+      let currentWeekStart = new Date();
+      let selectedDate = new Date();
+      let currentSubject = null;
+      let students = [];
+      let attendance = {};
+      const baseUrl = "http://ims-api.viendong.edu.vn/api/v1";
+
+      // Sample data - Replace with actual API calls
+      const sampleSubjects = {
+        "2025-07-28": [
+          {
+            id: "sub1",
+            name: "Web Development",
+            time: "08:00 - 10:00",
+            room: "Room A101",
+            code: "WEB101",
+          },
+          {
+            id: "sub2",
+            name: "Database Management",
+            time: "10:15 - 12:15",
+            room: "Room B203",
+            code: "DB201",
+          },
+        ],
+        "2025-07-29": [
+          {
+            id: "sub3",
+            name: "Mobile App Development",
+            time: "14:00 - 16:00",
+            room: "Room C105",
+            code: "MOB301",
+          },
+        ],
+      };
+
+      // Initialize app
+      document.addEventListener("DOMContentLoaded", function () {
+        // Mobile menu toggle
+        document
+          .getElementById("menuToggle")
+          .addEventListener("click", function () {
+            document.getElementById("sidebar").classList.toggle("open");
+          });
+
+        // Check if user is already logged in
+        const accessToken = localStorage.getItem("accessToken");
+        if (accessToken) {
+          showDashboard();
+        } else {
+          showLoginPage();
+        }
+
+        // Login form handler
+        document
+          .getElementById("loginForm")
+          .addEventListener("submit", handleLogin);
+
+        // Initialize current week
+        setCurrentWeekStart();
+        generateDayButtons();
+        selectToday();
+      });
+
+      async function handleLogin(e) {
+        e.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const btn = document.getElementById("login-btn");
+
+        // Simulate API call - Replace with actual authentication
+        if (username && password) {
+          btn.querySelector(".fa-right-to-bracket").style.display = "none";
+          btn.querySelector(".fa-spinner").style.display = "inline-block";
+          btn.disabled = true;
+
+          try {
+            const response = await axios.post(`${baseUrl}/login`, {
+              userid: username,
+              pass: password,
+              type: "local",
+            });
+            const result = response.data;
+            if (result.success) {
+              localStorage.setItem("accessToken", result.token);
+              localStorage.setItem("userInfo", JSON.stringify(result.user));
+              showDashboard();
+            } else {
+              showToast("Lỗi đăng nhập! Vui lòng thử lại", "error");
+            }
+          } catch (err) {
+            console.log(err);
+          } finally {
+            btn.querySelector(".fa-right-to-bracket").style.display =
+              "inline-block";
+            btn.querySelector(".fa-spinner").style.display = "none";
+            btn.disabled = false;
+          }
+        } else {
+          alert("Vui lòng nhập tên đăng nhập hoặc mật khẩu");
+        }
+      }
+
+      function showLoginPage() {
+        document.getElementById("loginPage").style.display = "flex";
+        document.getElementById("dashboard").style.display = "none";
+      }
+
+      function showDashboard() {
+        document.getElementById("loginPage").style.display = "none";
+        document.getElementById("dashboard").style.display = "block";
+
+        generateDayButtons();
+        selectToday();
+        loadSubjectsForDate(selectedDate);
+      }
+
+      function logout() {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("userInfo");
+        showLoginPage();
+        document.getElementById("loginForm").reset();
+      }
+
+      function setCurrentWeekStart() {
+        const today = new Date();
+        const dayOfWeek = today.getDay();
+        const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+        currentWeekStart = new Date(today);
+        currentWeekStart.setDate(today.getDate() + mondayOffset);
+      }
+
+      function generateDayButtons() {
+        const dayButtons = document.getElementById("dayButtons");
+        const dayNames = [
+          "Thứ Hai",
+          "Thứ Ba",
+          "Thứ Tư",
+          "Thứ Năm",
+          "Thứ Sáu",
+          "Thứ Bảy",
+          "Chủ nhật",
+        ];
+
+        dayButtons.innerHTML = "";
+
+        for (let i = 0; i < 7; i++) {
+          const date = new Date(currentWeekStart);
+          date.setDate(currentWeekStart.getDate() + i);
+
+          const button = document.createElement("button");
+          button.className = "day-btn";
+          button.innerHTML = `
+            <div>${dayNames[i]}</div>
+            <div style="font-size: 0.625rem; margin-top: 2px;">${date.getDate()}/${
+            date.getMonth() + 1
+          }</div>
+          `;
+          button.onclick = () => selectDay(date, button);
+          dayButtons.appendChild(button);
+        }
+      }
+
+      function selectDay(date, button) {
+        document
+          .querySelectorAll(".day-btn")
+          .forEach((btn) => btn.classList.remove("active"));
+        button.classList.add("active");
+        selectedDate = new Date(date);
+        loadSubjectsForDate(selectedDate);
+      }
+
+      function selectToday() {
+        const today = new Date();
+        const dayButtons = document.querySelectorAll(".day-btn");
+
+        for (let i = 0; i < dayButtons.length; i++) {
+          const buttonDate = new Date(currentWeekStart);
+          buttonDate.setDate(currentWeekStart.getDate() + i);
+
+          if (buttonDate.toDateString() === today.toDateString()) {
+            dayButtons[i].click();
+            return;
+          }
+        }
+
+        if (dayButtons.length > 0) {
+          dayButtons[0].click();
+        }
+      }
+
+      function changeWeek(direction) {
+        currentWeekStart.setDate(currentWeekStart.getDate() + direction * 7);
+        generateDayButtons();
+
+        const dayOfWeek = selectedDate.getDay();
+        const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+        const newSelectedDate = new Date(currentWeekStart);
+        newSelectedDate.setDate(currentWeekStart.getDate() + mondayOffset);
+
+        const dayButtons = document.querySelectorAll(".day-btn");
+        if (dayButtons[mondayOffset]) {
+          dayButtons[mondayOffset].click();
+        } else {
+          dayButtons[0].click();
+        }
+      }
+
+      function loadSubjectsForDate(date) {
+        const token = localStorage.getItem("accessToken");
+        const container = document.getElementById("subjectsContainer");
+        container.innerHTML =
+          '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Đang tải môn học...</div>';
+
+        setTimeout(async () => {
+          const dateKey = date.toISOString().split("T")[0];
+
+          const response = await axios.get(
+            `${baseUrl}/giangvien/tkbtheongay?ngay=${dateKey}`,
+            {
+              headers: {
+                token: token,
+              },
+            }
+          );
+
+          const result = response.data;
+
+          if (result.success) {
+            const subjects = result.data;
+
+            if (subjects.length === 0) {
+              container.innerHTML = `
+              <div class="no-subjects">
+                <i class="fas fa-calendar-times"></i>
+                <h3>Không có lịch</h3>
+                <p>Không tìm thấy lớp cho ngày ${date.toLocaleDateString(
+                  "vi-VN"
+                )}</p>
+              </div>
+            `;
+              return;
+            }
+
+            container.innerHTML = `
+            <div class="subjects-grid">
+              ${subjects
+                .map(
+                  (subject) => `
+                        <div class="subject-card" onclick="openStudentList('${encodeURIComponent(JSON.stringify(subject))}')">
+                            <div class="subject-title">
+                                <span class="subject-tag ${subject.buoi === 'S' ? 'tag-sang' : 'tag-chieu'}">
+                                    ${subject.buoi === 'S' ? 'Sáng' : 'Chiều'}
+                                </span>
+                                ${subject.mhten}
+                            </div>
+                            <div class="subject-meta">
+                                <span><i class="fas fa-clock"></i> ${subject.thoigianbd}</span>
+                                <span><i class="fas fa-door-open"></i> ${subject.phongten}</span>
+                            </div>
+                        </div>
+                    `
+                ).join("")}
+            </div>
+          `;
+          } else {
+            container.innerHTML = `
+              <div class="no-subjects">
+                <i class="fas fa-calendar-times"></i>
+                <h3>Không có lịch</h3>
+                <p>Không tìm thấy lớp cho ngày ${date.toLocaleDateString(
+                  "vi-VN"
+                )}</p>
+              </div>
+            `;
+          }
+        }, 500);
+      }
+
+      async function openStudentList(subject) {
+        const spinner = document.getElementById("loadingSpinner");
+        spinner.style.display = "block";
+        document.getElementById("studentListView").style.display = "none";
+        currentSubject = JSON.parse(decodeURIComponent(subject));
+        const token = localStorage.getItem("accessToken");
+
+        try {
+            const response = await axios.post(`${baseUrl}/giangvien/diemdanh/danhsach`, currentSubject, {
+                headers: {
+                    'token': token
+                }
+            });
+
+            const result = response.data;
+
+            if(result.success) {
+                students = result.data;
+                attendance = {};
+
+                students.forEach((student) => {
+                    attendance[student.hocvienid] = student.hiendienyn;
+                });
+
+                document.getElementById("subjectsView").style.display = "none";
+                document.getElementById("studentListView").style.display = "block";
+                document.getElementById("subjectTitle").textContent = currentSubject.mhten;
+
+                renderStudentList();
+                updateStats();
+            } else {
+                showToast("Lỗi tải danh sách sinh viên, vui lòng thử lại", "error");
+            }
+        } catch(err) {console.log(err)} 
+        finally {
+            spinner.style.display = "none";
+        }
+      }
+
+      function renderStudentList() {
+        const studentList = document.getElementById("studentList");
+        studentList.innerHTML = students
+          .map(
+            (student) => `
+          <div class="student-item ${attendance[student.hocvienid] ? "present" : ""}"
+               onclick="toggleAttendance('${student.hocvienid}')">
+            <div class="student-info">
+              <h4>${student.ho} ${student.ten}</h4>
+              <p>MSSV: ${student.mshv}</p>
+            </div>
+            <div class="attendance-status ${
+              attendance[student.hocvienid] ? "status-present" : "status-absent"
+            }">
+              ${attendance[student.hocvienid] ? "Hiện diện" : "Vắng"}
+            </div>
+          </div>
+        `
+          )
+          .join("");
+      }
+
+      function toggleAttendance(studentId) {
+        attendance[studentId] = !attendance[studentId];
+        renderStudentList();
+        updateStats();
+      }
+
+      function updateStats() {
+        const total = students.length;
+        const present = Object.values(attendance).filter(
+          (status) => status
+        ).length;
+        const absent = total - present;
+
+        document.getElementById("totalStudents").textContent = total;
+        document.getElementById("presentCount").textContent = present;
+        document.getElementById("absentCount").textContent = absent;
+      }
+
+      function selectAllStudents() {
+        students.forEach((student) => {
+          attendance[student.hocvienid] = true;
+        });
+        renderStudentList();
+        updateStats();
+      }
+
+      function removeAllStudents() {
+        students.forEach((student) => {
+          attendance[student.hocvienid] = false;
+        });
+        renderStudentList();
+        updateStats();
+      }
+
+      function backToSubjects() {
+        document.getElementById("studentListView").style.display = "none";
+        document.getElementById("subjectsView").style.display = "block";
+      }
+
+      async function saveAttendance() {
+        if (!currentSubject) return;
+
+        const token = localStorage.getItem("accessToken");
+        const btn = document.getElementById("save-btn");
+        btn.querySelector(".fa-floppy-disk").style.display = "none";
+        btn.querySelector(".fa-spinner").style.display = "inline-block";
+        btn.disabled = true;
+
+        try {
+            const attendanceData = {
+                tkb: {
+                    "tkbid": currentSubject.tkbid,
+                    "lopid": currentSubject.lopid,
+                    "gvid": currentSubject.gvid,
+                    "phongid": currentSubject.phongid,
+                    "ngayid": currentSubject.ngayid,
+                    "ngay": currentSubject.ngay,
+                    "thoigianbd": currentSubject.thoigianbd,
+                    "thoigiankt": currentSubject.thoigiankt,
+                    "dkid": currentSubject.dkid,
+                    "baonghiyn": currentSubject.baonghiyn,
+                    "dkghichu": currentSubject.dkghichu,
+                    "buoi": currentSubject.buoi,
+                    "loaitkb": currentSubject.loaitkb,
+                    "lmhid": currentSubject.lmhid,
+                    "lmhma": currentSubject.lmhma,
+                    "mhma": currentSubject.mhma,
+                    "mhten": currentSubject.mhten,
+                    "phongma": currentSubject.phongma,
+                    "phongten": currentSubject.phongten,
+                    "phongghichu": currentSubject.phongghichu
+                },
+                hocviens: Object.entries(attendance).map(([hocvienid, hiendienyn]) => ({
+                    hocvienid: hocvienid,
+                    hiendienyn: hiendienyn,
+                })),
+            };
+
+            const response = await axios.post(`${baseUrl}/giangvien/diemdanh/luu`, attendanceData, {
+                headers: {
+                    'token': token
+                }
+            });
+
+            const result = response.data;
+
+            if(result.success) {
+                showToast(
+                    `Đã lưu điểm danh "${currentSubject.mhten}"!\n\Hiện diện: ${
+                        Object.values(attendance).filter((status) => status).length
+                    }/${students.length} sinh viên`,
+                    "success"
+                );
+                openStudentList(`${encodeURIComponent(JSON.stringify(currentSubject))}`);
+            } else {
+                showToast("Điểm danh không thành công, vui lòng thử lại!", "error");
+            }
+            
+        } catch (err) {
+            console.log(err);
+        } finally {
+            btn.querySelector(".fa-floppy-disk").style.display = "inline-block";
+            btn.querySelector(".fa-spinner").style.display = "none";
+            btn.disabled = false;
+        }
+      }
+
+      function showToast(message, type = "info") {
+        const backgroundColor = {
+          success: "#4CAF50",
+          error: "#f44336",
+          info: "#2196F3",
+        };
+
+        Toastify({
+          text: message,
+          duration: 3000,
+          gravity: "top",
+          position: "right",
+          backgroundColor: backgroundColor[type] || backgroundColor.info,
+          stopOnFocus: true,
+        }).showToast();
+      }
+    </script>
+  </body>
+</html>
