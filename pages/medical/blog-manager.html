@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <title>Blog Manager</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        gap: 30px;
+        height: calc(100vh - 40px);
+      }
+
+      .container.detail-view {
+        grid-template-columns: 300px 1fr;
+      }
+
+      .sidebar {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        overflow-y: auto;
+      }
+
+      .main-content {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 40px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        overflow-y: auto;
+      }
+
+      .sidebar h2 {
+        color: white;
+        margin-bottom: 25px;
+        font-size: 24px;
+        text-align: center;
+      }
+
+      .blog-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .blog-item {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        position: relative;
+      }
+
+      .blog-item .blog-actions {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        display: flex;
+        gap: 8px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .blog-item:hover .blog-actions {
+        opacity: 1;
+      }
+
+      .action-btn {
+        background: rgba(255, 255, 255, 0.2);
+        border: none;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 14px;
+      }
+
+      .action-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        transform: scale(1.1);
+      }
+
+      .action-btn.view-btn {
+        color: #4facfe;
+      }
+
+      .action-btn.edit-btn {
+        color: #667eea;
+      }
+
+      .action-btn.delete-btn {
+        color: #ff6b6b;
+      }
+
+      .blog-item:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .blog-item.active {
+        background: rgba(255, 255, 255, 0.25);
+        border-color: rgba(255, 255, 255, 0.5);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .blog-item h3 {
+        color: white;
+        font-size: 16px;
+        margin-bottom: 8px;
+      }
+
+      .blog-item p {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+        line-height: 1.4;
+      }
+
+      .blog-item .date {
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 12px;
+        margin-top: 8px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 40px;
+      }
+
+      .header h1 {
+        color: #333;
+        font-size: 32px;
+        font-weight: 700;
+      }
+
+      .mode-toggle {
+        display: flex;
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 25px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: rgba(102, 126, 234, 0.1);
+        color: #667eea;
+        border: 2px solid #667eea;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+      }
+
+      .btn-secondary:hover {
+        background: #667eea;
+        color: white;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #333;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        width: 100%;
+        padding: 15px;
+        border: 2px solid rgba(102, 126, 234, 0.1);
+        border-radius: 15px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus,
+      .form-group select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        background: white;
+      }
+
+      .form-group textarea {
+        min-height: 200px;
+        resize: vertical;
+        font-family: inherit;
+      }
+
+      /* Rich Text Editor Styles */
+      .rich-editor {
+        border: 2px solid rgba(102, 126, 234, 0.1);
+        border-radius: 15px;
+        background: rgba(255, 255, 255, 0.8);
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .rich-editor:focus-within {
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        background: white;
+      }
+
+      .editor-toolbar {
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        padding: 12px 15px;
+        border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .editor-btn {
+        background: white;
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 8px 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 14px;
+        color: #333;
+        min-width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .editor-btn:hover {
+        background: #e9ecef;
+        transform: translateY(-1px);
+      }
+
+      .editor-btn.active {
+        background: #667eea;
+        color: white;
+        border-color: #667eea;
+      }
+
+      .editor-separator {
+        width: 1px;
+        height: 24px;
+        background: #dee2e6;
+        margin: 0 4px;
+      }
+
+      .editor-select {
+        border: 1px solid #dee2e6;
+        border-radius: 6px;
+        padding: 8px 12px;
+        background: white;
+        cursor: pointer;
+        font-size: 14px;
+        min-width: 120px;
+      }
+
+      .editor-content {
+        min-height: 300px;
+        padding: 20px;
+        font-size: 16px;
+        line-height: 1.6;
+        color: #333;
+        background: white;
+        outline: none;
+        overflow-y: auto;
+        max-height: 400px;
+      }
+
+      .editor-content:empty:before {
+        content: attr(data-placeholder);
+        color: #999;
+        font-style: italic;
+      }
+
+      .editor-content h1 {
+        font-size: 2em;
+        margin: 0.67em 0;
+        font-weight: bold;
+      }
+
+      .editor-content h2 {
+        font-size: 1.5em;
+        margin: 0.83em 0;
+        font-weight: bold;
+      }
+
+      .editor-content h3 {
+        font-size: 1.17em;
+        margin: 1em 0;
+        font-weight: bold;
+      }
+
+      .editor-content p {
+        margin: 1em 0;
+      }
+
+      .editor-content ul,
+      .editor-content ol {
+        margin: 1em 0;
+        padding-left: 40px;
+      }
+
+      .editor-content blockquote {
+        margin: 1em 0;
+        padding-left: 20px;
+        border-left: 4px solid #667eea;
+        color: #666;
+        font-style: italic;
+        background: #f8f9fa;
+        padding: 15px 20px;
+        border-radius: 0 8px 8px 0;
+      }
+
+      .editor-content code {
+        background: #f1f3f4;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        font-size: 0.9em;
+      }
+
+      .editor-content pre {
+        background: #f1f3f4;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        margin: 1em 0;
+      }
+
+      .editor-content table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: 1em 0;
+      }
+
+      .editor-content table,
+      .editor-content th,
+      .editor-content td {
+        border: 1px solid #dee2e6;
+      }
+
+      .editor-content th,
+      .editor-content td {
+        padding: 8px 12px;
+        text-align: left;
+      }
+
+      .editor-content th {
+        background: #f8f9fa;
+        font-weight: bold;
+      }
+
+      .form-actions {
+        display: flex;
+        gap: 15px;
+        justify-content: flex-end;
+        margin-top: 40px;
+        padding-top: 30px;
+        border-top: 2px solid rgba(102, 126, 234, 0.1);
+      }
+
+      .success-message {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        font-weight: 600;
+        text-align: center;
+        animation: slideIn 0.5s ease;
+      }
+
+      .error-message {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        color: white;
+        padding: 15px 20px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        font-weight: 600;
+        text-align: center;
+        animation: slideIn 0.5s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .char-counter {
+        text-align: right;
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+      }
+
+      .empty-state {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.7);
+        font-style: italic;
+        margin-top: 40px;
+      }
+
+      .delete-btn {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .delete-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+      }
+
+      .edit-indicator {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        margin-bottom: 15px;
+        text-align: center;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.7;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .sidebar {
+          order: 2;
+          max-height: 300px;
+        }
+
+        .main-content {
+          order: 1;
+        }
+
+        .editor-toolbar {
+          flex-wrap: wrap;
+          gap: 4px;
+        }
+
+        .editor-btn {
+          min-width: 32px;
+          height: 32px;
+          padding: 6px 8px;
+          font-size: 12px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h2>📝 Bài viết của tôi</h2>
+        <div class="blog-list" id="blogList">
+          <div class="empty-state">
+            Chưa có bài viết nào. Hãy tạo bài viết đầu tiên của bạn để bắt đầu!
+          </div>
+        </div>
+      </div>
+
+      <div class="main-content">
+        <div
+          id="loadingIndicator"
+          style="display: none; text-align: center; margin-top: 40px"
+        >
+          <span style="font-size: 16px; color: #667eea">
+            <i class="fas fa-spinner fa-spin"></i> Đang tải dữ liệu...
+          </span>
+        </div>
+
+        <!-- Blog Form View -->
+        <div id="blogForm-view" class="blog-form-view">
+          <div class="header">
+            <h1 id="pageTitle">Tạo bài viết mới</h1>
+            <div class="mode-toggle">
+              <button class="btn btn-primary" id="createBtn">
+                Bài viết mới
+              </button>
+              <button class="btn btn-secondary" id="clearBtn">
+                Xóa biểu mẫu
+              </button>
+            </div>
+          </div>
+
+          <div id="editIndicator" class="edit-indicator" style="display: none">
+            🖊️ Đang chỉnh sửa bài viết
+          </div>
+
+          <div id="messageContainer"></div>
+
+          <form id="blogForm">
+            <div class="form-group">
+              <label for="title">Tiêu đề bài viết</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                required
+                placeholder="Nhập tiêu đề hấp dẫn..."
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="author">Tác giả</label>
+              <input
+                type="text"
+                id="author"
+                name="author"
+                required
+                placeholder="Tên của bạn"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="category">Loại</label>
+              <select id="category" name="category" required>
+                <option value="">Chọn một loại</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="excerpt">Trích đoạn</label>
+              <textarea
+                id="excerpt"
+                name="excerpt"
+                placeholder="Mô tả ngắn gọn về bài đăng trên blog của bạn..."
+                maxlength="200"
+              ></textarea>
+              <div class="char-counter">
+                <span id="excerptCounter">0</span>/200 ký tự
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="content">Nội dung</label>
+              <div class="rich-editor" id="richEditor">
+                <div class="editor-toolbar">
+                  <select class="editor-select" id="formatSelect">
+                    <option value="p">Paragraph</option>
+                    <option value="h1">Heading 1</option>
+                    <option value="h2">Heading 2</option>
+                    <option value="h3">Heading 3</option>
+                  </select>
+
+                  <div class="editor-separator"></div>
+
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="bold"
+                    title="Bold"
+                  >
+                    <i class="fas fa-bold"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="italic"
+                    title="Italic"
+                  >
+                    <i class="fas fa-italic"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="underline"
+                    title="Underline"
+                  >
+                    <i class="fas fa-underline"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="strikeThrough"
+                    title="Strikethrough"
+                  >
+                    <i class="fas fa-strikethrough"></i>
+                  </button>
+
+                  <div class="editor-separator"></div>
+
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="justifyLeft"
+                    title="Align Left"
+                  >
+                    <i class="fas fa-align-left"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="justifyCenter"
+                    title="Align Center"
+                  >
+                    <i class="fas fa-align-center"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="justifyRight"
+                    title="Align Right"
+                  >
+                    <i class="fas fa-align-right"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="justifyFull"
+                    title="Justify"
+                  >
+                    <i class="fas fa-align-justify"></i>
+                  </button>
+
+                  <div class="editor-separator"></div>
+
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="insertUnorderedList"
+                    title="Bullet List"
+                  >
+                    <i class="fas fa-list-ul"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="insertOrderedList"
+                    title="Numbered List"
+                  >
+                    <i class="fas fa-list-ol"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="outdent"
+                    title="Decrease Indent"
+                  >
+                    <i class="fas fa-outdent"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="indent"
+                    title="Increase Indent"
+                  >
+                    <i class="fas fa-indent"></i>
+                  </button>
+
+                  <div class="editor-separator"></div>
+
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    id="linkBtn"
+                    title="Insert Link"
+                  >
+                    <i class="fas fa-link"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="unlink"
+                    title="Remove Link"
+                  >
+                    <i class="fas fa-unlink"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    id="imageBtn"
+                    title="Insert Image"
+                  >
+                    <i class="fas fa-image"></i>
+                  </button>
+
+                  <div class="editor-separator"></div>
+
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    id="codeBtn"
+                    title="Code Block"
+                  >
+                    <i class="fas fa-code"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    id="quoteBtn"
+                    title="Quote"
+                  >
+                    <i class="fas fa-quote-left"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    id="tableBtn"
+                    title="Insert Table"
+                  >
+                    <i class="fas fa-table"></i>
+                  </button>
+
+                  <div class="editor-separator"></div>
+
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="undo"
+                    title="Undo"
+                  >
+                    <i class="fas fa-undo"></i>
+                  </button>
+                  <button
+                    type="button"
+                    class="editor-btn"
+                    data-command="redo"
+                    title="Redo"
+                  >
+                    <i class="fas fa-redo"></i>
+                  </button>
+                </div>
+
+                <div
+                  class="editor-content"
+                  id="editorContent"
+                  contenteditable="true"
+                  data-placeholder="Viết nội dung blog của bạn ở đây..."
+                ></div>
+              </div>
+              <div class="char-counter">
+                <span id="contentCounter">0</span> ký tự (tối thiểu 100)
+              </div>
+              <textarea
+                id="content"
+                name="content"
+                style="display: none"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="tags">Thẻ</label>
+              <input
+                type="text"
+                id="tags"
+                name="tags"
+                placeholder="ví dụ: javascript, phát triển web, mã hóa (phân tách bằng dấu phẩy)"
+              />
+            </div>
+
+            <div class="form-actions">
+              <button type="button" class="btn btn-secondary" id="cancelBtn">
+                Hủy bỏ
+              </button>
+              <button type="submit" class="btn btn-primary" id="submitBtn">
+                Tạo bài viết
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      let currentFormId = null;
+      let isEditMode = false;
+
+      class RichTextEditor {
+        constructor(containerId) {
+          this.container = document.getElementById(containerId);
+          this.editorContent = this.container.querySelector(".editor-content");
+          this.hiddenTextarea = document.getElementById("content");
+          this.contentCounter = document.getElementById("contentCounter");
+          this.init();
+        }
+
+        init() {
+          this.attachEventListeners();
+          this.updateCounter();
+        }
+
+        attachEventListeners() {
+          // Toolbar buttons
+          const toolbarBtns = this.container.querySelectorAll(
+            ".editor-btn[data-command]"
+          );
+          toolbarBtns.forEach((btn) => {
+            btn.addEventListener("click", (e) => {
+              e.preventDefault();
+              const command = btn.getAttribute("data-command");
+              this.executeCommand(command);
+            });
+          });
+
+          // Format selector
+          const formatSelect = this.container.querySelector("#formatSelect");
+          formatSelect.addEventListener("change", (e) => {
+            this.executeCommand("formatBlock", e.target.value);
+          });
+
+          // Special buttons
+          document
+            .getElementById("linkBtn")
+            .addEventListener("click", () => this.insertLink());
+          document
+            .getElementById("imageBtn")
+            .addEventListener("click", () => this.insertImage());
+          document
+            .getElementById("codeBtn")
+            .addEventListener("click", () => this.insertCode());
+          document
+            .getElementById("quoteBtn")
+            .addEventListener("click", () => this.insertQuote());
+          document
+            .getElementById("tableBtn")
+            .addEventListener("click", () => this.insertTable());
+
+          // Content events
+          this.editorContent.addEventListener("input", () => {
+            this.updateCounter();
+            this.syncContent();
+            this.updateToolbarState();
+          });
+
+          this.editorContent.addEventListener("keyup", () => {
+            this.updateToolbarState();
+          });
+
+          this.editorContent.addEventListener("mouseup", () => {
+            this.updateToolbarState();
+          });
+
+          // Prevent form submission on Enter in toolbar
+          this.container.addEventListener("keydown", (e) => {
+            if (
+              e.target.classList.contains("editor-btn") &&
+              e.key === "Enter"
+            ) {
+              e.preventDefault();
+            }
+          });
+        }
+
+        executeCommand(command, value = null) {
+          this.editorContent.focus();
+          document.execCommand(command, false, value);
+          this.syncContent();
+          this.updateToolbarState();
+        }
+
+        insertLink() {
+          const selection = window.getSelection();
+          const selectedText = selection.toString();
+          const url = prompt("Enter URL:", "https://");
+
+          if (url && url !== "https://") {
+            if (selectedText) {
+              this.executeCommand("createLink", url);
+            } else {
+              const linkText = prompt("Enter link text:", url);
+              if (linkText) {
+                this.executeCommand(
+                  "insertHTML",
+                  `<a href="${url}">${linkText}</a>`
+                );
+              }
+            }
+          }
+        }
+
+        insertImage() {
+          const url = prompt("Enter image URL:", "https://");
+          if (url && url !== "https://") {
+            const alt = prompt("Enter image description (optional):", "");
+            this.executeCommand(
+              "insertHTML",
+              `<img src="${url}" alt="${alt}" style="max-width: 100%; height: auto; border-radius: 8px; margin: 10px 0;">`
+            );
+          }
+        }
+
+        insertCode() {
+          const selection = window.getSelection();
+          const selectedText = selection.toString();
+
+          if (selectedText) {
+            this.executeCommand("insertHTML", `<code>${selectedText}</code>`);
+          } else {
+            const codeType = prompt(
+              "Enter code type (e.g., javascript, html, css):",
+              "javascript"
+            );
+            const code = prompt("Enter code:", "");
+            if (code) {
+              this.executeCommand(
+                "insertHTML",
+                `<pre><code class="language-${codeType}">${code}</code></pre>`
+              );
+            }
+          }
+        }
+
+        insertQuote() {
+          const selection = window.getSelection();
+          const selectedText = selection.toString();
+
+          if (selectedText) {
+            this.executeCommand(
+              "insertHTML",
+              `<blockquote>${selectedText}</blockquote>`
+            );
+          } else {
+            const quote = prompt("Enter quote text:", "");
+            if (quote) {
+              this.executeCommand(
+                "insertHTML",
+                `<blockquote>${quote}</blockquote>`
+              );
+            }
+          }
+        }
+
+        insertTable() {
+          const rows = prompt("Number of rows:", "3");
+          const cols = prompt("Number of columns:", "3");
+
+          if (rows && cols) {
+            let tableHTML = "<table><thead><tr>";
+
+            // Create header
+            for (let j = 0; j < cols; j++) {
+              tableHTML += "<th>Header " + (j + 1) + "</th>";
+            }
+            tableHTML += "</tr></thead><tbody>";
+
+            // Create rows
+            for (let i = 0; i < rows - 1; i++) {
+              tableHTML += "<tr>";
+              for (let j = 0; j < cols; j++) {
+                tableHTML += "<td>Cell " + (i + 1) + "-" + (j + 1) + "</td>";
+              }
+              tableHTML += "</tr>";
+            }
+
+            tableHTML += "</tbody></table>";
+            this.executeCommand("insertHTML", tableHTML);
+          }
+        }
+
+        updateToolbarState() {
+          const commands = [
+            "bold",
+            "italic",
+            "underline",
+            "strikeThrough",
+            "justifyLeft",
+            "justifyCenter",
+            "justifyRight",
+            "justifyFull",
+            "insertUnorderedList",
+            "insertOrderedList",
+          ];
+
+          commands.forEach((command) => {
+            const btn = this.container.querySelector(
+              `[data-command="${command}"]`
+            );
+            if (btn) {
+              if (document.queryCommandState(command)) {
+                btn.classList.add("active");
+              } else {
+                btn.classList.remove("active");
+              }
+            }
+          });
+        }
+
+        updateCounter() {
+          const text =
+            this.editorContent.textContent ||
+            this.editorContent.innerText ||
+            "";
+          this.contentCounter.textContent = text.length;
+        }
+
+        syncContent() {
+          this.hiddenTextarea.value = this.editorContent.innerHTML;
+        }
+
+        getContent() {
+          return this.editorContent.innerHTML;
+        }
+
+        setContent(content) {
+          this.editorContent.innerHTML = content;
+          this.syncContent();
+          this.updateCounter();
+        }
+
+        clear() {
+          this.editorContent.innerHTML = "";
+          this.syncContent();
+          this.updateCounter();
+        }
+      }
+
+      // Initialize rich text editor
+      const richEditor = new RichTextEditor("richEditor");
+
+      // Categories for the dropdown
+      let categories = [];
+      let blogs = [];
+
+      // Populate categories dropdown
+      function populateCategories() {
+        const categorySelect = document.getElementById("category");
+        categories.filter(x => x.type === "blog").forEach((category) => {
+          const option = document.createElement("option");
+          option.value = category._id;
+          option.textContent = category.title;
+          categorySelect.appendChild(option);
+        });
+      }
+
+      async function saveFormToDatabase(formData, formId = null) {
+        try {
+          let response;
+          if (formId) {
+            response = await axios.put(
+              `/api/medical/admin/blogs/${formId}`,
+              formData
+            );
+          } else {
+            response = await axios.post("/api/medical/admin/blogs", formData);
+          }
+          return response?.data?.status ? response.data : null;
+        } catch (error) {
+          console.error(
+            "Error updating blogs:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
+      // Character counter for excerpt
+      document.getElementById("excerpt").addEventListener("input", function () {
+        document.getElementById("excerptCounter").textContent =
+          this.value.length;
+      });
+
+      // Form submission
+      document
+        .getElementById("blogForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const formData = new FormData(this);
+          const blogData = {
+            title: formData.get("title"),
+            author: formData.get("author"),
+            categoryId: formData.get("category"),
+            excerpt: formData.get("excerpt"),
+            content: richEditor.getContent(),
+            tags: formData.get("tags"),
+            createdAt: new Date().toISOString(),
+          };
+
+          // Validate content length
+          const contentText =
+            document.getElementById("editorContent").textContent ||
+            document.getElementById("editorContent").innerText ||
+            "";
+          if (contentText.length < 100) {
+            showMessage("Nội dung phải có ít nhất 100 ký tự!", "error");
+            return;
+          }
+
+          if (isEditMode) {
+            const index = blogs.findIndex((blog) => blog._id === currentFormId);
+            if (index !== -1) {
+              blogData._id = currentFormId; // Preserve the ID for editing
+              await saveFormToDatabase(blogData, currentFormId);
+              showMessage("Bài viết đã được cập nhật thành công!", "success");
+            }
+          } else {
+            await saveFormToDatabase(blogData);
+            showMessage("Bài viết đã được tạo thành công!", "success");
+          }
+
+          // Reset form
+          resetForm();
+          await loadBlogs();
+        });
+
+      // Clear form button
+      document
+        .getElementById("clearBtn")
+        .addEventListener("click", function () {
+          if (
+            confirm("Bạn có chắc chắn muốn xóa tất cả nội dung trong biểu mẫu?")
+          ) {
+            resetForm();
+          }
+        });
+
+      // Cancel button
+      document
+        .getElementById("cancelBtn")
+        .addEventListener("click", function () {
+          resetForm();
+        });
+
+      // Create new blog button
+      document
+        .getElementById("createBtn")
+        .addEventListener("click", function () {
+          resetForm();
+        });
+
+      // Reset form function
+      function resetForm() {
+        document.getElementById("blogForm").reset();
+        richEditor.clear();
+        document.getElementById("excerptCounter").textContent = "0";
+        document.getElementById("contentCounter").textContent = "0";
+        document.getElementById("pageTitle").textContent = "Tạo bài viết mới";
+        document.getElementById("submitBtn").textContent = "Tạo bài viết";
+        document.getElementById("editIndicator").style.display = "none";
+        currentFormId = null;
+        isEditMode = false;
+        clearMessage();
+      }
+
+      // Show message function
+      function showMessage(message, type) {
+        clearMessage();
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `${type}-message`;
+        messageDiv.textContent = message;
+        document.getElementById("messageContainer").appendChild(messageDiv);
+
+        setTimeout(() => {
+          clearMessage();
+        }, 5000);
+      }
+
+      // Clear message function
+      function clearMessage() {
+        document.getElementById("messageContainer").innerHTML = "";
+      }
+
+      async function loadCategories() {
+        try {
+          const response = await axios.get("/api/medical/categories");
+          categories = response?.data?.payload || [];
+          populateCategories();
+        } catch (error) {
+          console.error("Error loading categories:", error);
+        }
+      }
+
+      // Load blogs function
+      async function loadBlogs() {
+        blogs = await axios
+          .get("/api/medical/admin/blogs")
+          .then((response) => response?.data?.payload || [])
+          .catch((error) => {
+            console.error("Error loading blogs:", error);
+            return [];
+          });
+        const blogList = document.getElementById("blogList");
+
+        if (blogs.length === 0) {
+          blogList.innerHTML =
+            '<div class="empty-state">Chưa có bài viết nào. Hãy tạo bài viết đầu tiên của bạn để bắt đầu!</div>';
+          return;
+        }
+
+        // Sort blogs by date (newest first)
+        blogs.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        blogList.innerHTML = blogs
+          .map(
+            (blog) => `
+       <div class="blog-item" data-id="${blog._id}">
+         <div class="blog-actions">
+           <button class="action-btn view-btn" onclick="viewBlog('${
+             blog._id
+           }')" title="Xem">
+             <i class="fas fa-eye"></i>
+           </button>
+           <button class="action-btn edit-btn" onclick="editBlog('${
+             blog._id
+           }')" title="Chỉnh sửa">
+             <i class="fas fa-edit"></i>
+           </button>
+           <button class="action-btn delete-btn" onclick="deleteBlog('${
+             blog._id
+           }')" title="Xóa">
+             <i class="fas fa-trash"></i>
+           </button>
+         </div>
+         <h3>${blog.title}</h3>
+         <p>${blog.excerpt || "Không có mô tả"}</p>
+         <div class="date">${new Date(blog.createdAt).toLocaleDateString(
+           "vi-VN"
+         )} • ${blog.categoryId}</div>
+       </div>
+     `
+          )
+          .join("");
+      }
+
+      // View blog function
+      function viewBlog(id) {
+        const blog = blogs.find((b) => b._id === id);
+
+        if (blog) {
+          // Create a simple modal or new window to display the blog
+          const newWindow = window.open(
+            "",
+            "_blank",
+            "width=800,height=600,scrollbars=yes"
+          );
+          newWindow.document.write(`
+         <!DOCTYPE html>
+         <html>
+         <head>
+           <title>${blog.title}</title>
+           <style>
+             body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; }
+             .header { border-bottom: 2px solid #eee; padding-bottom: 20px; margin-bottom: 30px; }
+             .title { color: #333; font-size: 2.5em; margin-bottom: 10px; }
+             .meta { color: #666; font-size: 0.9em; }
+             .content { font-size: 1.1em; }
+             .tags { margin-top: 30px; }
+             .tag { background: #e9ecef; padding: 4px 8px; border-radius: 15px; font-size: 0.8em; margin-right: 8px; }
+           </style>
+         </head>
+         <body>
+           <div class="header">
+             <h1 class="title">${blog.title}</h1>
+             <div class="meta">
+               Tác giả: ${blog.author} • ${new Date(
+            blog.date
+          ).toLocaleDateString("vi-VN")} • ${blog.category}
+             </div>
+           </div>
+           <div class="content">${blog.content}</div>
+           ${
+             blog.tags
+               ? `<div class="tags">Thẻ: ${blog.tags
+                   .split(",")
+                   .map((tag) => `<span class="tag">${tag.trim()}</span>`)
+                   .join("")}</div>`
+               : ""
+           }
+         </body>
+         </html>
+       `);
+          newWindow.document.close();
+        }
+      }
+
+      // Edit blog function
+      function editBlog(id) {
+        const blog = blogs.find((b) => b._id === id);
+
+        if (blog) {
+          // Populate form with blog data
+          document.getElementById("title").value = blog.title;
+          document.getElementById("author").value = blog.author;
+          document.getElementById("category").value = blog.categoryId;
+          document.getElementById("excerpt").value = blog.excerpt || "";
+          document.getElementById("tags").value = blog.tags || "";
+
+          // Set content in rich editor
+          richEditor.setContent(blog.content);
+
+          // Update counters
+          document.getElementById("excerptCounter").textContent = (
+            blog.excerpt || ""
+          ).length;
+
+          // Update UI for edit mode
+          document.getElementById("pageTitle").textContent =
+            "Chỉnh sửa bài viết";
+          document.getElementById("submitBtn").textContent =
+            "Cập nhật bài viết";
+          document.getElementById("editIndicator").style.display = "block";
+
+          // Set edit mode
+          currentFormId = id;
+          isEditMode = true;
+
+          // Clear any existing messages
+          clearMessage();
+        }
+      }
+
+      // Delete blog function
+      async function deleteBlog(id) {
+        if (confirm("Bạn có chắc chắn muốn xóa bài viết này?")) {
+          await axios
+            .delete(`/api/medical/admin/blogs/${id}`)
+            .then((response) => {
+              if (response.data.status) {
+                showMessage("Bài viết đã được xóa thành công!", "success");
+              } else {
+                showMessage("Không thể xóa bài viết. Vui lòng thử lại.", "error");
+              }
+            })
+            .catch((error) => {
+              console.error("Error deleting blog:", error);
+              showMessage("Lỗi khi xóa bài viết. Vui lòng thử lại.", "error");
+            });
+          await loadBlogs();
+          showMessage("Bài viết đã được xóa!", "success");
+
+          // If currently editing this blog, reset form
+          if (currentFormId === id) {
+            resetForm();
+          }
+        }
+      }
+
+      // Initialize the application
+      async function init() {
+        await Promise.all([
+          loadBlogs(),
+          loadCategories(),
+        ])
+      }
+
+      // Start the application
+      init();
+    </script>
+  </body>
+</html>

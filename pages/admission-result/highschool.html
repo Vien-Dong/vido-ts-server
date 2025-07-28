@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tra Cứu Điểm Thi Lớp 10</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #fff;
+            font-family: Arial, sans-serif;
+        }
+        
+        .container {
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+        }
+        
+        h2 {
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-control {
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            padding: 12px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+        }
+        
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        
+        .resultSearch__left {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .resultSearch__left-sbd {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+        }
+        
+        .font-bold {
+            font-weight: bold;
+            color: #007bff;
+        }
+        
+        .edu-institution {
+            text-align: center;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .share-link {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        
+        .newFeature__iconLink {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #007bff;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        
+        .newFeature__iconLink:hover {
+            transform: scale(1.1);
+        }
+        
+        .img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background-size: 20px 20px;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        
+        .img-facebook { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z'/%3E%3C/svg%3E"); }
+        .img-twitter { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z'/%3E%3C/svg%3E"); }
+        .img-email { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z'/%3E%3C/svg%3E"); }
+        .img-share { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 24 24'%3E%3Cpath d='M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z'/%3E%3C/svg%3E"); }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: 600;
+        }
+        
+        tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .results-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .promotional-links {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+            gap: 20px;
+        }
+        
+        .promotional-links a {
+            text-decoration: none;
+        }
+        
+        .promotional-links img {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        
+        .promotional-links img:hover {
+            transform: scale(1.05);
+        }
+        
+        .form-control.is-invalid {
+            border-color: #dc3545;
+        }
+        
+        .form-control.is-valid {
+            border-color: #28a745;
+        }
+        
+        .invalid-feedback {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        
+        .valid-feedback {
+            color: #28a745;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        /* Custom Toast Notifications */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+        
+        .toast-notification {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            margin-bottom: 10px;
+            padding: 16px;
+            min-width: 300px;
+            transform: translateX(400px);
+            transition: all 0.3s ease;
+            border-left: 4px solid #007bff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .toast-notification.show {
+            transform: translateX(0);
+        }
+        
+        .toast-notification.success {
+            border-left-color: #28a745;
+        }
+        
+        .toast-notification.error {
+            border-left-color: #dc3545;
+        }
+        
+        .toast-notification.loading {
+            border-left-color: #007bff;
+        }
+        
+        .toast-icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .toast-icon.success {
+            background-color: #28a745;
+        }
+        
+        .toast-icon.error {
+            background-color: #dc3545;
+        }
+        
+        .toast-icon.loading {
+            background-color: #007bff;
+            animation: spin 1s linear infinite;
+        }
+        
+        .toast-message {
+            flex: 1;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #999;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .toast-close:hover {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <br>
+        <h2>Tra Cứu Điểm Thi lớp 10 năm <span id="year"></span></h2>
+
+        <form id="searchForm">
+            <div class="form-group">
+                <label for="id" class="mb-1">Số Báo Danh:</label>
+                <br>
+                <input type="text" class="form-control" id="id" placeholder="Nhập số báo danh" name="id" required>
+                <div class="valid-feedback">Hợp lệ</div>
+                <div class="invalid-feedback">Vui lòng nhập đầy đủ</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="name" class="mb-1">Họ và tên:</label>
+                <br>
+                <input type="text" class="form-control" id="name" placeholder="Nhập họ tên" name="name" required>
+                <div class="valid-feedback">Hợp lệ</div>
+                <div class="invalid-feedback">Vui lòng nhập đầy đủ</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="birth" class="mb-1">Ngày sinh: *Nhập tháng + ngày + năm ghi liền không dấu (Ví dụ: '09082010')</label>
+                <br>
+                <input type="text" class="form-control" id="birth" placeholder="Nhập ngày sinh" name="birth" required>
+                <div class="valid-feedback">Hợp lệ</div>
+                <div class="invalid-feedback">Vui lòng nhập đầy đủ</div>
+            </div>
+            
+            <br>
+            <button type="submit" class="btn btn-primary">Tra cứu điểm thi</button>
+        </form>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Vui lòng chờ...</p>
+        </div>
+
+        <div id="results" class="results-section" style="display: none;">
+            <h2 class="mb-5">Kết Quả Tra Cứu Điểm Thi Lớp 10</h2>
+
+            <div class="resultSearch__left">
+                <div class="resultSearch__left-sbd">
+                    <p>Số báo danh</p>
+                    <p class="font-bold" id="resultId"></p>
+                </div>
+                <div class="resultSearch__left-info">
+                    <p class="edu-institution">Sở GD&ĐT Thành Phố Hồ Chí Minh</p>
+
+                    <div class="controll__box share-link">
+                        <a class="newFeature__iconLink" title="Chia sẻ bài viết lên facebook" href="#" onclick="shareToFacebook()">
+                            <span class="img img-facebook"></span>
+                        </a>
+                        <a class="newFeature__iconLink" title="Chia sẻ bài viết lên twitter" href="#" onclick="shareToTwitter()">
+                            <span class="img img-twitter"></span>
+                        </a>
+                        <a class="newFeature__iconLink" title="Chia sẻ bài viết lên email" href="#" onclick="shareToEmail()">
+                            <span class="img img-email"></span>
+                        </a>
+                        <a class="newFeature__iconLink" title="Sao chép liên kết" href="#" onclick="copyLink()">
+                            <span class="img img-share"></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="resultSearch__right">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Môn</th>
+                            <th>Điểm</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Toán</td>
+                            <td id="mathScore">-</td>
+                        </tr>
+                        <tr>
+                            <td>Văn</td>
+                            <td id="literatureScore">-</td>
+                        </tr>
+                        <tr>
+                            <td>Ngoại ngữ</td>
+                            <td id="englishScore">-</td>
+                        </tr>
+                        <tr>
+                            <td>Chuyên</td>
+                            <td id="specializeScore">-</td>
+                        </tr>
+                        <tr>
+                            <td><b>Tổng điểm</b></td>
+                            <td><b id="totalScore">-</b></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <br><br>
+        <div class="promotional-links">
+            <a href="https://www.viendong.edu.vn">This form was created by Vien Dong College</a>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script>
+        // Custom Toast Notification System
+        class Toast {
+            constructor() {
+                this.container = document.getElementById('toastContainer');
+                this.toasts = new Map();
+            }
+
+            show(message, type = 'info', duration = 5000) {
+                const id = Date.now() + Math.random();
+                const toast = this.createToast(message, type, id);
+                this.container.appendChild(toast);
+                
+                // Show animation
+                setTimeout(() => toast.classList.add('show'), 10);
+                
+                // Auto remove
+                if (duration > 0) {
+                    setTimeout(() => this.remove(id), duration);
+                }
+                
+                this.toasts.set(id, toast);
+                return id;
+            }
+
+            createToast(message, type, id) {
+                const toast = document.createElement('div');
+                toast.className = `toast-notification ${type}`;
+                toast.dataset.id = id;
+                
+                const iconMap = {
+                    success: '✓',
+                    error: '✕',
+                    loading: '⟳'
+                };
+                
+                toast.innerHTML = `
+                    <div class="toast-icon ${type}">${iconMap[type] || 'ⓘ'}</div>
+                    <div class="toast-message">${message}</div>
+                    <button class="toast-close" onclick="toast.remove(${id})">&times;</button>
+                `;
+                
+                return toast;
+            }
+
+            remove(id) {
+                const toast = this.toasts.get(id);
+                if (toast) {
+                    toast.classList.remove('show');
+                    setTimeout(() => {
+                        if (toast.parentNode) {
+                            toast.parentNode.removeChild(toast);
+                        }
+                        this.toasts.delete(id);
+                    }, 300);
+                }
+            }
+
+            update(id, message, type) {
+                const toast = this.toasts.get(id);
+                if (toast) {
+                    const messageEl = toast.querySelector('.toast-message');
+                    const iconEl = toast.querySelector('.toast-icon');
+                    
+                    messageEl.textContent = message;
+                    toast.className = `toast-notification ${type} show`;
+                    
+                    const iconMap = {
+                        success: '✓',
+                        error: '✕',
+                        loading: '⟳'
+                    };
+                    
+                    iconEl.textContent = iconMap[type] || 'ⓘ';
+                    iconEl.className = `toast-icon ${type}`;
+                    
+                    // Auto remove after update (except loading)
+                    if (type !== 'loading') {
+                        setTimeout(() => this.remove(id), 2000);
+                    }
+                }
+            }
+
+            loading(message) {
+                return this.show(message, 'loading', 0); // 0 means no auto-remove
+            }
+
+            success(message) {
+                return this.show(message, 'success');
+            }
+
+            error(message) {
+                return this.show(message, 'error');
+            }
+        }
+
+        // Create global toast instance
+        const toast = new Toast();
+
+        // State variables
+        let currentResults = {
+            id: '',
+            name: '',
+            birth: '',
+            specialize: 0,
+            english: 0,
+            math: 0,
+            literature: 0
+        };
+
+        // Form elements
+        const form = document.getElementById('searchForm');
+        const idInput = document.getElementById('id');
+        const nameInput = document.getElementById('name');
+        const birthInput = document.getElementById('birth');
+        const loadingDiv = document.getElementById('loading');
+        const resultsDiv = document.getElementById('results');
+
+        // Form validation
+        function validateForm() {
+            const inputs = [idInput, nameInput, birthInput];
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    input.classList.add('is-invalid');
+                    input.classList.remove('is-valid');
+                    isValid = false;
+                } else {
+                    input.classList.add('is-valid');
+                    input.classList.remove('is-invalid');
+                }
+            });
+
+            return isValid;
+        }
+
+        const yearSpan = document.getElementById("year");
+        yearSpan.innerText = new Date().getFullYear()
+
+        // Search function
+        async function getResult(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                toast.error('Vui lòng nhập đầy đủ thông tin');
+                return;
+            }
+
+            const id = idInput.value.trim();
+            const name = nameInput.value.trim();
+            const birth = birthInput.value.trim();
+
+            loadingDiv.classList.add('show');
+            resultsDiv.style.display = 'none';
+
+            const toastId = toast.loading('Vui lòng chờ...');
+            const searchUrl = `/api/crawler/crawl-highschool?name=${encodeURIComponent(name)}&sbd=${encodeURIComponent(id)}&birth=${encodeURIComponent(birth)}`;
+
+            try {
+                const response = await axios.get(searchUrl);
+                const result = response.data;
+
+                if (result?.status && result?.data && result?.data?.data) {
+                    const subjectScores = result.data.data.subjectScores;
+                    
+                    currentResults = {
+                        id: id,
+                        name: name,
+                        birth: birth,
+                        specialize: subjectScores?.Chuyen?.point || 0,
+                        english: subjectScores?.NgoaiNgu?.point || 0,
+                        math: subjectScores?.Toan?.point || 0,
+                        literature: subjectScores?.Van?.point || 0
+                    };
+
+                    displayResults();
+                    toast.update(toastId, 'Đã xong', 'success');
+                } else {
+                    toast.update(toastId, 'Không có dữ liệu', 'error');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                toast.update(toastId, 'Lỗi khi tra cứu dữ liệu', 'error');
+            } finally {
+                loadingDiv.classList.remove('show');
+            }
+        }
+
+        // Display results
+        function displayResults() {
+            document.getElementById('resultId').textContent = currentResults.id;
+            document.getElementById('mathScore').textContent = currentResults.math;
+            document.getElementById('literatureScore').textContent = currentResults.literature;
+            document.getElementById('englishScore').textContent = currentResults.english;
+            document.getElementById('specializeScore').textContent = currentResults.specialize;
+            document.getElementById('totalScore').textContent = 
+                currentResults.specialize + currentResults.math + currentResults.literature + currentResults.english;
+            
+            resultsDiv.style.display = 'block';
+        }
+
+        // Share functions
+        function shareToFacebook() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(`Kết quả thi lớp 10 - SBD: ${currentResults.id}`);
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
+        }
+
+        function shareToTwitter() {
+            const url = encodeURIComponent(window.location.href);
+            const text = encodeURIComponent(`Kết quả thi lớp 10 - SBD: ${currentResults.id}`);
+            window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+        }
+
+        function shareToEmail() {
+            const subject = encodeURIComponent(`Kết quả thi lớp 10 - SBD: ${currentResults.id}`);
+            const body = encodeURIComponent(`Xem kết quả thi lớp 10 tại: ${window.location.href}`);
+            window.location.href = `mailto:?subject=${subject}&body=${body}`;
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => {
+                toastr.success('Đã sao chép liên kết');
+            }).catch(() => {
+                toastr.error('Không thể sao chép liên kết');
+            });
+        }
+
+        // Event listeners
+        form.addEventListener('submit', getResult);
+
+        // Remove validation classes on input
+        [idInput, nameInput, birthInput].forEach(input => {
+            input.addEventListener('input', function() {
+                this.classList.remove('is-invalid', 'is-valid');
+            });
+        });
+    </script>
+</body>
+</html>

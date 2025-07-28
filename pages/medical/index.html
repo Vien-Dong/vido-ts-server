@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hệ thống Đánh giá Y tế - Medical Simulator</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --secondary-gradient: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+        --success-gradient: linear-gradient(135deg, #48cab2 0%, #2dd4bf 100%);
+        --info-gradient: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+        --dark-gradient: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        --glass-bg: rgba(255, 255, 255, 0.1);
+        --glass-border: rgba(255, 255, 255, 0.2);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        line-height: 1.6;
+        color: #1e293b;
+        overflow-x: hidden;
+      }
+
+      /* Enhanced Navigation */
+      .navbar {
+        backdrop-filter: blur(20px);
+        background: rgba(102, 126, 234, 0.9) !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .navbar-brand {
+        font-weight: 800;
+        font-size: 1.3rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar-nav .nav-link {
+        font-weight: 500;
+        position: relative;
+        transition: all 0.3s ease;
+      }
+
+      .navbar-nav .nav-link:hover {
+        transform: translateY(-2px);
+      }
+
+      .navbar-nav .nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 50%;
+        background: white;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+      }
+
+      .navbar-nav .nav-link:hover::after {
+        width: 80%;
+      }
+
+      /* Hero Section with Particles Effect */
+      .hero-section {
+        background: var(--primary-gradient);
+        color: white;
+        padding: 120px 0 80px;
+        position: relative;
+        overflow: hidden;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+      }
+
+      .hero-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="grad1" cx="50%" cy="50%" r="50%"><stop offset="0%" style="stop-color:rgba(255,255,255,0.1);stop-opacity:1" /><stop offset="100%" style="stop-color:rgba(255,255,255,0);stop-opacity:0" /></radialGradient></defs><circle cx="100" cy="100" r="50" fill="url(%23grad1)"><animate attributeName="cx" values="100;900;100" dur="20s" repeatCount="indefinite"/></circle><circle cx="300" cy="300" r="30" fill="url(%23grad1)"><animate attributeName="cy" values="300;100;300" dur="15s" repeatCount="indefinite"/></circle><circle cx="700" cy="200" r="40" fill="url(%23grad1)"><animate attributeName="cx" values="700;200;700" dur="18s" repeatCount="indefinite"/></circle></svg>')
+          no-repeat center center;
+        background-size: cover;
+        opacity: 0.1;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero-title {
+        font-size: clamp(2.5rem, 5vw, 4rem);
+        font-weight: 800;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        line-height: 1.2;
+      }
+
+      .hero-subtitle {
+        font-size: 1.3rem;
+        margin-bottom: 2rem;
+        opacity: 0.95;
+        font-weight: 400;
+      }
+
+      .hero-image {
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        transition: all 0.5s ease;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+      }
+
+      .hero-image:hover {
+        transform: scale(1.05) rotate(2deg);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Enhanced Buttons */
+      .btn-primary {
+        background: var(--primary-gradient);
+        border: none;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+      }
+
+      .btn-light {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        color: white;
+        padding: 15px 35px;
+        border-radius: 50px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+      }
+
+      .btn-light:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Statistics Section */
+      .stats-section {
+        background: var(--dark-gradient);
+        color: white;
+        padding: 60px 0;
+        position: relative;
+      }
+
+      .stat-item {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .stat-number {
+        font-size: 3rem;
+        font-weight: 800;
+        background: var(--success-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        display: block;
+      }
+
+      .stat-label {
+        font-size: 1.1rem;
+        opacity: 0.8;
+        margin-top: 10px;
+      }
+
+      /* Enhanced Feature Cards */
+      .features-section {
+        padding: 100px 0;
+        background: linear-gradient(45deg, #f8fafc 0%, #e2e8f0 100%);
+      }
+
+      .feature-card {
+        background: white;
+        border: none;
+        border-radius: 20px;
+        padding: 40px 30px;
+        transition: all 0.4s ease;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-gradient);
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      }
+
+      .feature-icon {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 2rem;
+        transition: all 0.3s ease;
+      }
+
+      .feature-card:nth-child(1) .feature-icon {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .feature-card:nth-child(2) .feature-icon {
+        background: var(--success-gradient);
+        color: white;
+      }
+
+      .feature-card:nth-child(3) .feature-icon {
+        background: var(--info-gradient);
+        color: white;
+      }
+
+      .feature-card:nth-child(4) .feature-icon {
+        background: var(--secondary-gradient);
+        color: white;
+      }
+
+      .feature-card:nth-child(5) .feature-icon {
+        background: linear-gradient(135deg, #a855f7 0%, #ec4899 100%);
+        color: white;
+      }
+
+      .feature-card:nth-child(6) .feature-icon {
+        background: linear-gradient(135deg, #06b6d4 0%, #10b981 100%);
+        color: white;
+      }
+
+      /* Forms Section */
+      .forms-section {
+        padding: 100px 0;
+        background: white;
+      }
+
+      .form-card {
+        background: white;
+        border: none;
+        border-radius: 20px;
+        transition: all 0.4s ease;
+        overflow: hidden;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        position: relative;
+      }
+
+      .form-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: var(--primary-gradient);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .form-card:hover::before {
+        opacity: 0.05;
+      }
+
+      .form-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      /* Process Section */
+      .process-section {
+        padding: 100px 0;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .process-step {
+        text-align: center;
+        padding: 30px;
+        position: relative;
+      }
+
+      .process-number {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        border: 2px solid var(--glass-border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 20px;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .process-step::after {
+        content: "";
+        position: absolute;
+        top: 30px;
+        right: -50%;
+        width: 100%;
+        height: 2px;
+        background: var(--glass-border);
+        z-index: 1;
+      }
+
+      .process-step:last-child::after {
+        display: none;
+      }
+
+      /* Testimonials */
+      .testimonials-section {
+        padding: 100px 0;
+        background: #f8fafc;
+      }
+
+      .testimonial-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+        position: relative;
+      }
+
+      .testimonial-card::before {
+        content: '"';
+        position: absolute;
+        top: -10px;
+        left: 30px;
+        font-size: 4rem;
+        color: #667eea;
+        font-family: serif;
+      }
+
+      /* Section Titles */
+      .section-title {
+        font-size: 2.8rem;
+        font-weight: 800;
+        text-align: center;
+        margin-bottom: 60px;
+        position: relative;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background: var(--primary-gradient);
+        border-radius: 2px;
+      }
+
+      /* Footer */
+      .footer {
+        background: var(--dark-gradient);
+        color: white;
+        padding: 60px 0 30px;
+      }
+
+      .footer-section h5 {
+        color: white;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+
+      .footer-section ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      .footer-section ul li {
+        margin-bottom: 10px;
+      }
+
+      .footer-section ul li a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-section ul li a:hover {
+        color: white;
+      }
+
+      /* Animations */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(30px);
+        animation: fadeInUp 0.8s ease forwards;
+      }
+
+      @keyframes fadeInUp {
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .hero-section {
+          padding: 100px 0 60px;
+          text-align: center;
+        }
+
+        .hero-title {
+          font-size: 2.5rem;
+        }
+
+        .feature-card {
+          margin-bottom: 30px;
+        }
+
+        .process-step::after {
+          display: none;
+        }
+      }
+
+      /* Loading Animation */
+      .loading-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--primary-gradient);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        transition: opacity 0.5s ease;
+      }
+
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top: 3px solid white;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+      <div class="container">
+        <a class="navbar-brand" href="/medical">
+          <i class="fas fa-heartbeat me-2"></i>
+          <strong>Medical Simulator</strong>
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNav"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#features">
+                <i class="fas fa-star me-1"></i>
+                Tính năng
+              </a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="formsDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <i class="fas fa-clipboard-list me-1"></i>
+                Biểu mẫu đánh giá
+              </a>
+              <ul class="dropdown-menu" id="navFormsDropdown">
+                <!-- Forms will be populated by JavaScript -->
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 mb-5 mb-lg-0">
+            <div class="hero-content">
+              <h1 class="hero-title fade-in">
+                Hệ thống Đánh giá Y tế tiên tiến
+              </h1>
+              <p class="hero-subtitle fade-in">
+                Nền tảng đánh giá sức khỏe toàn diện với công nghệ hiện đại, hỗ
+                trợ chẩn đoán chính xác và theo dõi tiến trình điều trị hiệu
+                quả.
+              </p>
+              <div class="d-flex flex-wrap gap-3 fade-in">
+                <div class="dropdown">
+                  <button
+                    class="btn btn-light btn-lg dropdown-toggle"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                  >
+                    <i class="fas fa-file-medical me-2"></i>
+                    Bắt đầu đánh giá
+                  </button>
+                  <ul class="dropdown-menu" id="heroFormsDropdown">
+                    <!-- Forms will be populated by JavaScript -->
+                  </ul>
+                </div>
+                <button
+                  class="btn btn-outline-light btn-lg"
+                  onclick="scrollToSection('features')"
+                >
+                  <i class="fas fa-info-circle me-2"></i>
+                  Tìm hiểu thêm
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="text-center fade-in">
+              <img
+                src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500&h=500&fit=crop&crop=center"
+                alt="Medical Assessment System"
+                class="hero-image img-fluid"
+                style="
+                  max-width: 100%;
+                  width: 100%;
+                  max-width: 400px;
+                  border-radius: 20px;
+                "
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section py-5">
+      <div class="container">
+        <div class="row text-center gy-4">
+          <div class="col-6 col-md-3">
+            <div class="stat-item fade-in">
+              <span class="stat-number d-block fs-3 fw-bold">10,000+</span>
+              <div class="stat-label text-muted">Bệnh nhân đã đánh giá</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-item fade-in">
+              <span class="stat-number d-block fs-3 fw-bold">50+</span>
+              <div class="stat-label text-muted">
+                Thang đánh giá chuyên nghiệp
+              </div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-item fade-in">
+              <span class="stat-number d-block fs-3 fw-bold">99.9%</span>
+              <div class="stat-label text-muted">Độ chính xác</div>
+            </div>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="stat-item fade-in">
+              <span class="stat-number d-block fs-3 fw-bold">24/7</span>
+              <div class="stat-label text-muted">Hỗ trợ liên tục</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features-section" id="features">
+      <div class="container">
+        <h2 class="section-title fade-in">Tính năng vượt trội</h2>
+        <div class="row" id="categoriesContainer"></div>
+      </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process-section">
+      <div class="container">
+        <h2 class="section-title text-white fade-in">Quy trình đánh giá</h2>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="process-step fade-in">
+              <div class="process-number">1</div>
+              <h5>Chọn Form</h5>
+              <p>Lựa chọn biểu mẫu đánh giá phù hợp với tình trạng sức khỏe</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="process-step fade-in">
+              <div class="process-number">2</div>
+              <h5>Nhập thông tin</h5>
+              <p>Điền đầy đủ thông tin bệnh nhân và các chỉ số cần thiết</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="process-step fade-in">
+              <div class="process-number">3</div>
+              <h5>Phân tích</h5>
+              <p>Hệ thống tự động phân tích và tính toán điểm đánh giá</p>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="process-step fade-in">
+              <div class="process-number">4</div>
+              <h5>Báo cáo</h5>
+              <p>Nhận báo cáo chi tiết với khuyến nghị điều trị cụ thể</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Available Forms Section -->
+    <section class="forms-section">
+      <div class="container">
+        <h2 class="section-title fade-in">Biểu mẫu đánh giá có sẵn</h2>
+        <div class="row" id="formsContainer">
+          <!-- Forms will be populated by JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action Section -->
+    <section class="py-5" style="background: var(--primary-gradient)">
+      <div class="container text-center">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <h2 class="text-white mb-4 fade-in">Sẵn sàng bắt đầu?</h2>
+            <p class="text-white lead mb-4 fade-in">
+              Tham gia cùng hàng nghìn chuyên gia y tế đang sử dụng hệ thống của
+              chúng tôi
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-3 fade-in">
+              <button class="btn btn-light btn-lg" onclick="goToAdmin()">
+                <i class="fas fa-rocket me-2"></i>
+                Tạo Form Đầu Tiên
+              </button>
+              <button
+                class="btn btn-outline-light btn-lg"
+                onclick="scrollToSection('features')"
+              >
+                <i class="fas fa-play me-2"></i>
+                Xem Demo
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4 col-md-6 mb-4">
+            <div class="footer-section">
+              <h5>
+                <i class="fas fa-heartbeat me-2"></i>
+                Medical Simulator
+              </h5>
+              <p class="text-light opacity-75">
+                Hệ thống đánh giá y tế tiên tiến, hỗ trợ chẩn đoán chính xác và
+                nâng cao chất lượng chăm sóc sức khỏe.
+              </p>
+              <div class="d-flex gap-3 mt-3">
+                <a href="#" class="text-light">
+                  <i class="fab fa-facebook-f fa-lg"></i>
+                </a>
+                <a href="#" class="text-light">
+                  <i class="fab fa-twitter fa-lg"></i>
+                </a>
+                <a href="#" class="text-light">
+                  <i class="fab fa-linkedin-in fa-lg"></i>
+                </a>
+                <a href="#" class="text-light">
+                  <i class="fab fa-youtube fa-lg"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="my-4" style="border-color: rgba(255, 255, 255, 0.1)" />
+        <div class="row align-items-center">
+          <div class="col-md-6">
+            <p class="mb-0 text-light opacity-75">
+              &copy; 2025 Vien Dong College. Bảo lưu mọi quyền.
+            </p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <p class="mb-0 text-light opacity-75">
+              Phiên bản 2.1.0 | Cập nhật: 06/06/2025
+            </p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      // API Functions
+      async function getForms() {
+        try {
+          const response = await axios.get("/api/medical");
+          if (response && response.data && response.data.status)
+            return response.data;
+          return null;
+        } catch (error) {
+          console.error(
+            "Error fetching forms:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
+      async function getCategories() {
+        try {
+          const response = await axios.get("/api/medical/categories");
+          if (response && response.data && response.data.status)
+            return response.data;
+          return null;
+        } catch (error) {
+          console.error(
+            "Error fetching categories:",
+            error.response?.data || error.message
+          );
+          return null;
+        }
+      }
+
+      // Populate Dropdowns
+      function populateDropdowns(forms) {
+        const navDropdown = document.getElementById("navFormsDropdown");
+        const heroDropdown = document.getElementById("heroFormsDropdown");
+
+        if (forms.length > 0) {
+          forms.forEach((form) => {
+            // Navigation dropdown
+            const navItem = document.createElement("li");
+            navItem.innerHTML = `
+              <a class="dropdown-item" href="/medical/patient/form?id=${form._id}">
+                <i class="fas fa-file-medical me-2"></i>
+                ${form.title}
+              </a>`;
+            navDropdown.appendChild(navItem);
+
+            // Hero dropdown
+            const heroItem = document.createElement("li");
+            heroItem.innerHTML = `
+              <a class="dropdown-item" href="/medical/patient/form?id=${form._id}">
+                <i class="fas fa-file-medical me-2"></i>
+                ${form.title}
+              </a>`;
+            heroDropdown.appendChild(heroItem);
+          });
+        } else {
+          const emptyMessage =
+            '<li><span class="dropdown-item text-muted">Chưa có form nào</span></li>';
+          navDropdown.innerHTML = emptyMessage;
+          heroDropdown.innerHTML = emptyMessage;
+        }
+      }
+
+      // Populate Forms Section
+      function populateFormsSection(forms) {
+        const formsContainer = document.getElementById("formsContainer");
+
+        if (forms.length > 0) {
+          forms.forEach((form, index) => {
+            const formCard = document.createElement("div");
+            formCard.className = "col-lg-4 col-md-6 mb-4";
+            formCard.innerHTML = `
+              <div class="form-card h-100 p-4 fade-in" style="animation-delay: ${
+                index * 0.1
+              }s">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="feature-icon me-3" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                    <i class="fas fa-clipboard-check"></i>
+                  </div>
+                  <div>
+                    <h5 class="mb-1">${form.title}</h5>
+                    <small class="text-muted">Biểu mẫu đánh giá</small>
+                  </div>
+                </div>
+                <p class="text-muted mb-4">${
+                  form.description ||
+                  "Biểu mẫu đánh giá chuyên nghiệp với các thang điểm chuẩn quốc tế"
+                }</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="d-flex align-items-center text-muted">
+                    <i class="fas fa-clock me-1"></i>
+                    <small>5-10 phút</small>
+                  </div>
+                  <button class="btn btn-primary" onclick="startAssessment('${
+                    form._id
+                  }')">
+                    <i class="fas fa-play me-2"></i>Bắt đầu
+                  </button>
+                </div>
+              </div>
+            `;
+            formsContainer.appendChild(formCard);
+          });
+        } else {
+          formsContainer.innerHTML = `
+            <div class="col-12">
+              <div class="text-center py-5">
+                <div class="mb-4">
+                  <i class="fas fa-clipboard fa-4x text-muted opacity-50"></i>
+                </div>
+                <h4 class="text-muted mb-3">Chưa có biểu mẫu đánh giá</h4>
+                <p class="text-muted mb-4">
+                  Hãy tạo biểu mẫu đánh giá đầu tiên để bắt đầu sử dụng hệ thống
+                </p>
+                <button class="btn btn-primary btn-lg" onclick="goToAdmin()">
+                  <i class="fas fa-plus me-2"></i>Tạo biểu mẫu đầu tiên
+                </button>
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      function categoriesSection(categories) {
+        const formsContainer = document.getElementById("categoriesContainer");
+        if (categories.length > 0) {
+          categories.forEach((category, index) => {
+            const formCard = document.createElement("div");
+            formCard.className = "col-lg-4 col-md-6 mb-4";
+            formCard.innerHTML = `
+              <div class="feature-card fade-in">
+                  ${
+                    category.type === "blog" ?
+                    `<a href="/medical/blog?id=${category._id}&title=${category.title}" class="text-decoration-none text-dark">
+                      <div class="feature-icon">
+                        <i class="${category.iconUrl}"></i>
+                      </div>
+                      <h5 class="text-center mb-3">${category.title}</h5>
+                      <p class="text-center text-muted">${category.description}</p>
+                    </a>`
+                    :
+                    `<div class="text-decoration-none text-dark">
+                      <div class="feature-icon">
+                        <i class="${category.iconUrl}"></i>
+                      </div>
+                      <h5 class="text-center mb-3">${category.title}</h5>
+                      <p class="text-center text-muted">${category.description}</p>
+                    </div>`
+                  }
+              </div>
+            `;
+            formsContainer.appendChild(formCard);
+          });
+        }
+      }
+
+      // Utility Functions
+      function startAssessment(formId) {
+        window.location.href = `/medical/patient/form?id=${formId}`;
+      }
+
+      function goToAdmin() {
+
+      }
+
+      function scrollToSection(sectionId) {
+        const element = document.getElementById(sectionId);
+        if (element) {
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        }
+      }
+
+      // Animation on Scroll
+      function animateOnScroll() {
+        const elements = document.querySelectorAll(".fade-in");
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.style.animationPlayState = "running";
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+          }
+        );
+
+        elements.forEach((el) => {
+          el.style.animationPlayState = "paused";
+          observer.observe(el);
+        });
+      }
+
+      // Navbar scroll effect
+      function initNavbarScroll() {
+        window.addEventListener("scroll", () => {
+          const navbar = document.querySelector(".navbar");
+          if (window.scrollY > 50) {
+            navbar.style.background = "rgba(102, 126, 234, 0.95)";
+            navbar.style.backdropFilter = "blur(20px)";
+          } else {
+            navbar.style.background = "rgba(102, 126, 234, 0.9)";
+            navbar.style.backdropFilter = "blur(20px)";
+          }
+        });
+      }
+
+      // Page Initialization
+      document.addEventListener("DOMContentLoaded", async function () {
+        // Show loading overlay
+        const loadingOverlay = document.getElementById("loadingOverlay");
+
+        try {
+          // Fetch forms data
+          const [data, categoryData] = await Promise.all([
+            getForms(),
+            getCategories()
+          ]);
+
+          if (data && data.status) {
+            populateDropdowns(data.payload);
+            populateFormsSection(data.payload);
+          }
+
+          if (categoryData && categoryData.status) {
+            console.log(categoryData);
+            categoriesSection(categoryData.payload);
+          }
+
+          // Initialize animations and effects
+          animateOnScroll();
+          initNavbarScroll();
+
+          // Hide loading overlay with fade effect
+          setTimeout(() => {
+            loadingOverlay.style.opacity = "0";
+            setTimeout(() => {
+              loadingOverlay.style.display = "none";
+            }, 500);
+          }, 1000);
+        } catch (error) {
+          console.error("Initialization error:", error);
+          // Hide loading overlay even if there's an error
+          loadingOverlay.style.display = "none";
+        }
+      });
+
+      // Smooth scrolling for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.addEventListener("click", function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute("href"));
+          if (target) {
+            target.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
+          }
+        });
+      });
+
+      // Add some interactive effects
+      document
+        .querySelectorAll(".feature-card, .form-card, .testimonial-card")
+        .forEach((card) => {
+          card.addEventListener("mouseenter", function () {
+            this.style.transform = "translateY(-8px) scale(1.02)";
+          });
+
+          card.addEventListener("mouseleave", function () {
+            this.style.transform = "translateY(0) scale(1)";
+          });
+        });
+
+      // Add parallax effect to hero section
+      window.addEventListener("scroll", () => {
+        const scrolled = window.pageYOffset;
+        const heroSection = document.querySelector(".hero-section");
+        const heroImage = document.querySelector(".hero-image");
+
+        if (heroSection && heroImage) {
+          heroSection.style.transform = `translateY(${scrolled * 0.5}px)`;
+          heroImage.style.transform = `translateY(${scrolled * -0.3}px)`;
+        }
+      });
+    </script>
+  </body>
+</html>

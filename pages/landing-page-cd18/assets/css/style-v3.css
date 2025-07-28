@@ -223,7 +223,9 @@ html :where(.is-position-sticky) {
   height: 90px;
 }
 #logo img {
-  max-height: 90px;
+  width: 100%;
+  max-height: 100%;
+  height: auto;
 }
 #logo {
   width: 400px;
@@ -247,9 +249,7 @@ html :where(.is-position-sticky) {
 .stuck .header-main {
   height: 70px !important;
 }
-.stuck #logo img {
-  max-height: 70px !important;
-}
+
 .header-bottom {
   background-color: #f1f1f1;
 }
@@ -423,7 +423,7 @@ blockquote,
   border-color: #002147;
 }
 body {
-  font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif !important;
 }
 body {
   font-weight: 0;
@@ -11930,44 +11930,44 @@ body.lazyload .ladi-spin-lucky-start {
 /* Responsive design */
 @media screen and (max-width: 992px) {
   .gallery-grid {
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 250px);
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 250px);
   }
-  
+
   .item-1 {
-      grid-column: 1 / 2;
-      grid-row: 1 / 2;
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
   }
-  
+
   .item-2 {
-      grid-column: 2 / 3;
-      grid-row: 1 / 2;
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
   }
-  
+
   .item-3 {
-      grid-column: 3 / 4;
-      grid-row: 1 / 2;
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
   }
-  
+
   .item-4 {
-      grid-column: 1 / 2;
-      grid-row: 2 / 3;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
   }
-  
+
   .item-5 {
-      grid-column: 2 / 4;
-      grid-row: 2 / 3;
+    grid-column: 2 / 4;
+    grid-row: 2 / 3;
   }
-  
+
   .item-6 {
-      grid-column: 1 / 4;
-      grid-row: 3 / 4;
+    grid-column: 1 / 4;
+    grid-row: 3 / 4;
   }
 }
 
 #wrap_btn_submit {
-  display: flex; 
-  align-items: center; 
+  display: flex;
+  align-items: center;
   gap: 15px;
 }
 
@@ -11980,10 +11980,202 @@ body.lazyload .ladi-spin-lucky-start {
 }
 
 #re-btn a {
-  border-radius: 5px; 
-  background-color: #3D90D7; 
-  color: white; 
+  border-radius: 5px;
   font-size: 0.85em;
+  position: relative;
+  font-weight: bold;
+  text-decoration: none;
+  color: #ffffff;
+  background: linear-gradient(45deg, #2c3e50, #3498db, #2c3e50);
+  background-size: 200% 200%;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#re-btn a::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+#re-btn a:hover::before {
+  left: 100%;
+}
+
+#re-btn a:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(52, 152, 219, 0.6);
+}
+
+/* Flickering animation */
+@keyframes flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  2% {
+    opacity: 0.8;
+  }
+  4% {
+    opacity: 1;
+  }
+  6% {
+    opacity: 0.7;
+  }
+  8% {
+    opacity: 1;
+  }
+  10% {
+    opacity: 0.9;
+  }
+  12% {
+    opacity: 1;
+  }
+  14% {
+    opacity: 0.6;
+  }
+  16% {
+    opacity: 1;
+  }
+  18% {
+    opacity: 0.8;
+  }
+  20% {
+    opacity: 1;
+  }
+  22% {
+    opacity: 0.9;
+  }
+  24% {
+    opacity: 1;
+  }
+  26% {
+    opacity: 0.7;
+  }
+  28% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  32% {
+    opacity: 1;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    box-shadow: 0 10px 30px rgba(52, 152, 219, 0.4),
+      0 0 20px rgba(52, 152, 219, 0.3);
+  }
+  50% {
+    box-shadow: 0 15px 40px rgba(52, 152, 219, 0.8),
+      0 0 40px rgba(52, 152, 219, 0.6);
+  }
+}
+
+@keyframes backgroundShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+#re-btn a {
+  animation: flicker 3s infinite, glow 2s ease-in-out infinite alternate,
+    backgroundShift 4s ease infinite;
+}
+
+/* Pulsing border effect */
+#re-btn a::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+  border-radius: 5px;
+  z-index: -1;
+  animation: borderPulse 2s linear infinite;
+}
+
+@keyframes borderPulse {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Sparkling particles */
+.sparkle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: sparkle 1.5s linear infinite;
+}
+
+@keyframes sparkle {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+
+.sparkle:nth-child(1) {
+  top: 20%;
+  left: 20%;
+  animation-delay: 0s;
+}
+.sparkle:nth-child(2) {
+  top: 80%;
+  left: 80%;
+  animation-delay: 0.3s;
+}
+.sparkle:nth-child(3) {
+  top: 40%;
+  left: 70%;
+  animation-delay: 0.6s;
+}
+.sparkle:nth-child(4) {
+  top: 70%;
+  left: 30%;
+  animation-delay: 0.9s;
 }
 
 @media screen and (max-width: 768px) {
@@ -11998,7 +12190,7 @@ body.lazyload .ladi-spin-lucky-start {
     padding-block: 10px;
     padding-inline: 10px;
     justify-content: center;
-    align-items:center;
+    align-items: center;
   }
 
   #container-mobile #re-btn,
@@ -12017,23 +12209,30 @@ body.lazyload .ladi-spin-lucky-start {
   }
 
   .gallery-grid {
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: repeat(3, 200px);
-  }
-  
-  .item-1, .item-2, .item-3, .item-4, .item-5, .item-6 {
-      grid-column: auto;
-      grid-row: auto;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 200px);
   }
 
-  .item-4, .item-5, .item-6 {
+  .item-1,
+  .item-2,
+  .item-3,
+  .item-4,
+  .item-5,
+  .item-6 {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .item-4,
+  .item-5,
+  .item-6 {
     display: none;
   }
 }
 
 @media screen and (max-width: 576px) {
   .gallery-grid {
-      grid-template-columns: 1fr;
-      grid-template-rows: repeat(3, 200px);
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(3, 200px);
   }
 }
