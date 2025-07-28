@@ -2,7 +2,7 @@ var express = require("express");
 var cors = require('cors');
 var mongoose = require('mongoose');
 const Message = require("./models/message");
-
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 var app = express();
@@ -14,6 +14,7 @@ var socketIO = require("socket.io");
 var port = process.env.PORT || 3000;
 
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json({
     limit: '50mb',
     parameterLimit: 50000,
