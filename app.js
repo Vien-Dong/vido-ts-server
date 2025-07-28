@@ -50,6 +50,7 @@ app.use('/api/diploma', require("./routes/api/diploma"));
 app.use('/api/check', require("./routes/api/check"));
 app.use('/api/medical', require("./routes/api/medical"));
 app.use('/api/crawler', require("./routes/api/crawler"));
+app.use('/api/school', require("./routes/api/school"));
 
 app.get('/delete-account', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/index.html'));

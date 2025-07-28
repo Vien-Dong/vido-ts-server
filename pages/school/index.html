@@ -830,7 +830,6 @@
       let currentSubject = null;
       let students = [];
       let attendance = {};
-      const baseUrl = "http://ims-api.viendong.edu.vn/api/v1";
 
       // Sample data - Replace with actual API calls
       const sampleSubjects = {
@@ -902,7 +901,7 @@
           btn.disabled = true;
 
           try {
-            const response = await axios.post(`${baseUrl}/login`, {
+            const response = await axios.post('/api/school/login', {
               userid: username,
               pass: password,
               type: "local",
@@ -1042,14 +1041,10 @@
         setTimeout(async () => {
           const dateKey = date.toISOString().split("T")[0];
 
-          const response = await axios.get(
-            `${baseUrl}/giangvien/tkbtheongay?ngay=${dateKey}`,
-            {
-              headers: {
-                token: token,
-              },
-            }
-          );
+          const response = await axios.get('/api/school/tkb', {
+            params: { ngay: dateKey },
+            headers: { token }
+          });
 
           const result = response.data;
 
@@ -1112,7 +1107,7 @@
         const token = localStorage.getItem("accessToken");
 
         try {
-            const response = await axios.post(`${baseUrl}/giangvien/diemdanh/danhsach`, currentSubject, {
+            const response = await axios.post(`/api/school/studentList`, currentSubject, {
                 headers: {
                     'token': token
                 }
@@ -1243,7 +1238,7 @@
                 })),
             };
 
-            const response = await axios.post(`${baseUrl}/giangvien/diemdanh/luu`, attendanceData, {
+            const response = await axios.post(`/api/school/save`, attendanceData, {
                 headers: {
                     'token': token
                 }
