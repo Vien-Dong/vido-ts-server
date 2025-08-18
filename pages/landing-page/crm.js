@@ -107,6 +107,7 @@ $(document).ready(function () {
         var postData = {
             lastname: lastName,
             firstname: firstName,
+            full_name: inputNameValue,
             designation: firstName,
             salutationtype: "",
             birthday: birthdate,
