@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+            <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <!doctype html>
+    <html lang="vi">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Khung nhỏ nằm trên chữ</title>
+        <style>
+            body{
+                overflow:hidden;
+            }
+            .badge {
+                position: absolute;
+                left: 5%;
+                bottom: 30px;
+                padding: 15px 14px 20px;
+                min-width: 180px;
+                background: white;
+                color: blue;
+                border-radius: 12px;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+                font-weight: 600;
+                font-size: 16px;
+                pointer-events: none;
+                transition: all 0.6s ease;
+                /* smooth */
+
+                /* trạng thái mặc định */
+                opacity: 0;
+                transform: translateY(100px);
+            }
+
+            .badge.show {
+                opacity: 1;
+                transform: translateY(0);
+                /* trượt lên */
+            }
+            .fixedText {
+                font-size: 10px;
+                color: #111827;
+                display: flex;
+                gap: 6px;                
+                align-items: left;
+            }
+
+            
+        </style>
+    </head>
+
+    <body>
+
+        <div class="content">
+            <div id="badgeContainer" ></div>
+        </div>
+        </div>
+    </body>
+    <script>
+        const array = [
+            "Nguyễn Văn An",
+            "Trần Thị Bách",
+            "Lê Văn Chi",
+            "Phạm Thị Dũng",
+            "Hoàng Văn Lâm",
+            "Vũ Thị Phương",
+            "Đặng Văn Dương",
+            "Bùi Thị Hiền",
+            "Đỗ Văn Liên",
+            "Phan Thị Khánh"
+        ];
+
+        const container = document.getElementById("badgeContainer");
+        let index = 0;
+
+        // tạo badge chỉ 1 lần duy nhất
+        const badge = document.createElement("div");
+        badge.className = "badge";
+        badge.innerHTML = `
+        <div style="display: flex;"> 
+            <dotlottie-wc src="https://lottie.host/be273b82-d6ac-4e8d-b80a-ba24663dc882/f8vQwxfML1.lottie" style="width: 50px;height: 50px" speed="1" autoplay loop></dotlottie-wc>
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="name"></div>
+                <div class="fixedText">Đăng Ký Xét Tuyển Thành Công Vừa Xong</div>
+            </div>
+        </div>
+        `;
+        container.appendChild(badge);
+
+        const nameEl = badge.querySelector(".name");
+
+        function showNext() {
+            // đổi tên
+            nameEl.textContent = array[index];
+            index = (index + 1) % array.length;
+
+            // hiện lên
+            requestAnimationFrame(() => {
+                badge.classList.add("show");
+            });
+
+            // 5s sau thì ẩn xuống
+            setTimeout(() => {
+                badge.classList.remove("show");
+            }, 5000);
+        }
+
+        showNext();
+        setInterval(showNext, 10000);
+    </script>
+
+    </html>
+
+</body>
+
+</html>
