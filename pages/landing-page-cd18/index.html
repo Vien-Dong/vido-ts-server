@@ -1,5 +1,53 @@
 <html lang="vi" class="js">
   <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.6.2/dist/dotlottie-wc.js" type="module"></script>
+    <meta charset="UTF-8">
+    <style>
+     body{
+                overflow:hidden;
+            }
+            .badgea {
+                position: absolute;
+                
+                padding: 10px;
+                min-width: 180px;
+                background: white;
+                color: blue;
+                border-radius: 12px;
+                box-shadow: 0 8px 20px rgba(0, 0, 0, .15);
+                font-weight: 600;
+                font-size: 16px;
+                pointer-events: none;
+                transition: all 0.6s ease;
+                /* smooth */
+
+                /* trạng thái mặc định */
+                opacity: 0;
+                transform: translateY(100px);
+                width: 300px;
+            }
+
+            .badgea.show {
+                opacity: 1;
+                transform: translateY(0);
+                /* trượt lên */
+            }
+            .fixedText {
+                font-size: 10px;
+                color: #111827;
+                display: flex;
+                gap: 6px;                
+                align-items: left;
+            }
+            #badgeContainer{
+                left: 5%;
+                bottom: 15%;
+                z-index: 999999;
+                position: fixed;
+                
+            }
+    </style>
     <meta charset="UTF-8" />
     <link rel="profile" href="https://gmpg.org/xfn/11" />
 
@@ -408,6 +456,7 @@
   <body
     class="home page-template page-template-page-blank page-template-page-blank-php page page-id-6 lightbox nav-dropdown-has-arrow nav-dropdown-has-shadow nav-dropdown-has-border vt_popup_open"
   >
+
     <div id="wrapper">
       <header
         id="header"
@@ -551,7 +600,7 @@
           </div>
         </div>
       </header>
-
+      
       <div id="container-mobile">
         <div class="header-button" id="re-btn">
           <a
@@ -576,6 +625,63 @@
       <main id="main" class="">
         <div id="content" role="main" class="content-area">
           <section class="section banner_intro" id="section_152464162">
+            <div class="content">
+            <div id="badgeContainer" ></div>
+        </div>
+        </div>
+    </body>
+    <script>
+        const array = [
+            "Nguyễn Văn An",
+            "Trần Thị Bách",
+            "Lê Văn Chi",
+            "Phạm Thị Dũng",
+            "Hoàng Văn Lâm",
+            "Vũ Thị Phương",
+            "Đặng Văn Dương",
+            "Bùi Thị Hiền",
+            "Đỗ Văn Liên",
+            "Phan Thị Khánh"
+        ];
+
+        const container = document.getElementById("badgeContainer");
+        let index = 0;
+
+        // tạo badge chỉ 1 lần duy nhất
+        const badgea = document.createElement("div");
+        badgea.className = "badgea";
+        badgea.innerHTML = `
+        <div style="display: flex;"> 
+            <dotlottie-wc src="https://lottie.host/be273b82-d6ac-4e8d-b80a-ba24663dc882/f8vQwxfML1.lottie" style="width: 50px;height: 50px" speed="1" autoplay loop></dotlottie-wc>
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="name"></div>
+                <div class="fixedText">Đăng Ký Xét Tuyển Thành Công Vừa Xong</div>
+            </div>
+        </div>
+        `;
+        container.appendChild(badgea);
+
+        const nameEl = badgea.querySelector(".name");
+
+        function showNext() {
+            // đổi tên
+            nameEl.textContent = array[index];
+            index = (index + 1) % array.length;
+
+            // hiện lên
+            requestAnimationFrame(() => {
+                badgea.classList.add("show");
+            });
+
+            // 5s sau thì ẩn xuống
+            setTimeout(() => {
+                badgea.classList.remove("show");
+            }, 5000);
+        }
+
+        showNext();
+        setInterval(showNext, 10000);
+    </script>
             <div class="bg section-bg fill bg-fill bg-loaded bg-loaded"></div>
 
             <div class="section-content relative">
@@ -3056,9 +3162,9 @@
                           width="24"
                         />
                         <span class="ux-menu-link__text">
-                          &nbsp; Trường Cao đẳng Viễn Đông, lô 2, đường số 16,
-                          &nbsp;&nbsp;Công viên phần mềm Quang Trung, P.Tân
-                          Chánh &nbsp;&nbsp;Hiệp, Q.12
+                          CS 1: Lô 2, Công viên Phần mềm
+                          Quang Trung, Phường Trung Mỹ Tây, TP.HCM
+                          CS 2: 207/20/1 Nguyễn Văn Đậu, Phường Bình Lợi Trung, TP.HCM
                         </span>
                       </a>
                     </div>
