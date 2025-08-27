@@ -494,6 +494,25 @@ function generateQRCode() {
     document.getElementById('qrModal').classList.add('active');
 
     showToast('Đã tạo mã QR thành công!', 'success');
+
+    const btn = document.getElementById("regenerateBtn");
+    let countdown = 30;
+
+    btn.disabled = true;
+    btn.style.background = "#6c757d"; // màu xám
+    btn.innerHTML = `${countdown}s`;
+
+    const timer = setInterval(() => {
+        countdown--;
+        if (countdown > 0) {
+            btn.innerHTML = `${countdown}s`;
+        } else {
+            clearInterval(timer);
+            btn.disabled = false;
+            btn.style.background = "#28a745";
+            btn.innerHTML = '<i class="fas fa-refresh"></i> Tạo lại';
+        }
+    }, 1000);
 }
 
 function generateQRCanvas() {
@@ -510,18 +529,7 @@ function generateQRCanvas() {
 }
 
 function regenerateQR() {
-    if (currentSubject) {
-        generateQRCode(currentSubject.id);
-        showToast('Đã tạo lại mã QR!', 'success');
-    } else {
-        // Get subject ID from current modal context
-        const subjectName = document.getElementById('qrTitle').textContent.replace('QR Code - ', '');
-        const subject = mockSubjects.find(s => s.name === subjectName);
-        if (subject) {
-            generateQRCode(subject.id);
-            showToast('Đã tạo lại mã QR!', 'success');
-        }
-    }
+    generateQRCode();
 }
 
 function downloadQR() {
