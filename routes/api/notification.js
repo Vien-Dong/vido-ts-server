@@ -202,12 +202,15 @@ router.get("/notify/all", async function (req, res) {
       },
 
       { $replaceRoot: { newRoot: "$doc" } },
+      { $project: { users: 0, } },
     ]);
 
     if (notifications?.length > 0) {
       res.json({
         result: "success",
-        data: notifications,
+        data: notifications.map(x => ({
+
+        })),
       });
     } else {
       res.json({
