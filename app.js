@@ -4,10 +4,12 @@ var mongoose = require('mongoose');
 const Message = require("./models/message");
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+const multer = require("multer");
 
 var app = express();
 var http = require('http');
 const path = require("path");
+var upload = multer();
 
 var socketIO = require("socket.io");
 
@@ -27,6 +29,7 @@ app.use(express.urlencoded({
 }));
 app.use(express.static('js'));
 app.set('view engine', 'ejs');
+app.use(upload.array());
 
 mongoose.connect("mongodb+srv://administrator:admin123456@cluster.jh4lmtx.mongodb.net/").then(() => {
     console.log("Connected to mongodb");
@@ -119,6 +122,10 @@ app.get('/jhs-ges', function (req, res) {
 app.get('/school', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/school/index.html'));
 });
+app.get('/school/notify', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/school/notify.html'));
+});
+
 
 app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/lucky'));

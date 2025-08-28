@@ -67,4 +67,20 @@ router.post("/save", async (req, res) => {
     }
 });
 
+router.get("/devices", async (req, res) => {
+    try {
+        const token = req.cookies.authToken;
+
+        const response = await axios.get(`${baseUrl}/manager/student?department_code=0&require_device_token=true`, {
+            headers: {
+                token: token
+            }
+        });
+        
+        res.json(response.data);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
 module.exports = router;
