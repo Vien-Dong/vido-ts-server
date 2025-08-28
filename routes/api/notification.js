@@ -208,9 +208,7 @@ router.get("/notify/all", async function (req, res) {
     if (notifications?.length > 0) {
       res.json({
         result: "success",
-        data: notifications.map(x => ({
-
-        })),
+        data: notifications,
       });
     } else {
       res.json({
