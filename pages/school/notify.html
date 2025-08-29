@@ -488,6 +488,9 @@
         try {
           const response = await fetch(API_CONFIG.getAllDevicesUrl, {
             method: "GET",
+            headers: {
+              token: localStorage.getItem("accessToken"),
+            },
           });
 
           if (!response.ok) {

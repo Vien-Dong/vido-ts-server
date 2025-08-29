@@ -119,9 +119,11 @@ function showDashboard() {
     document.getElementById("loginPage").style.display = "none";
     document.getElementById("dashboard").style.display = "block";
 
-    generateDayButtons();
-    selectToday();
-    loadSubjectsForDate(selectedDate);
+    setTimeout(() => {
+        generateDayButtons();
+        selectToday();
+        loadSubjectsForDate(selectedDate);
+    }, 500);
 }
 
 function logout() {
@@ -229,7 +231,9 @@ function loadSubjectsForDate(date) {
         try {
             const response = await axios.get("/api/school/tkb", {
                 params: { ngay: dateKey },
-                withCredentials: true,
+                headers: {
+                    'token': localStorage.getItem('accessToken')
+                }
             });
 
             const result = response.data;
@@ -296,6 +300,63 @@ function loadSubjectsForDate(date) {
     }, 500);
 }
 
+async function reloadStudentList() {
+    const btn = document.getElementById("reload-btn");
+
+    // Check if we have a current subject selected
+    if (!currentSubject) {
+        showToast("Không có lớp nào được chọn", "error");
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang tải...`;
+
+    try {
+        // Reload the student list for the current subject
+        const token = localStorage.getItem("accessToken");
+        
+        if (!token) {
+            showToast("Phiên đăng nhập hết hạn", "error");
+            return;
+        }
+
+        const response = await axios.post(
+            `/api/school/studentList`,
+            currentSubject,
+            {
+                headers: {
+                    'token': token
+                }
+            }
+        );
+
+        const result = response.data;
+
+        if (result.success) {
+            students = result.data;
+            attendance = {};
+
+            // Reset attendance status based on fresh data
+            students.forEach((student) => {
+                attendance[student.hocvienid] = student.hiendienyn;
+            });
+
+            renderStudentList();
+            updateStats();
+            showToast("Đã tải lại danh sách sinh viên", "success");
+        } else {
+            showToast("Lỗi tải danh sách sinh viên, vui lòng thử lại", "error");
+        }
+    } catch (err) {
+        console.error("Reload error:", err);
+        showToast("Có lỗi xảy ra khi tải lại danh sách", "error");
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = `<i class="fas fa-rotate-right"></i> Tải lại`;
+    }
+}
+
 async function openStudentList(subject) {
     const spinner = document.getElementById("loadingSpinner");
     spinner.style.display = "block";
@@ -310,7 +371,9 @@ async function openStudentList(subject) {
             `/api/school/studentList`,
             currentSubject,
             {
-                withCredentials: true,
+                headers: {
+                    'token': localStorage.getItem("accessToken")
+                }
             }
         );
 
@@ -450,7 +513,9 @@ async function saveAttendance() {
             `/api/school/save`,
             attendanceData,
             {
-                withCredentials: true,
+                headers: {
+                    'token': localStorage.getItem("accessToken")
+                }
             }
         );
 

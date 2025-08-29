@@ -22,6 +22,7 @@ router.post("/save-attendance", async (req, res) => {
 router.get("/attendance/:tkbId", async (req, res) => {
     try {
         const { tkbId } = req.params;
+        console.log(tkbId);
         const attendances = await Attendance.find({ "tkbId": tkbId });
 
         res.status(200).send(attendances);
