@@ -126,7 +126,9 @@ app.get('/school', function (req, res) {
 app.get('/school/notify', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/school/notify.html'));
 });
-
+app.get('/school/survey', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/school/survey.html'));
+});
 
 app.use(express.static(__dirname + '/pages'));
 app.use(express.static(__dirname + '/pages/lucky'));

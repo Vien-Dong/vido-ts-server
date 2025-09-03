@@ -1,6 +1,7 @@
 // proxy-server.js
 const express = require("express");
 const axios = require("axios");
+const Survey = require("../../models/survey");
 const router = express.Router();
 
 const baseUrl = "http://ims-api.viendong.edu.vn/api/v1";
@@ -71,6 +72,28 @@ router.get("/devices", async (req, res) => {
         });
         
         res.json(response.data);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+router.post("/create-survey", async (req, res) => {
+    const data = req.body;
+
+    try {
+        const survey = new Survey({
+            url: data.url,
+            dateToDo: data.dateToDo,
+            createdAt: data.createdAt ?? new Date()
+        });
+
+        await survey.save();
+
+        res.json({
+            status: true,
+            message: "Tạo khảo sát thành công",
+            payload: []
+        });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

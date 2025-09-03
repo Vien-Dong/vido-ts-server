@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Khảo sát</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <link href="./assets/css/school-style.css" rel="stylesheet" />
+    <style>
+      .header {
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      }
+
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-size: 20px;
+        font-weight: 600;
+        color: #0f172a;
+      }
+
+      .container {
+        max-width: 480px;
+        margin: 60px auto;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 32px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #0f172a;
+        margin-bottom: 24px;
+        text-align: center;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: 500;
+        color: #374151;
+        margin-bottom: 6px;
+        font-size: 14px;
+      }
+
+      input[type="url"],
+      input[type="date"] {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 16px;
+        background: white;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      input[type="url"]:focus,
+      input[type="date"]:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      input[type="url"].error,
+      input[type="date"].error {
+        border-color: #dc2626;
+      }
+
+      .error-message {
+        color: #dc2626;
+        font-size: 14px;
+        margin-top: 4px;
+        display: none;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 12px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        margin-top: 8px;
+      }
+
+      .submit-btn:hover:not(:disabled) {
+        background: #1d4ed8;
+      }
+
+      .submit-btn:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+      }
+
+      .success-message {
+        background: #dcfce7;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+        padding: 12px;
+        border-radius: 6px;
+        margin-top: 16px;
+        display: none;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      .info-section {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid #e2e8f0;
+      }
+
+      .info-section h3 {
+        font-size: 16px;
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 12px;
+      }
+
+      .info-list {
+        list-style: none;
+        font-size: 14px;
+        color: #6b7280;
+      }
+
+      .info-list li {
+        margin-bottom: 6px;
+        padding-left: 16px;
+        position: relative;
+      }
+
+      .info-list li::before {
+        content: "•";
+        position: absolute;
+        left: 0;
+        color: #2563eb;
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          margin: 20px 16px;
+          padding: 24px 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">
+          <i
+            class="fas fa-graduation-cap"
+            style="font-size: 40px; color: #667eea"
+          ></i>
+          Cao đẳng Viễn Đông
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/school" class="nav-item active">
+          <i class="fas fa-calendar-check"></i> Điểm danh
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-users"></i> Sinh viên
+        </a>
+        <a href="#" class="nav-item"> <i class="fas fa-book"></i> Môn học </a>
+        <a href="survey" class="nav-item">
+          <i class="fas fa-chart-bar"></i> Quản lý khảo sát
+        </a>
+        <a href="#" class="nav-item"> <i class="fas fa-cog"></i> Cài đặt </a>
+        <a href="notify" class="nav-item">
+          <i class="fas fa-bell"></i> Thông báo
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="header">
+        <div class="header-content">
+          <div class="logo">Quản lý khảo sát</div>
+          <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+          </button>
+        </div>
+      </header>
+
+      <div class="container">
+        <h1>Biểu mẫu khảo sát</h1>
+
+        <form id="surveyForm">
+          <div class="form-group">
+            <label for="surveyUrl">Đường dẫn đến form khảo sát</label>
+            <input
+              type="url"
+              id="surveyUrl"
+              name="surveyUrl"
+              placeholder="https://example.com/survey"
+              required
+            />
+            <div class="error-message" id="urlError">
+              Vui lòng nhâp đường dẫn hợp lệ
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="surveyDate">Ngày thực hiện</label>
+            <input type="date" id="surveyDate" name="surveyDate" required />
+            <div class="error-message" id="dateError">
+              Vui lòng chọn ngày hợp lệ
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn">Tạo mới</button>
+        </form>
+
+        <div class="success-message" id="successMessage">Tạo thành công</div>
+
+        <div class="info-section">
+          <h3>Yêu cầu</h3>
+          <ul class="info-list">
+            <li>Đường dẫn đến khảo sát phải chính xác</li>
+            <li>Ngày thực hiện phải là hôm nay hoặc trong tương lai</li>
+            <li>Tất cả các trường là bắt buộc</li>
+            <li>Khảo sát sẽ hết hạn theo thời gian thực</li>
+          </ul>
+        </div>
+      </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+      const form = document.getElementById("surveyForm");
+      const urlInput = document.getElementById("surveyUrl");
+      const dateInput = document.getElementById("surveyDate");
+      const urlError = document.getElementById("urlError");
+      const dateError = document.getElementById("dateError");
+      const successMessage = document.getElementById("successMessage");
+      const submitBtn = form.querySelector(".submit-btn");
+
+      // Set minimum date to today
+      const today = new Date().toISOString().split("T")[0];
+      dateInput.setAttribute("min", today);
+
+      // URL validation
+      function validateUrl(url) {
+        try {
+          new URL(url);
+          return true;
+        } catch {
+          return false;
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("userInfo");
+        window.location.href = "/school";
+        document.getElementById("loginForm").reset();
+      }
+
+      // Date validation
+      function validateDate(date) {
+        const selectedDate = new Date(date);
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        return selectedDate >= currentDate;
+      }
+
+      // Real-time validation
+      urlInput.addEventListener("input", function () {
+        const url = this.value.trim();
+        if (url && !validateUrl(url)) {
+          this.classList.add("error");
+          urlError.style.display = "block";
+        } else {
+          this.classList.remove("error");
+          urlError.style.display = "none";
+        }
+      });
+
+      dateInput.addEventListener("change", function () {
+        const date = this.value;
+        if (date && !validateDate(date)) {
+          this.classList.add("error");
+          dateError.style.display = "block";
+        } else {
+          this.classList.remove("error");
+          dateError.style.display = "none";
+        }
+      });
+
+      // Form submission
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const url = urlInput.value.trim();
+        const date = dateInput.value;
+
+        let isValid = true;
+
+        // Validate URL
+        if (!url || !validateUrl(url)) {
+          urlInput.classList.add("error");
+          urlError.style.display = "block";
+          isValid = false;
+        }
+
+        // Validate date
+        if (!date || !validateDate(date)) {
+          dateInput.classList.add("error");
+          dateError.style.display = "block";
+          isValid = false;
+        }
+
+        if (isValid) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Đang tạo...";
+
+          // Log the data
+          const response = await axios.post("/api/school/create-survey", {
+            url: url,
+            dateToDo: date,
+            createdAt: new Date().toISOString(),
+          });
+
+          if (response.data && response.data.status) {
+            successMessage.style.display = "block";
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Create Survey";
+
+            // Reset form
+            form.reset();
+            urlInput.classList.remove("error");
+            dateInput.classList.remove("error");
+
+            // Hide success message
+            setTimeout(() => {
+              successMessage.style.display = "none";
+            }, 3000);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
