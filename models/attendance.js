@@ -12,6 +12,10 @@ const attendanceSchema = new mongoose.Schema({
     tkbId: {
         type: String,
         required: true
+    },
+    ngay: {
+        type: String,
+        required: true
     }
 })
 

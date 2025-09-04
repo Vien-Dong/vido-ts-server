@@ -5,10 +5,10 @@ const router = express.Router();
 
 router.post("/save-attendance", async (req, res) => {
     try {
-        const { mshv, deviceId, tkbId } = req.body;
+        const { mshv, deviceId, tkbId, ngay } = req.body;
 
         const newAttendance = new Attendance({
-            mshv, deviceId, tkbId
+            mshv, deviceId, tkbId, ngay
         });
 
         await newAttendance.save();
@@ -19,11 +19,10 @@ router.post("/save-attendance", async (req, res) => {
     }
 });
 
-router.get("/attendance/:tkbId", async (req, res) => {
+router.get("/attendance/:ngay", async (req, res) => {
     try {
-        const { tkbId } = req.params;
-        console.log(tkbId);
-        const attendances = await Attendance.find({ "tkbId": tkbId });
+        const { ngay } = req.params;
+        const attendances = await Attendance.find({ "ngay": ngay });
 
         res.status(200).send(attendances);
     } catch (error) {
