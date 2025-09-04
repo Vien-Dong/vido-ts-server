@@ -660,7 +660,7 @@
               submitBtn.innerHTML =
                 '<span class="loading"></span>Đang đăng nhập...';
               const loginRes = await axios.post(
-                "http://ims-api.viendong.edu.vn/api/v1/login",
+                "/api/school/login",
                 { userid: studentId, pass: password, type: "local" },
                 {
                   headers: {
@@ -699,7 +699,7 @@
               '<span class="loading"></span>Đang điểm danh...';
 
             const response = await axios.post(
-              "http://ims-api.viendong.edu.vn/api/v1/giangvien/diemdanh/luu",
+              "/api/school/save",
               attendanceData,
               {
                 headers: {
