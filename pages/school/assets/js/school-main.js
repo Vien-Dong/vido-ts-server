@@ -315,7 +315,7 @@ async function reloadStudentList() {
     try {
         // Reload the student list for the current subject
         const token = localStorage.getItem("accessToken");
-        
+
         if (!token) {
             showToast("Phiên đăng nhập hết hạn", "error");
             return;
@@ -543,14 +543,22 @@ async function saveAttendance() {
 }
 
 // QR Code Generation Functions
-function generateQRCode() {
+function generateQRCode(isWeb) {
     if (!currentSubject) return;
 
     const timestamp = new Date().getTime();
     const objectData = JSON.stringify(currentSubject);
 
     const compressed = LZString.compressToBase64(objectData);
-    qrData = `QR_${timestamp}_${compressed}`;
+
+    const queryString = new URLSearchParams(
+        Object.fromEntries(
+            Object.entries(currentSubject).map(([k, v]) => [k, v ?? ""])
+        )
+    ).toString();
+
+    console.log(`http://localhost:3050/school/scanned?exp=${timestamp}&${queryString}`);
+    qrData = isWeb ? `http://localhost:3050/school/scanned?exp=${timestamp}&${queryString}` : `QR_${timestamp}_${compressed}`;
 
     document.getElementById('qrTitle').textContent = `QR Code - ${currentSubject?.mhten}`;
     document.getElementById('qrData').textContent = qrData;
