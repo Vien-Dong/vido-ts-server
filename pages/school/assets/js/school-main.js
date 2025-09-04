@@ -557,8 +557,8 @@ function generateQRCode(isWeb) {
         )
     ).toString();
 
-    console.log(`http://localhost:3050/school/scanned?exp=${timestamp}&${queryString}`);
-    qrData = isWeb ? `http://localhost:3050/school/scanned?exp=${timestamp}&${queryString}` : `QR_${timestamp}_${compressed}`;
+    console.log(`https://tuyensinhcd-dh.viendong.edu.vn/school/scanned?exp=${timestamp}&${queryString}`);
+    qrData = isWeb ? `https://tuyensinhcd-dh.viendong.edu.vn/school/scanned?exp=${timestamp}&${queryString}` : `QR_${timestamp}_${compressed}`;
 
     document.getElementById('qrTitle').textContent = `QR Code - ${currentSubject?.mhten}`;
     document.getElementById('qrData').textContent = qrData;
