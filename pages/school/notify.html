@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quản lý thông báo</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <link href="./assets/css/school-style.css" rel="stylesheet" />
+    <style>
+      .header {
+        background: #ffffff;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 16px 0;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+      }
+
+      .header-content {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .logo {
+        font-size: 20px;
+        font-weight: 600;
+        color: #0f172a;
+      }
+
+      .main-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 24px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 24px;
+        min-height: calc(100vh - 80px);
+      }
+
+      .panel {
+        background: #ffffff;
+        border-radius: 8px;
+        border: 1px solid #e2e8f0;
+        overflow: hidden;
+        height: fit-content;
+      }
+
+      .panel-header {
+        background: #f8fafc;
+        border-bottom: 1px solid #e2e8f0;
+        padding: 16px 20px;
+        font-weight: 600;
+        font-size: 16px;
+        color: #0f172a;
+      }
+
+      .panel-content {
+        padding: 20px;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 20px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 16px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background: #ffffff;
+        color: #374151;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+      }
+
+      .btn:hover {
+        background: #f9fafb;
+        border-color: #9ca3af;
+      }
+
+      .btn:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        border-color: #3b82f6;
+      }
+
+      .btn-primary {
+        background: #3b82f6;
+        border-color: #3b82f6;
+        color: #ffffff;
+      }
+
+      .btn-primary:hover {
+        background: #2563eb;
+        border-color: #2563eb;
+      }
+
+      .btn-success {
+        background: #10b981;
+        border-color: #10b981;
+        color: #ffffff;
+        padding: 12px 24px;
+        font-size: 15px;
+        font-weight: 600;
+      }
+
+      .btn-success:hover {
+        background: #059669;
+        border-color: #059669;
+      }
+
+      .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .form-group {
+        margin-bottom: 16px;
+      }
+
+      .label {
+        display: block;
+        margin-bottom: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        color: #374151;
+      }
+
+      .input,
+      .textarea {
+        width: 100%;
+        padding: 10px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: border-color 0.2s ease;
+        background: #ffffff;
+      }
+
+      .input:focus,
+      .textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+
+      .textarea {
+        min-height: 100px;
+        resize: vertical;
+        font-family: inherit;
+      }
+
+      .devices-textarea {
+        min-height: 120px;
+        font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono",
+          monospace;
+        font-size: 13px;
+        background: #f8fafc;
+      }
+
+      .device-list {
+        border: 1px solid #e5e7eb;
+        border-radius: 6px;
+        max-height: 300px;
+        overflow-y: auto;
+        background: #ffffff;
+      }
+
+      .device-item {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f3f4f6;
+        font-size: 14px;
+      }
+
+      .device-item:last-child {
+        border-bottom: none;
+      }
+
+      .device-item:hover {
+        background: #f9fafb;
+      }
+
+      .device-id {
+        font-family: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono",
+          monospace;
+        font-size: 13px;
+        color: #6b7280;
+      }
+
+      .device-name {
+        font-weight: 500;
+        color: #111827;
+        margin-bottom: 2px;
+      }
+
+      .spinner {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid #f3f4f6;
+        border-top: 2px solid #3b82f6;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .alert {
+        padding: 12px 16px;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .alert-success {
+        background: #ecfdf5;
+        border: 1px solid #a7f3d0;
+        color: #065f46;
+      }
+
+      .alert-error {
+        background: #fef2f2;
+        border: 1px solid #fca5a5;
+        color: #991b1b;
+      }
+
+      .stats-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 16px;
+        background: #f8fafc;
+        border-radius: 6px;
+        margin-bottom: 16px;
+        font-size: 14px;
+      }
+
+      .stat-item {
+        color: #6b7280;
+      }
+
+      .stat-a-value {
+        font-weight: 600;
+        color: #111827;
+      }
+
+      .divider {
+        height: 1px;
+        background: #e5e7eb;
+        margin: 24px 0;
+      }
+
+      .submit-section {
+        border-top: 1px solid #e5e7eb;
+        padding-top: 20px;
+        margin-top: 24px;
+        text-align: right;
+      }
+
+      @media (max-width: 1024px) {
+        .main-container {
+          grid-template-columns: 1fr;
+          gap: 16px;
+          padding: 16px;
+        }
+
+        .header-content {
+          padding: 0 16px;
+        }
+
+        .button-group {
+          flex-direction: column;
+        }
+
+        .btn {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .submit-section {
+          text-align: center;
+        }
+
+        .btn-success {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">
+          <i
+            class="fas fa-graduation-cap"
+            style="font-size: 40px; color: #667eea"
+          ></i>
+          Cao đẳng Viễn Đông
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="/school" class="nav-item active">
+          <i class="fas fa-calendar-check"></i> Điểm danh
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-users"></i> Sinh viên
+        </a>
+        <a href="#" class="nav-item"> <i class="fas fa-book"></i> Môn học </a>
+        <a href="survey" class="nav-item">
+          <i class="fas fa-chart-bar"></i> Quản lý khảo sát
+        </a>
+        <a href="#" class="nav-item"> <i class="fas fa-cog"></i> Cài đặt </a>
+        <a href="notify" class="nav-item">
+          <i class="fas fa-bell"></i> Thông báo
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <header class="header">
+        <div class="header-content">
+          <div class="logo">Quản lý thông báo</div>
+          <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+          </button>
+        </div>
+      </header>
+
+      <div class="main-container">
+        <!-- Device Management Panel -->
+        <div class="panel">
+          <div class="panel-header">Quản lý thiết bị</div>
+          <div class="panel-content">
+            <div class="button-group">
+              <button class="btn btn-primary" id="getAllDevicesBtn">
+                <span id="getAllDevicesText">Lấy tất cả thiết bị</span>
+                <span id="getAllDevicesLoader" class="spinner hidden"></span>
+              </button>
+              <button class="btn" id="toggleManualInputBtn">
+                Nhập thủ công
+              </button>
+            </div>
+
+            <div id="deviceStats" class="stats-bar hidden">
+              <div class="stat-item">
+                Thiết bị đã tải:
+                <span class="stat-a-value" id="deviceCount">0</span>
+              </div>
+              <div class="stat-item">
+                Trạng thái:
+                <span class="stat-a-value" id="deviceStatus">Sẵn sàng</span>
+              </div>
+            </div>
+
+            <div id="devicesList" class="device-list hidden"></div>
+
+            <div id="manualDeviceInput" class="hidden">
+              <div class="form-group">
+                <label class="label" for="devicesTextarea"
+                  >Mã thiết bị (mỗi dòng 1 mã)</label
+                >
+                <textarea
+                  class="textarea devices-textarea"
+                  id="devicesTextarea"
+                  placeholder="device-id-1&#10;device-id-2&#10;device-id-3"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notification Panel -->
+        <div class="panel">
+          <div class="panel-header">Gửi thông báo</div>
+          <div class="panel-content">
+            <div id="statusMessages"></div>
+
+            <form id="notificationForm">
+              <div class="form-group">
+                <label class="label" for="title">Tiêu đề</label>
+                <input
+                  type="text"
+                  class="input"
+                  id="title"
+                  placeholder="Nhập tiêu đề"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="label" for="message">Tin nhắn</label>
+                <textarea
+                  class="textarea"
+                  id="message"
+                  placeholder="Nhập tin nhắn..."
+                  required
+                ></textarea>
+              </div>
+
+              <div class="submit-section">
+                <button type="submit" class="btn btn-success" id="sendBtn">
+                  <span id="sendBtnText">Gửi thông báo</span>
+                  <span id="sendBtnLoader" class="spinner hidden"></span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // State management
+      let allDevices = [];
+      let selectedDevices = [];
+      let manualInputVisible = false;
+
+      // DOM elements
+      const getAllDevicesBtn = document.getElementById("getAllDevicesBtn");
+      const getAllDevicesText = document.getElementById("getAllDevicesText");
+      const getAllDevicesLoader = document.getElementById(
+        "getAllDevicesLoader"
+      );
+      const toggleManualInputBtn = document.getElementById(
+        "toggleManualInputBtn"
+      );
+      const devicesList = document.getElementById("devicesList");
+      const deviceStats = document.getElementById("deviceStats");
+      const deviceCount = document.getElementById("deviceCount");
+      const deviceStatus = document.getElementById("deviceStatus");
+      const manualDeviceInput = document.getElementById("manualDeviceInput");
+      const devicesTextarea = document.getElementById("devicesTextarea");
+      const notificationForm = document.getElementById("notificationForm");
+      const sendBtn = document.getElementById("sendBtn");
+      const sendBtnText = document.getElementById("sendBtnText");
+      const sendBtnLoader = document.getElementById("sendBtnLoader");
+      const statusMessages = document.getElementById("statusMessages");
+      const titleInput = document.getElementById("title");
+      const messageInput = document.getElementById("message");
+
+      // API Configuration
+      const API_CONFIG = {
+        getAllDevicesUrl: "/api/school/devices",
+        sendNotificationUrl: "/api/notification/notify",
+      };
+
+      const MAX_TOKEN_AMOUNT_CHUNK = 400;
+
+      // Event listeners
+      getAllDevicesBtn.addEventListener("click", getAllDevices);
+      toggleManualInputBtn.addEventListener("click", toggleManualInput);
+      notificationForm.addEventListener("submit", sendNotification);
+
+      // Get all devices function
+      async function getAllDevices() {
+        showLoading(
+          getAllDevicesBtn,
+          getAllDevicesText,
+          getAllDevicesLoader,
+          "Đang tải..."
+        );
+        updateDeviceStatus("Đang tải...");
+
+        try {
+          const response = await fetch(API_CONFIG.getAllDevicesUrl, {
+            method: "GET",
+            headers: {
+              token: localStorage.getItem("accessToken"),
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+
+          const result = await response.json();
+
+          if (result.success) {
+            const data = result.data;
+
+            allDevices = Array.isArray(data.array) ? data.array : [];
+
+            displayDevices(allDevices);
+            updateDeviceStats(data.amount ?? 0, "đã kết nối");
+            showAlert(`Tải thành công ${data.amount ?? 0} thiết bị`, "success");
+          } else {
+            showAlert("Lỗi khi tìm các thiết bị", "error");
+          }
+        } catch (error) {
+          console.error("Error fetching devices:", error);
+          showAlert("Lỗi hệ thống, vui lòng thử lại sau", "error");
+        }
+
+        hideLoading(
+          getAllDevicesBtn,
+          getAllDevicesText,
+          getAllDevicesLoader,
+          "Lấy tất cả thiết bị"
+        );
+      }
+
+      function displayDevices(devices) {
+        devicesList.innerHTML = "";
+
+        if (devices.length === 0) {
+          devicesList.innerHTML =
+            '<div class="device-item">Không có sẵn thiết bị</div>';
+        } else {
+          devices.forEach((device) => {
+            const deviceElement = document.createElement("div");
+            deviceElement.className = "device-item";
+            deviceElement.innerHTML = `
+                        <div class="device-name">${
+                          device.hocVienId || "Unknown Device"
+                        }</div>
+                        <div class="device-id">${device.DeviceTokens?.join(
+                          " | "
+                        )}</div>
+                    `;
+            devicesList.appendChild(deviceElement);
+          });
+        }
+
+        devicesList.classList.remove("hidden");
+        selectedDevices = devices;
+      }
+
+      function updateDeviceStats(count, status) {
+        deviceCount.textContent = count;
+        deviceStatus.textContent = status;
+        deviceStats.classList.remove("hidden");
+      }
+
+      function updateDeviceStatus(status) {
+        deviceStatus.textContent = status;
+        if (!deviceStats.classList.contains("hidden")) {
+          deviceStats.classList.remove("hidden");
+        }
+      }
+
+      function toggleManualInput() {
+        manualInputVisible = !manualInputVisible;
+
+        if (manualInputVisible) {
+          manualDeviceInput.classList.remove("hidden");
+          toggleManualInputBtn.textContent = "Ẩn khung nhập";
+          toggleManualInputBtn.classList.add("btn-primary");
+          devicesList.classList.add("hidden");
+        } else {
+          manualDeviceInput.classList.add("hidden");
+          toggleManualInputBtn.textContent = "Nhập thủ công";
+          toggleManualInputBtn.classList.remove("btn-primary");
+          if (allDevices.length > 0) {
+            devicesList.classList.remove("hidden");
+          }
+        }
+      }
+
+      function splitIntoChunks(array) {
+        try {
+          const chunks = [[]];
+          let chunkLength = 0;
+          let chunkIndex = 0;
+          for (let i = 0; i < array.length; i++) {
+            const currentNode = array[i];
+            chunkLength += currentNode?.DeviceTokens?.length;
+            if (chunkLength <= MAX_TOKEN_AMOUNT_CHUNK) {
+              chunks[chunkIndex].push(currentNode);
+            } else {
+              chunkLength = currentNode?.DeviceTokens?.length;
+              chunks.push([currentNode]);
+              chunkIndex++;
+            }
+          }
+          return chunks;
+        } catch (error) {
+          console.log(error);
+        }
+      }
+
+      function createUUID() {
+        return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+          /[xy]/g,
+          function (c) {
+            const r = (Math.random() * 16) | 0;
+            const v = c === "x" ? r : (r & 0x3) | 0x8;
+            return v.toString(16);
+          }
+        );
+      }
+
+      async function sendNotification(event) {
+        event.preventDefault();
+
+        const title = titleInput.value.trim();
+        const message = messageInput.value.trim();
+
+        if (!title || !message) {
+          showAlert("Hãy lấy các thiết bị trước", "error");
+          return;
+        }
+
+        let devicesToSend = [];
+        if (manualInputVisible) {
+          devicesToSend = [
+            {
+              hocViendId: "231",
+              DeviceTokens: devicesTextarea.value
+                .split("\n")
+                .map((line) => line.trim())
+                .filter((line) => line.length > 0),
+            },
+          ];
+        } else {
+          devicesToSend = selectedDevices;
+        }
+
+        if (devicesToSend.length === 0) {
+          showAlert("Không có thiết bị nào được gửi", "error");
+          return;
+        }
+
+        showLoading(sendBtn, sendBtnText, sendBtnLoader, "Đang gửi...");
+
+        try {
+          // Chunk devices into groups of 400
+          const deviceChunks = splitIntoChunks(devicesToSend);
+          let totalSuccessCount = 0;
+          let totalErrorCount = 0;
+          var id = createUUID();
+
+          showAlert(
+            `Đang gửi đến ${deviceChunks.length} thiết bị trong tổng số ${devicesToSend.length} thiết bị...`,
+            "success"
+          );
+
+          // Send notification to each chunk
+          for (let i = 0; i < deviceChunks.length; i++) {
+            const chunk = deviceChunks[i];
+
+            // Update loading text with progress
+            sendBtnText.textContent = `Đang gửi đến ${i + 1}/${
+              deviceChunks.length
+            }...`;
+
+            try {
+              const payload = {
+                title: title,
+                msg: message,
+                notiId: id,
+                tokens: chunk,
+              };
+
+              const response = await fetch(API_CONFIG.sendNotificationUrl, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              });
+
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+
+              const result = await response.json();
+              const successCount = result.success ?? 0;
+              totalSuccessCount += successCount;
+
+              console.log(
+                `Batch ${i + 1}/${deviceChunks.length}: ${successCount}/${
+                  chunk.length
+                } devices successful`
+              );
+
+              // Optional: Add a small delay between batches to avoid overwhelming the API
+              if (i < deviceChunks.length - 1) {
+                await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 second delay
+              }
+            } catch (batchError) {
+              console.error(`Error in batch ${i + 1}:`, batchError);
+              totalErrorCount += chunk.length;
+              showAlert(`Cắt ${i + 1} lỗi: ${batchError.message}`, "error");
+            }
+          }
+
+          // Show final results
+          if (totalSuccessCount > 0) {
+            showAlert(
+              `Thông báo thành công đến ${totalSuccessCount} thiết bị (${deviceChunks.length} batch)`,
+              "success"
+            );
+          }
+
+          if (totalErrorCount > 0) {
+            showAlert(
+              `${totalErrorCount} devices failed to receive notification`,
+              "error"
+            );
+          }
+
+          // Reset form only if there were some successes
+          if (totalSuccessCount > 0) {
+            titleInput.value = "";
+            messageInput.value = "";
+            devicesTextarea.value = "";
+          }
+        } catch (error) {
+          console.error("Error sending notification:", error);
+          showAlert(`Error: ${error.message}`, "error");
+        }
+
+        hideLoading(sendBtn, sendBtnText, sendBtnLoader, "Gửi thông báo");
+      }
+
+      function showLoading(button, textElement, loader, loadingText) {
+        button.disabled = true;
+        textElement.textContent = loadingText;
+        textElement.classList.add("hidden");
+        loader.classList.remove("hidden");
+      }
+
+      function hideLoading(button, textElement, loader, originalText) {
+        button.disabled = false;
+        textElement.textContent = originalText;
+        textElement.classList.remove("hidden");
+        loader.classList.add("hidden");
+      }
+
+      function showAlert(message, type) {
+        const alert = document.createElement("div");
+        alert.className = `alert alert-${type}`;
+        alert.textContent = message;
+
+        statusMessages.appendChild(alert);
+
+        setTimeout(() => {
+          if (alert.parentNode) {
+            alert.parentNode.removeChild(alert);
+          }
+        }, 5000);
+      }
+
+      function logout() {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("userInfo");
+        window.location.href = "/school";
+        document.getElementById("loginForm").reset();
+      }
+    </script>
+  </body>
+</html>

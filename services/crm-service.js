@@ -1,9 +1,6 @@
 const { default: axios } = require("axios");
 const Participant = require("../models/participant");
 const Device = require("../models/device");
-const Redis = require("ioredis");
-
-const redis = new Redis("rediss://default:Ac4BAAIncDE4OWU3NjhiOGU4YTY0ZDYwYTMxZDIxMDMzNTQyZGE2ZHAxNTI3Mzc@elegant-sawfly-52737.upstash.io:6379");
 
 // Cache trên server
 let cachedToken = null;
@@ -19,19 +16,6 @@ const getAccessToken = async () => {
         };
     }
 
-    // 2️⃣ Nếu không có, kiểm tra Redis
-    let tokenData = await redis.get("tokenData");
-    if (tokenData) {
-        tokenData = JSON.parse(tokenData);
-        if (Date.now() < Number(tokenData.expire_time)) {
-            return {
-                access_token: tokenData.access_token,
-                expire_time: Number(tokenData.expire_time) / 1000
-            };
-        }
-    }
-
-    // 3️⃣ Nếu Redis cũng không có, gọi API lấy token mới
     try {
         const param = {
             username: "admin",
@@ -41,16 +25,10 @@ const getAccessToken = async () => {
             params: param,
         });
 
-        console.log(response);
-
         if (response?.data) {
             console.log(response?.data);
             cachedToken = response?.data?.access_token;
             tokenExpiresAt = Number(response?.data?.expire_time ?? 0) * 1000;
-            await redis.set("tokenData", JSON.stringify({
-                access_token: response?.data?.access_token,
-                expire_time: Number(response?.data?.expire_time ?? 0) * 1000
-            }), "EX", 86400);
         }
 
         return response.data;

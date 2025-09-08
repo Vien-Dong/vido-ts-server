@@ -4,10 +4,12 @@ var mongoose = require('mongoose');
 const Message = require("./models/message");
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
+const multer = require("multer");
 
 var app = express();
 var http = require('http');
 const path = require("path");
+var upload = multer();
 
 var socketIO = require("socket.io");
 
@@ -27,6 +29,7 @@ app.use(express.urlencoded({
 }));
 app.use(express.static('js'));
 app.set('view engine', 'ejs');
+app.use(upload.array());
 
 mongoose.connect("mongodb+srv://administrator:admin123456@cluster.jh4lmtx.mongodb.net/").then(() => {
     console.log("Connected to mongodb");
@@ -52,6 +55,7 @@ app.use('/api/check', require("./routes/api/check"));
 app.use('/api/medical', require("./routes/api/medical"));
 app.use('/api/crawler', require("./routes/api/crawler"));
 app.use('/api/school', require("./routes/api/school"));
+app.use('/api/attendance', require("./routes/api/attendance"));
 
 app.get('/delete-account', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/index.html'));
@@ -118,6 +122,15 @@ app.get('/jhs-ges', function (req, res) {
 });
 app.get('/school', function (req, res) {
     res.sendFile(path.join(__dirname + '/pages/school/index.html'));
+});
+app.get('/school/notify', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/school/notify.html'));
+});
+app.get('/school/survey', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/school/survey.html'));
+});
+app.get('/school/scanned', function (req, res) {
+    res.sendFile(path.join(__dirname + '/pages/school/scanned.html'));
 });
 
 app.use(express.static(__dirname + '/pages'));

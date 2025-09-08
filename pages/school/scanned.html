@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Điểm danh</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif;
+        background: #f5f7fa;
+        min-height: 100vh;
+        padding: 16px;
+      }
+
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+      }
+
+      .header {
+        background: #2563eb;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+
+      .header h1 {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .header p {
+        font-size: 14px;
+        opacity: 0.9;
+      }
+
+      .form-section {
+        padding: 24px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        font-weight: 500;
+        color: #374151;
+        font-size: 14px;
+        margin-bottom: 6px;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 16px;
+        background: white;
+        transition: border-color 0.2s;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        border-color: #2563eb;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 12px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .submit-btn:hover {
+        background: #1d4ed8;
+      }
+
+      .submit-btn:disabled {
+        background: #9ca3af;
+        cursor: not-allowed;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid #e5e7eb;
+      }
+
+      .info-item {
+        font-size: 13px;
+      }
+
+      .info-label {
+        color: #6b7280;
+        font-weight: 500;
+        margin-bottom: 2px;
+      }
+
+      .info-value {
+        color: #111827;
+        font-family: "Monaco", "Menlo", monospace;
+      }
+
+      /* Toast Container */
+      .toast-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 400px;
+      }
+
+      /* Toast Styles */
+      .toast {
+        padding: 16px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        transform: translateX(400px);
+        transition: transform 0.3s ease, opacity 0.3s ease;
+        opacity: 0;
+        position: relative;
+        backdrop-filter: blur(10px);
+        border-left: 4px solid;
+      }
+
+      .toast.show {
+        transform: translateX(0);
+        opacity: 1;
+      }
+
+      .toast.hide {
+        transform: translateX(400px);
+        opacity: 0;
+      }
+
+      .toast.success {
+        background: rgba(209, 250, 229, 0.95);
+        color: #065f46;
+        border-left-color: #10b981;
+      }
+
+      .toast.error {
+        background: rgba(254, 226, 226, 0.95);
+        color: #991b1b;
+        border-left-color: #ef4444;
+      }
+
+      .toast.info {
+        background: rgba(219, 234, 254, 0.95);
+        color: #1e40af;
+        border-left-color: #3b82f6;
+      }
+
+      .toast-close {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: none;
+        border: none;
+        font-size: 18px;
+        cursor: pointer;
+        color: currentColor;
+        opacity: 0.6;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+      }
+
+      .toast-close:hover {
+        opacity: 1;
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      .toast-content {
+        margin-right: 30px;
+      }
+
+      /* Progress bar */
+      .toast-progress {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: currentColor;
+        opacity: 0.3;
+        transition: width linear;
+        border-radius: 0 0 8px 0;
+        width: 0%;
+      }
+
+      .loading {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        border: 2px solid transparent;
+        border-top: 2px solid currentColor;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 8px;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .footer {
+        padding: 16px 24px;
+        background: #f9fafb;
+        border-top: 1px solid #e5e7eb;
+        font-size: 12px;
+        color: #6b7280;
+        text-align: center;
+      }
+
+      .location-guide {
+        background: #fef3c7;
+        border: 1px solid #fcd34d;
+        border-radius: 6px;
+        padding: 16px;
+        margin: 16px 24px;
+        display: none; /* Hidden by default, shown when location blocked */
+      }
+
+      .location-guide h3 {
+        font-size: 14px;
+        font-weight: 600;
+        color: #92400e;
+        margin-bottom: 8px;
+      }
+
+      .location-guide ol {
+        margin: 8px 0;
+        padding-left: 16px;
+        color: #92400e;
+        font-size: 13px;
+      }
+
+      .location-guide li {
+        margin-bottom: 4px;
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 8px;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+
+        .toast-container {
+          left: 20px;
+          right: 20px;
+          max-width: none;
+        }
+
+        .toast {
+          transform: translateY(-100px);
+        }
+
+        .toast.show {
+          transform: translateY(0);
+        }
+
+        .toast.hide {
+          transform: translateY(-100px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Hệ thống điểm danh</h1>
+        <p>Sinh viên checkin tại chỗ</p>
+      </div>
+
+      <div class="form-section">
+        <form id="attendanceForm">
+          <div class="form-group">
+            <label for="studentId">Mã số sinh viên</label>
+            <input
+              type="text"
+              id="studentId"
+              name="studentId"
+              required
+              placeholder="Hãy nhập mã số của bạn"
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Mật khẩu</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              required
+              placeholder="Hãy nhập mật khẩu của bạn"
+              autocomplete="off"
+            />
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">
+            Xác nhận
+          </button>
+        </form>
+
+        <div class="info-grid">
+          <div class="info-item">
+            <div class="info-label">Mã thiết bị</div>
+            <div class="info-value" id="deviceId">Đang tải...</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Mã phiên</div>
+            <div class="info-value" id="tkbId">-</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Địa chỉ</div>
+            <div class="info-value" id="location">Đang truy cập...</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Thời gian</div>
+            <div class="info-value" id="currentDate">-</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="location-guide" id="locationGuide">
+        <h3>📍 Yêu cầu quyền truy cập vị trí</h3>
+        <p>Vui lòng bật quyền truy cập vị trí để tiếp tục:</p>
+        <ol>
+          <li>
+            Nhấp vào biểu tượng vị trí (🔒) trên thanh địa chỉ của trình duyệt
+          </li>
+          <li>Chọn "Cho phép" để cấp quyền vị trí</li>
+          <li>
+            Nếu bị chặn, hãy vào Cài đặt > Quyền riêng tư > Dịch vụ định vị
+          </li>
+          <li>
+            Đối với Chrome: Cài đặt > Quyền riêng tư và Bảo mật > Cài đặt Trang
+            web > Vị trí
+          </li>
+          <li>Làm mới trang này sau khi bật vị trí</li>
+        </ol>
+      </div>
+
+      <div class="toast-container" id="toastContainer"></div>
+
+      <div class="footer">Hệ thống điểm danh trực tuyến</div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+      class AttendanceScanner {
+        constructor() {
+          this.deviceId = this.generateDeviceId();
+          this.tkb = this.getTkbIdFromUrl();
+          this.location = null;
+          this.toastId = 0;
+          this.userInfo = localStorage.getItem("userInfo")
+            ? JSON.parse(localStorage.getItem("userInfo"))
+            : null;
+          this.token = localStorage.getItem("accessToken");
+          this.init();
+        }
+
+        init() {
+          this.displaySystemInfo();
+          this.getLocation();
+          this.checkDeviceAvailability();
+          this.setupEventListeners();
+        }
+
+        generateDeviceId() {
+          const canvas = document.createElement("canvas");
+          const ctx = canvas.getContext("2d");
+          ctx.textBaseline = "top";
+          ctx.font = "14px Arial";
+          ctx.fillText("Device fingerprint", 2, 2);
+
+          const fingerprint =
+            canvas.toDataURL() +
+            navigator.userAgent +
+            navigator.language +
+            screen.width +
+            "x" +
+            screen.height;
+
+          let hash = 0;
+          for (let i = 0; i < fingerprint.length; i++) {
+            const char = fingerprint.charCodeAt(i);
+            hash = (hash << 5) - hash + char;
+            hash = hash & hash;
+          }
+
+          return Math.abs(hash).toString(16).substring(0, 8).toUpperCase();
+        }
+
+        checkTime(timestamp) {
+          const currentTime = new Date().getTime();
+          const qrTimeMs = timestamp < 1e12 ? timestamp * 1000 : timestamp;
+
+          if (currentTime - qrTimeMs > 60 * 1000) {
+            alert("QR code đã hết hạn");
+            window.history.back();
+            return;
+          }
+        }
+
+        parseQrValue = (value) => {
+          const params = new URLSearchParams(value);
+
+          const obj = {};
+          for (const [key, value] of params.entries()) {
+            obj[key] = value === "" ? null : decodeURIComponent(value);
+          }
+
+          const { exp, ...rest } = obj;
+
+          return {
+            exp,
+            data: rest,
+          };
+        };
+
+        getTkbIdFromUrl() {
+          const urlParams = new URLSearchParams(window.location.search);
+
+          const obj = this.parseQrValue(urlParams);
+
+          if (!obj) {
+            alert("Đường dẫn không hợp lệ, vui lòng quét lại mã.");
+            window.history.back();
+            return;
+          }
+
+          this.checkTime(Number(obj.exp));
+
+          return obj.data;
+        }
+
+        isInsideGeoFence = async (currentLat, currentLong) => {
+          const latMin = 10.882558745725722; // nhỏ nhất (dưới)
+          const latMax = 10.882725542736818; // lớn nhất (trên)
+          const longMin = 106.61291346793128; // trái
+          const longMax = 106.61302112037313; // phải
+
+          // Kiểm tra nếu vĩ độ và kinh độ của thiết bị nằm trong giới hạn
+          const isLatInArea = currentLat >= latMin && currentLat <= latMax;
+          const isLongInArea = currentLong >= longMin && currentLong <= longMax;
+
+          return isLatInArea && isLongInArea;
+        };
+
+        async checkDeviceAvailability() {
+          try {
+            const response = await axios.get(
+              `/api/attendance/attendance/${this.tkb.ngay}`
+            );
+
+            if (response.data && response.data.length > 0) {
+              this.showToast(`Thiết bị này đã được sử dụng trước đó.`, "error");
+              document.getElementById("submitBtn").disabled = true;
+              return false;
+            } else {
+              this.hideToast(this.toastId);
+              document.getElementById("submitBtn").disabled = false;
+              return true;
+            }
+          } catch (error) {
+            this.showToast(
+              "Không thể xác thực thiết bị, vui lòng thử lại...",
+              "info"
+            );
+            setTimeout(() => this.hideToast(this.toastId), 2000);
+            return false;
+          }
+        }
+
+        displaySystemInfo() {
+          document.getElementById("deviceId").textContent = this.deviceId;
+          document.getElementById("tkbId").textContent = this.tkb.tkbid;
+
+          const now = new Date();
+          const timestamp = now.toLocaleString("en-GB", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          document.getElementById("currentDate").textContent = timestamp;
+        }
+
+        async getLocation() {
+          const locationElement = document.getElementById("location");
+
+          if (!navigator.geolocation) {
+            locationElement.textContent = "Không hỗ trợ";
+            this.showLocationGuide(
+              "Định vị không được hỗ trợ trên trình duyệt này."
+            );
+            return;
+          }
+
+          try {
+            locationElement.textContent = "Đang yêu cầu...";
+
+            const position = await new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject, {
+                timeout: 10000,
+                enableHighAccuracy: false,
+                maximumAge: 300000, // 5 minutes cache
+              });
+            });
+
+            this.location = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+              accuracy: position.coords.accuracy,
+            };
+
+            locationElement.textContent = `${this.location.latitude.toFixed(
+              4
+            )}, ${this.location.longitude.toFixed(4)}`;
+
+            // Hide location guide if it was shown
+            this.hideLocationGuide();
+          } catch (error) {
+            console.error("Location error:", error);
+            locationElement.textContent = "Blocked";
+
+            let message = "Yêu cầu cấp quyền vị trí để xác minh";
+
+            // Handle different error types
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                message = "Vị trí bị tắt, hãy mở vị trí của bạn.";
+                break;
+              case error.POSITION_UNAVAILABLE:
+                message =
+                  "Thông tin vị trí không có, hãy kiểm tra thiết bị của bạn";
+                break;
+              case error.TIMEOUT:
+                message = "Hết thời gian truy vấn, vui lòng thử lại.";
+                break;
+            }
+
+            // Show guidance to user
+            this.showLocationGuide(message);
+          }
+        }
+
+        // Show location guidance panel
+        showLocationGuide(message) {
+          const guideElement = document.getElementById("locationGuide");
+          if (message) {
+            guideElement.querySelector("p").textContent = message;
+          }
+          guideElement.style.display = "block";
+        }
+
+        // Hide location guidance panel
+        hideLocationGuide() {
+          document.getElementById("locationGuide").style.display = "none";
+        }
+
+        setupEventListeners() {
+          document
+            .getElementById("attendanceForm")
+            .addEventListener("submit", (e) => {
+              e.preventDefault();
+              this.submitAttendance();
+            });
+        }
+
+        // Enhanced form submission with location check
+        async submitAttendance() {
+          const studentId = document.getElementById("studentId").value.trim();
+          const password = document.getElementById("password").value.trim();
+
+          const submitBtn = document.getElementById("submitBtn");
+
+          if (!studentId || !password) {
+            this.showToast("Vui lòng nhập đầy đủ thông tin", "error");
+            return;
+          }
+
+          // Check if location is available
+          // if (!this.location) {
+          //   this.showToast(
+          //     "Vị trí cần phải được bật, hãy cấp quyền vị trí.",
+          //     "error"
+          //   );
+          //   this.showLocationGuide(
+          //     "Cần có quyền truy cập vị trí để theo dõi điểm danh"
+          //   );
+          //   return;
+          // } 
+
+          // else if (
+          //   !(await this.isInsideGeoFence(
+          //     this.location.latitude,
+          //     this.location.longitude
+          //   ))
+          // ) {
+          //   this.showToast(
+          //     "Vị trí của bạn nằm ngoài trường, hãy di chuyển vào trong",
+          //     "error"
+          //   );
+          //   return;
+          // }
+
+          if(!await this.checkDeviceAvailability()) return;
+
+          // Rest of submission code...
+          submitBtn.disabled = true;
+
+          try {
+            let newToken = null;
+            let newInfo = null;
+
+            if (!this.token || !this.userInfo) {
+              submitBtn.innerHTML =
+                '<span class="loading"></span>Đang đăng nhập...';
+              const loginRes = await axios.post(
+                "/api/school/login",
+                { userid: studentId, pass: password, type: "local" },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                }
+              );
+
+              if (loginRes && loginRes.data && loginRes.data.token) {
+                newToken = loginRes.data.token;
+                newInfo = loginRes.data.user;
+                localStorage.setItem("accessToken", loginRes.data.token);
+                localStorage.setItem(
+                  "userInfo",
+                  JSON.stringify(loginRes.data.user)
+                );
+              }
+            } else {
+              newToken = this.token;
+              newInfo = this.userInfo;
+            }
+
+            console.log(newInfo);
+
+            const attendanceData = {
+              tkb: this.tkb,
+              hocviens: [
+                {
+                  hocvienid: newInfo?.hocVien?.id ?? newInfo?.giangVien?.id,
+                  hiendienyn: true,
+                },
+              ],
+            };
+
+            submitBtn.innerHTML =
+              '<span class="loading"></span>Đang điểm danh...';
+
+            const response = await axios.post(
+              "/api/school/save",
+              attendanceData,
+              {
+                headers: {
+                  "Content-Type": "application/json",
+                  token: newToken,
+                },
+              }
+            );
+
+            if (response.data && response.data.success) {
+              await axios.post("/api/attendance/save-attendance", {
+                mshv: attendanceData.hocviens[0].hocvienid,
+                tkbId: attendanceData.tkb.tkbid,
+                deviceId: this.deviceId,
+                ngay: attendanceData.tkb.ngay,
+              });
+            }
+
+            this.showToast(`Điểm danh thành công`, "success");
+          } catch (error) {
+            console.log(error);
+            this.showToast(`Lỗi điểm danh, vui lòng thử lại sau.`, "error");
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "Xác nhận";
+          }
+        }
+
+        showToast(message, type = "info", duration = 4000) {
+          const container = document.getElementById("toastContainer");
+          const toast = document.createElement("div");
+          const currentId = ++this.toastId;
+
+          toast.className = `toast ${type}`;
+          toast.setAttribute("data-toast-id", currentId);
+
+          toast.innerHTML = `
+                <div class="toast-content">${message}</div>
+                <button class="toast-close" aria-label="Close">&times;</button>
+                <div class="toast-progress"></div>
+            `;
+
+          // Add click event for close button
+          const closeBtn = toast.querySelector(".toast-close");
+          closeBtn.addEventListener("click", () => this.hideToast(currentId));
+
+          container.appendChild(toast);
+
+          // Trigger animation
+          setTimeout(() => {
+            toast.classList.add("show");
+          }, 10);
+
+          // Start progress bar animation
+          const progressBar = toast.querySelector(".toast-progress");
+          setTimeout(() => {
+            progressBar.style.width = "100%";
+            progressBar.style.transitionDuration = `${duration}ms`;
+          }, 50);
+
+          // Auto hide after duration
+          const timeoutId = setTimeout(() => {
+            this.hideToast(currentId);
+          }, duration);
+
+          // Store timeout ID for potential cancellation
+          toast.setAttribute("data-timeout-id", timeoutId);
+
+          return currentId;
+        }
+
+        hideToast(toastId) {
+          const toast = document.querySelector(`[data-toast-id="${toastId}"]`);
+          if (!toast) return;
+
+          // Clear the timeout if it exists
+          const timeoutId = toast.getAttribute("data-timeout-id");
+          if (timeoutId) {
+            clearTimeout(parseInt(timeoutId));
+          }
+
+          toast.classList.add("hide");
+          toast.classList.remove("show");
+
+          // Remove from DOM after animation
+          setTimeout(() => {
+            if (toast.parentNode) {
+              toast.parentNode.removeChild(toast);
+            }
+          }, 300);
+        }
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        new AttendanceScanner();
+      });
+    </script>
+  </body>
+</html>
