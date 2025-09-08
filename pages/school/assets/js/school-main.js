@@ -567,8 +567,10 @@ function generateQRCode(isWeb) {
     document.getElementById('qrModal').classList.add('active');
 
     showToast('Đã tạo mã QR thành công!', 'success');
+    console.log("QR mới được tạo:", qrData);
 
     const btn = document.getElementById("regenerateBtn");
+
     let countdown = 30;
 
     btn.disabled = true;
@@ -584,6 +586,8 @@ function generateQRCode(isWeb) {
             btn.disabled = false;
             btn.style.background = "#28a745";
             btn.innerHTML = '<i class="fas fa-refresh"></i> Tạo lại';
+
+            console.log("Nút 'Tạo lại' đã sẵn sàng. QR hiện tại:", qrData);
         }
     }, 1000);
 }
@@ -602,7 +606,8 @@ function generateQRCanvas() {
 }
 
 function regenerateQR() {
-    generateQRCode();
+    generateQRCode(true);
+
 }
 
 function downloadQR() {
