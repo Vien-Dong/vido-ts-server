@@ -408,6 +408,64 @@
   <body
     class="home page-template page-template-page-blank page-template-page-blank-php page page-id-6 lightbox nav-dropdown-has-arrow nav-dropdown-has-shadow nav-dropdown-has-border vt_popup_open"
   >
+
+  <div class="content">
+    <div id="badgeContainer" ></div>
+  </div>
+
+  <script>
+        const array = [
+            "Nguyễn Văn An",
+            "Trần Thị Bách",
+            "Lê Văn Chi",
+            "Phạm Thị Dũng",
+            "Hoàng Văn Lâm",
+            "Vũ Thị Phương",
+            "Đặng Văn Dương",
+            "Bùi Thị Hiền",
+            "Đỗ Văn Liên",
+            "Phan Thị Khánh"
+        ];
+
+        const container = document.getElementById("badgeContainer");
+        let index = 0;
+
+        // tạo badge chỉ 1 lần duy nhất
+        const badgea = document.createElement("div");
+        badgea.className = "badgea";
+        badgea.innerHTML = `
+        <div style="display: flex;"> 
+            <dotlottie-wc src="https://lottie.host/be273b82-d6ac-4e8d-b80a-ba24663dc882/f8vQwxfML1.lottie" style="width: 50px;height: 50px" speed="1" autoplay loop></dotlottie-wc>
+            <div style="display: flex; flex-direction: column; justify-content: center;">
+                <div class="name"></div>
+                <div class="fixedText">Đăng Ký Xét Tuyển Thành Công Vừa Xong</div>
+            </div>
+        </div>
+        `;
+        container.appendChild(badgea);
+
+        const nameEl = badgea.querySelector(".name");
+
+        function showNext() {
+            // đổi tên
+            nameEl.textContent = array[index];
+            index = (index + 1) % array.length;
+
+            // hiện lên
+            requestAnimationFrame(() => {
+                badgea.classList.add("show");
+            });
+
+            // 5s sau thì ẩn xuống
+            setTimeout(() => {
+                badgea.classList.remove("show");
+            }, 5000);
+        }
+
+        showNext();
+        setInterval(showNext, 10000);
+    </script>
+
     <div id="wrapper">
       <header
         id="header"
