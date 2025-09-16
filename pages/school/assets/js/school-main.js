@@ -237,7 +237,6 @@ function loadSubjectsForDate(date) {
             });
 
             const result = response.data;
-
             if (result.success) {
                 const subjects = result.data;
 
@@ -363,7 +362,6 @@ async function openStudentList(subject) {
     document.getElementById("studentListView").style.display = "none";
     currentSubject = JSON.parse(decodeURIComponent(subject));
     const token = localStorage.getItem("accessToken");
-
     if (!token) return;
 
     try {
@@ -378,8 +376,8 @@ async function openStudentList(subject) {
         );
 
         const result = response.data;
-
-        if (result.success) {
+        console.log("Student list response:", result);
+            if (result.success) {
             students = result.data;
             attendance = {};
 
@@ -406,18 +404,24 @@ async function openStudentList(subject) {
 
 function renderStudentList() {
     const studentList = document.getElementById("studentList");
-    studentList.innerHTML = students
+
+    // Sắp xếp theo tên (chữ cuối cùng trong họ tên)
+    const sortedStudents = [...students].sort((a, b) => {
+        const nameA = a.ten.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        const nameB = b.ten.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        return nameA.localeCompare(nameB, "vi");
+    });
+
+    studentList.innerHTML = sortedStudents
         .map(
             (student) => `
-          <div class="student-item ${attendance[student.hocvienid] ? "present" : ""
-                }"
+          <div class="student-item ${attendance[student.hocvienid] ? "present" : ""}"
                onclick="toggleAttendance('${student.hocvienid}')">
             <div class="student-info">
               <h4>${student.ho} ${student.ten}</h4>
               <p>MSSV: ${student.mshv}</p>
             </div>
-            <div class="attendance-status ${attendance[student.hocvienid] ? "status-present" : "status-absent"
-                }">
+            <div class="attendance-status ${attendance[student.hocvienid] ? "status-present" : "status-absent"}">
               ${attendance[student.hocvienid] ? "Hiện diện" : "Vắng"}
             </div>
           </div>
@@ -467,7 +471,6 @@ function backToSubjects() {
 
 async function saveAttendance() {
     if (!currentSubject) return;
-
     const token = localStorage.getItem("accessToken");
 
     if (!token) return;
@@ -569,8 +572,10 @@ function generateQRCode(isWeb = false) {
     document.getElementById('qrModal').classList.add('active');
 
     showToast('Đã tạo mã QR thành công!', 'success');
+    console.log("QR mới được tạo:", qrData);
 
     const btn = document.getElementById("regenerateBtn");
+
     let countdown = 30;
 
     btn.disabled = true;
@@ -586,6 +591,8 @@ function generateQRCode(isWeb = false) {
             btn.disabled = false;
             btn.style.background = "#28a745";
             btn.innerHTML = '<i class="fas fa-refresh"></i> Tạo lại';
+
+            console.log("Nút 'Tạo lại' đã sẵn sàng. QR hiện tại:", qrData);
         }
     }, 1000);
 }
@@ -604,7 +611,8 @@ function generateQRCanvas(qrData) {
 }
 
 function regenerateQR() {
-    generateQRCode(false);
+    generateQRCode(true);
+
 }
 
 function downloadQR() {
