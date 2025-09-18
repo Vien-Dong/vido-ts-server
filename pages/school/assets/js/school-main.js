@@ -172,6 +172,7 @@ function generateDayButtons() {
 }
 
 function selectDay(date, button) {
+    backToSubjects();
     document
         .querySelectorAll(".day-btn")
         .forEach((btn) => btn.classList.remove("active"));
@@ -405,11 +406,25 @@ async function openStudentList(subject) {
 function renderStudentList() {
     const studentList = document.getElementById("studentList");
 
-    // Sắp xếp theo tên (chữ cuối cùng trong họ tên)
     const sortedStudents = [...students].sort((a, b) => {
+        // chuẩn hóa bỏ dấu, viết thường
         const nameA = a.ten.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
         const nameB = b.ten.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-        return nameA.localeCompare(nameB, "vi");
+
+        // so sánh tên riêng từng ký tự
+        if (nameA !== nameB) {
+            for (let i = 0; i < Math.min(nameA.length, nameB.length); i++) {
+                if (nameA[i] !== nameB[i]) {
+                    return nameA.charCodeAt(i) - nameB.charCodeAt(i);
+                }
+            }
+            return nameA.length - nameB.length; // nếu một tên là prefix của tên kia
+        }
+
+        // Nếu tên giống hệt nhau thì so tiếp cả họ + đệm
+        const fullA = `${a.ho} ${a.ten}`.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        const fullB = `${b.ho} ${b.ten}`.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+        return fullA.localeCompare(fullB, "vi");
     });
 
     studentList.innerHTML = sortedStudents
@@ -429,6 +444,23 @@ function renderStudentList() {
         )
         .join("");
 }
+
+function filterStudents() {
+    const input = document.getElementById("searchInput").value.toLowerCase().trim();
+    const studentItems = document.querySelectorAll("#studentList .student-item");
+
+    studentItems.forEach(item => {
+        const name = item.querySelector(".student-info h4").textContent.toLowerCase();
+        const mssv = item.querySelector(".student-info p").textContent.toLowerCase();
+        
+        if (name.includes(input) || mssv.includes(input)) {
+            item.style.display = "flex"; // hiện lại
+        } else {
+            item.style.display = "none"; // ẩn đi
+        }
+    });
+}
+
 
 function toggleAttendance(studentId) {
     attendance[studentId] = !attendance[studentId];

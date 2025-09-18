@@ -1,346 +1,381 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Dashboard - Attendance System</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css"
-      rel="stylesheet"
-    />
-    <link href="./assets/css/school-style.css" rel="stylesheet" />
-    <style>
-      /* Base styles from your existing school-style.css */
 
-      .qr-btn {
-        background: #28a745;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 5px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 14px;
-        transition: background 0.3s;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Attendance System</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css" rel="stylesheet" />
+  <link href="./assets/css/school-style.css" rel="stylesheet" />
+  <style>
+    /* Base styles from your existing school-style.css */
 
-      .qr-btn:hover {
-        background: #218838;
-      }
+    .qr-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      transition: background 0.3s;
+    }
 
-      .subject-arrow {
-        color: #667eea;
-        font-size: 18px;
-      }
+    .qr-btn:hover {
+      background: #218838;
+    }
 
-      /* QR Modal */
-      .qr-modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.8);
-        display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 2000;
-      }
+    .subject-arrow {
+      color: #667eea;
+      font-size: 18px;
+    }
 
-      .qr-modal.active {
-        display: flex;
-      }
+    /* QR Modal */
+    .qr-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
 
-      .qr-modal-content {
-        background: white;
-        padding: 30px;
-        border-radius: 20px;
-        text-align: center;
-        max-width: 400px;
-        width: 90%;
-        position: relative;
-      }
+    .qr-modal.active {
+      display: flex;
+    }
 
-      .qr-close {
-        position: absolute;
-        top: 15px;
-        right: 20px;
-        background: none;
-        border: none;
-        font-size: 24px;
-        cursor: pointer;
-        color: #666;
-      }
+    .qr-modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      text-align: center;
+      max-width: 400px;
+      width: 90%;
+      position: relative;
+    }
 
-      .qr-title {
-        margin-bottom: 20px;
-        color: #333;
-        font-size: 18px;
-        font-weight: 600;
-      }
+    .qr-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: #666;
+    }
 
-      .qr-code-container {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 12px;
-        margin-bottom: 20px;
-        display: flex;
-        justify-content: center;
-      }
+    .qr-title {
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 18px;
+      font-weight: 600;
+    }
 
-      .qr-info {
-        background: #e9ecef;
-        padding: 15px;
-        display: none;
-        border-radius: 8px;
-        margin-bottom: 20px;
-      }
+    .qr-code-container {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
 
-      .qr-data {
-        font-family: "Courier New", monospace;
-        font-size: 12px;
-        word-break: break-all;
-        color: #666;
-      }
+    .qr-info {
+      background: #e9ecef;
+      padding: 15px;
+      display: none;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
 
-      .qr-actions {
-        display: flex;
-        gap: 10px;
-        justify-content: center;
-      }
+    .qr-data {
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      word-break: break-all;
+      color: #666;
+    }
 
-      .download-btn,
-      .regenerate-btn {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.3s;
-      }
+    .qr-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+    }
 
-      .download-btn {
-        background: #667eea;
-        color: white;
-      }
+    .download-btn,
+    .regenerate-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
 
-      .download-btn:hover {
-        background: #5a67d8;
-      }
+    .download-btn {
+      background: #667eea;
+      color: white;
+    }
 
-      .regenerate-btn {
-        background: #28a745;
-        color: white;
-      }
+    .download-btn:hover {
+      background: #5a67d8;
+    }
 
-      .regenerate-btn:hover {
-        background: #218838;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Login Page -->
-    <div id="loginPage" class="login-container">
-      <div class="login-form">
-        <h2><i class="fas fa-user-shield"></i> Xác thực</h2>
-        <form id="loginForm">
-          <div class="form-group">
-            <label for="username">Tên đăng nhập</label>
-            <input type="text" id="username" name="username" required />
-          </div>
-          <div class="form-group">
-            <label for="password">Mật khẩu</label>
-            <input type="password" id="password" name="password" required />
-          </div>
-          <button type="submit" class="login-btn" id="login-btn">
-            <i class="fas fa-sign-in-alt"></i>
-            <i class="fas fa-spinner fa-spin" style="display: none"></i>
-            Đăng nhập
-          </button>
-        </form>
-      </div>
-    </div>
+    .regenerate-btn {
+      background: #28a745;
+      color: white;
+    }
 
-    <!-- Main Dashboard -->
-    <div id="dashboard" class="dashboard">
-      <!-- Sidebar -->
-      <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-          <div class="sidebar-title">
-            <i
-              class="fas fa-graduation-cap"
-              style="font-size: 40px; color: #667eea"
-            ></i>
-            Cao đẳng Viễn Đông
-          </div>
+    .regenerate-btn:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Login Page -->
+  <div id="loginPage" class="login-container">
+    <div class="login-form">
+      <h2><i class="fas fa-user-shield"></i> Xác thực</h2>
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="username">Tên đăng nhập</label>
+          <input type="text" id="username" name="username" required />
         </div>
-        <nav class="sidebar-nav">
-          <a href="school" class="nav-item active">
-            <i class="fas fa-calendar-check"></i> Điểm danh
-          </a>
-          <a href="#" class="nav-item">
-            <i class="fas fa-users"></i> Sinh viên
-          </a>
-          <a href="#" class="nav-item"> <i class="fas fa-book"></i> Môn học </a>
-          <a href="school/survey" class="nav-item">
-            <i class="fas fa-chart-bar"></i> Quản lý khảo sát
-          </a>
-          <a href="#" class="nav-item"> <i class="fas fa-cog"></i> Cài đặt </a>
-          <a href="school/notify" class="nav-item"> <i class="fas fa-bell"></i> Thông báo </a>
-        </nav>
-      </aside>
-
-      <!-- Main Content -->
-      <main class="main-content">
-        <!-- Top Bar -->
-        <header class="topbar">
-          <div class="topbar-left">
-            <button class="menu-toggle" id="menuToggle">
-              <i class="fas fa-bars"></i>
-            </button>
-            <h1 class="page-title">Quản lý điểm danh</h1>
-          </div>
-          <div class="topbar-actions">
-            <button class="logout-btn" onclick="logout()">
-              <i class="fas fa-sign-out-alt"></i> Đăng xuất
-            </button>
-          </div>
-        </header>
-
-        <!-- Content Area -->
-        <div class="content-area">
-          <!-- Week Navigation -->
-          <div class="week-nav">
-            <div class="nav-controls">
-              <button class="nav-btn" onclick="changeWeek(-1)">
-                <i class="fas fa-chevron-left"></i>
-              </button>
-            </div>
-
-            <div class="day-buttons" id="dayButtons">
-              <!-- Day buttons will be generated here -->
-            </div>
-
-            <div class="nav-controls">
-              <button class="nav-btn" onclick="changeWeek(1)">
-                <i class="fas fa-chevron-right"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Subjects View -->
-          <div id="subjectsView">
-            <div class="subjects-container">
-              <div class="subjects-header">
-                <h3>Lớp hôm nay</h3>
-              </div>
-              <div id="subjectsContainer">
-                <div class="loading">
-                  <i class="fas fa-spinner fa-spin"></i> Đang tải môn học...
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div
-            id="loadingSpinner"
-            style="display: none; text-align: center; padding: 16px"
-          >
-            <i class="fas fa-spinner fa-spin fa-2x"></i>
-          </div>
-
-          <!-- Student List View -->
-          <div id="studentListView" class="student-list-container">
-            <div class="list-header">
-              <button class="back-btn" onclick="backToSubjects()">
-                <i class="fas fa-arrow-left"></i> Quay lại
-              </button>
-              <h3 id="subjectTitle">Tên môn</h3>
-              <button class="qr-btn" onclick="generateQRCode(false)">
-                <i class="fas fa-qrcode"></i> Tạo QR điểm danh
-              </button>
-              <button class="qr-btn" style="margin-left: 10px;" onclick="generateQRCode(true)">
-                <i class="fas fa-qrcode"></i> Tạo QR điểm danh Website
-              </button>
-            </div>
-
-            <div class="attendance-panel">
-              <div class="attendance-stats">
-                <div class="stat-item">
-                  <div class="stat-number total" id="totalStudents">0</div>
-                  <div class="stat-label">Tổng cộng</div>
-                </div>
-                <div class="stat-item">
-                  <div class="stat-number present" id="presentCount">0</div>
-                  <div class="stat-label">Hiện diện</div>
-                </div>
-                <div class="stat-item">
-                  <div class="stat-number absent" id="absentCount">0</div>
-                  <div class="stat-label">Vắng</div>
-                </div>
-              </div>
-
-              <div class="action-buttons">
-                <button class="select-all-btn" onclick="selectAllStudents()">
-                  <i class="fas fa-check-double"></i> Chọn tất cả
-                </button>
-                <button class="remove-all-btn" onclick="removeAllStudents()">
-                  <i class="fas fa-xmark"></i> Xóa tất cả
-                </button>
-                <button id="reload-btn" class="reload-btn" onclick="reloadStudentList()">
-                  <i class="fas fa-rotate-right"></i> Tải lại
-                </button>
-                <button
-                  class="save-btn"
-                  id="save-btn"
-                  onclick="saveAttendance()"
-                >
-                  <i class="fas fa-save"></i>
-                  <i class="fas fa-spinner fa-spin" style="display: none"></i>
-                  Lưu điểm danh
-                </button>
-              </div>
-
-              <div class="student-list" id="studentList">
-                <!-- Students will be loaded here -->
-              </div>
-            </div>
-          </div>
+        <div class="form-group">
+          <label for="password">Mật khẩu</label>
+          <input type="password" id="password" name="password" required />
         </div>
-      </main>
-    </div>
-
-    <!-- QR Code Modal -->
-    <div class="qr-modal" id="qrModal">
-      <div class="qr-modal-content">
-        <button class="qr-close" onclick="closeQRModal()">
-          <i class="fas fa-times"></i>
+        <button type="submit" class="login-btn" id="login-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          <i class="fas fa-spinner fa-spin" style="display: none"></i>
+          Đăng nhập
         </button>
-        <h3 class="qr-title" id="qrTitle">Mã QR điểm danh</h3>
-        <div class="qr-code-container">
-          <div id="qrCanvas"></div>
-        </div>
-        <div class="qr-info">
-          <div class="qr-data" id="qrData"></div>
-        </div>
-        <div class="qr-actions">
-          <button class="download-btn" onclick="downloadQR()">
-            <i class="fas fa-download"></i> Tải xuống
-          </button>
-          <button id="regenerateBtn" class="regenerate-btn" onclick="regenerateQR()">
-            <i class="fas fa-refresh"></i> Tạo lại
-          </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Dashboard -->
+  <div id="dashboard" class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-title">
+          <i class="fas fa-graduation-cap" style="font-size: 40px; color: #667eea"></i>
+          Cao đẳng Viễn Đông
         </div>
       </div>
-    </div>
+      <nav class="sidebar-nav">
+        <a href="school" class="nav-item active">
+          <i class="fas fa-calendar-check"></i> Điểm danh
+        </a>
+        <a href="#" class="nav-item">
+          <i class="fas fa-users"></i> Sinh viên
+        </a>
+        <a href="#" class="nav-item"> <i class="fas fa-book"></i> Môn học </a>
+        <a href="school/survey" class="nav-item">
+          <i class="fas fa-chart-bar"></i> Quản lý khảo sát
+        </a>
+        <a href="#" class="nav-item"> <i class="fas fa-cog"></i> Cài đặt </a>
+        <a href="school/notify" class="nav-item"> <i class="fas fa-bell"></i> Thông báo </a>
+      </nav>
+    </aside>
 
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
-    <script src="./assets/js/school-main.js"></script>
-  </body>
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+          <h1 class="page-title">Quản lý điểm danh</h1>
+        </div>
+        <div class="topbar-actions">
+          <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Area -->
+      <div class="content-area">
+        <!-- Week Navigation -->
+        <div class="week-nav">
+          <div class="nav-controls">
+            <button class="nav-btn" onclick="changeWeek(-1)">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+          </div>
+
+          <div class="day-buttons" id="dayButtons">
+            <!-- Day buttons will be generated here -->
+          </div>
+
+          <div class="nav-controls">
+            <button class="nav-btn" onclick="changeWeek(1)">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Subjects View -->
+        <div id="subjectsView">
+          <div class="subjects-container">
+            <div class="subjects-header">
+              <h3>Lớp hôm nay</h3>
+            </div>
+            <div id="subjectsContainer">
+              <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i> Đang tải môn học...
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="loadingSpinner" style="display: none; text-align: center; padding: 16px">
+          <i class="fas fa-spinner fa-spin fa-2x"></i>
+        </div>
+
+        <!-- Student List View -->
+        <div id="studentListView" class="student-list-container">
+          <div class="list-header">
+            <button class="back-btn" onclick="backToSubjects()">
+              <i class="fas fa-arrow-left"></i> Quay lại
+            </button>
+            <h3 id="subjectTitle">Tên môn</h3>
+            <button class="qr-btn" onclick="generateQRCode(false)">
+              <i class="fas fa-qrcode"></i> Tạo QR điểm danh
+            </button>
+            <button class="qr-btn" style="margin-left: 10px;" onclick="generateQRCode(true)">
+              <i class="fas fa-qrcode"></i> Tạo QR điểm danh Website
+            </button>
+          </div>
+
+          <div class="attendance-panel">
+            <div class="attendance-stats">
+              <div class="stat-item">
+                <div class="stat-number total" id="totalStudents">0</div>
+                <div class="stat-label">Tổng cộng</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number present" id="presentCount">0</div>
+                <div class="stat-label">Hiện diện</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-number absent" id="absentCount">0</div>
+                <div class="stat-label">Vắng</div>
+              </div>
+            </div>
+
+            <div class="action-buttons">
+              <button class="select-all-btn" onclick="selectAllStudents()">
+                <i class="fas fa-check-double"></i> Chọn tất cả
+              </button>
+              <button class="remove-all-btn" onclick="removeAllStudents()">
+                <i class="fas fa-xmark"></i> Xóa tất cả
+              </button>
+              <button id="reload-btn" class="reload-btn" onclick="reloadStudentList()">
+                <i class="fas fa-rotate-right"></i> Tải lại
+              </button>
+              <button class="save-btn" id="save-btn" onclick="saveAttendance()">
+                <i class="fas fa-save"></i>
+                <i class="fas fa-spinner fa-spin" style="display: none"></i>
+                Lưu điểm danh
+              </button>
+            </div>
+
+            <div class="search-container">
+              <i class="fas fa-search search-icon" style="margin-left: 10px;"></i>
+              <input type="text" id="searchInput" placeholder="Tìm sinh viên theo tên hoặc MSSV..."
+                onkeyup="filterStudents()" />
+            </div>
+
+            <style>
+              .search-container {
+                position: relative;
+                margin: 15px 0;
+              }
+
+              .search-container .search-icon {
+                position: absolute;
+                top: 50%;
+                left: 12px;
+                transform: translateY(-50%);
+                color: #000000;
+                font-size: 14px;
+                pointer-events: none;
+              }
+
+              .search-container input {
+                width: calc(100% - 20px);
+                margin: 0 10px;
+                padding: 10px 12px 10px 36px;
+                border-radius: 10px;
+                color: #000000;
+                border: 1px solid #888;
+                font-size: 14px;
+                transition: all 0.3s ease;
+                outline: none;
+              }
+
+              .search-container input:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.5);
+              }
+
+              .search-container input::placeholder {
+                color: #000000;
+                font-style: italic;
+              }
+            </style>
+
+            <div class="student-list" id="studentList">
+              <!-- Students will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- QR Code Modal -->
+  <div class="qr-modal" id="qrModal">
+    <div class="qr-modal-content">
+      <button class="qr-close" onclick="closeQRModal()">
+        <i class="fas fa-times"></i>
+      </button>
+      <h3 class="qr-title" id="qrTitle">Mã QR điểm danh</h3>
+      <div class="qr-code-container">
+        <div id="qrCanvas"></div>
+      </div>
+      <div class="qr-info">
+        <div class="qr-data" id="qrData"></div>
+      </div>
+      <div class="qr-actions">
+        <button class="download-btn" onclick="downloadQR()">
+          <i class="fas fa-download"></i> Tải xuống
+        </button>
+        <button id="regenerateBtn" class="regenerate-btn" onclick="regenerateQR()">
+          <i class="fas fa-refresh"></i> Tạo lại
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+  <script src="./assets/js/school-main.js"></script>
+</body>
+
 </html>
