@@ -355,9 +355,11 @@ async function reloadStudentList() {
         btn.disabled = false;
         btn.innerHTML = `<i class="fas fa-rotate-right"></i> Tải lại`;
     }
+    clearFilter();
 }
 
 async function openStudentList(subject) {
+    clearFilter();
     const spinner = document.getElementById("loadingSpinner");
     spinner.style.display = "block";
     document.getElementById("studentListView").style.display = "none";
@@ -461,12 +463,38 @@ function filterStudents() {
     });
 }
 
+function clearFilter() {
+    const input = document.getElementById("searchInput");
+    input.value = ""; 
+}
+
 
 function toggleAttendance(studentId) {
+    // cập nhật trạng thái trong attendance
     attendance[studentId] = !attendance[studentId];
-    renderStudentList();
+
+    // tìm đúng element student trong DOM
+    const studentItem = document.querySelector(`#studentList .student-item[onclick="toggleAttendance('${studentId}')"]`);
+    if (studentItem) {
+        // update class
+        if (attendance[studentId]) {
+            studentItem.classList.add("present");
+        } else {
+            studentItem.classList.remove("present");
+        }
+
+        // update text trạng thái
+        const statusDiv = studentItem.querySelector(".attendance-status");
+        if (statusDiv) {
+            statusDiv.className = `attendance-status ${attendance[studentId] ? "status-present" : "status-absent"}`;
+            statusDiv.textContent = attendance[studentId] ? "Hiện diện" : "Vắng";
+        }
+    }
+
+    // chỉ gọi updateStats, không reload lại toàn bộ danh sách
     updateStats();
 }
+
 
 function updateStats() {
     const total = students.length;
@@ -575,6 +603,7 @@ async function saveAttendance() {
         btn.querySelector(".fa-spinner").style.display = "none";
         btn.disabled = false;
     }
+    clearFilter();
 }
 
 // QR Code Generation Functions
