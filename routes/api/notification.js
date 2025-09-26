@@ -3,7 +3,7 @@ const express = require("express");
 const { getDocs, collection } = require("firebase/firestore");
 const { database } = require("../../config/firebase");
 const admin = require("firebase-admin");
-const serviceAccount = require("../../google-service.json");
+const serviceAccount = require("../../vido-student-beta-firebase-adminsdk-4rkqd-1360fc04f3.json");
 const { v4: uuidv4 } = require("uuid");
 const { sliceIntoChunks } = require("../../utils/index");
 const NotificationModel = require("../../models/notification");
@@ -64,6 +64,7 @@ router.post("/send", (req, res) => {
         res.status(400).send('Something went wrong!');
         console.log(err);
       })
+      console.log("res: ", totalSuccessCount, totalFailureCount);
     }
   } catch (err) {
     console.log(err);
@@ -108,14 +109,30 @@ router.post("/notify", async function (req, res) {
     tokens: listToken,
   };
   try {
-    const response = await admin.messaging().sendEachForMulticast(message);
-    success += +(response?.successCount || 0);
-    fail += +(response?.failureCount || 0);
+    const response = await admin.messaging().sendEachForMulticast({
+      tokens: listToken,
+      notification: {
+        title: data.title,
+        body: data.msg,
+      }
+    });
+
+    console.log("📊 Firebase response:", response);
+
+    response.responses.forEach((resp, idx) => {
+      if (!resp.success) {
+        console.error(`❌ Token failed [${listToken[idx]}]:`, resp.error.code, resp.error.message);
+      }
+    });
+
+    success = response.successCount;
+    fail = response.failureCount;
   } catch (error) {
-    console.log("error:", error);
+    console.log("❌ Error sending notifications:", error);
     res.status(500).send({ error: "Error in sending notifications" });
     return;
   }
+
   try {
     const newNotification = new NotificationModel({
       title: data?.title,
