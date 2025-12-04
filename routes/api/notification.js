@@ -1,14 +1,31 @@
+require("dotenv").config();
 const { default: axios } = require("axios");
 const express = require("express");
 const { getDocs, collection } = require("firebase/firestore");
 const { database } = require("../../config/firebase");
 const admin = require("firebase-admin");
-const serviceAccount = require("../../vido-student-beta-firebase-adminsdk-4rkqd-1360fc04f3.json");
+// const serviceAccount = require("../../vido-student-beta-firebase-adminsdk-4rkqd-1360fc04f3.json");
 const { v4: uuidv4 } = require("uuid");
 const { sliceIntoChunks } = require("../../utils/index");
 const NotificationModel = require("../../models/notification");
+const serviceAccount = {
 
-require("dotenv").config();
+  type: process.env.GOOGLE_TYPE,
+  project_id: process.env.GOOGLE_PROJECT_ID,
+  private_key_id: process.env.GOOGLE_PRIVATE_KEY_ID,
+  
+  private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+  
+  client_email: process.env.GOOGLE_CLIENT_EMAIL,
+  client_id: process.env.GOOGLE_CLIENT_ID,
+  
+  auth_uri: process.env.GOOGLE_AUTH_URI,
+  token_uri: process.env.GOOGLE_TOKEN_URI,
+  auth_provider_x509_cert_url: process.env.GOOGLE_AUTH_PROVIDER_CERT_URL,
+  client_x509_cert_url: process.env.GOOGLE_CLIENT_CERT_URL,
+  universe_domain: process.env.GOOGLE_UNIVERSE_DOMAIN,
+};
+
 
 const router = express.Router();
 const chunkSize = 500;
