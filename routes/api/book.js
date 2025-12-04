@@ -9,13 +9,13 @@ router.get("/getBookInfo", async (req, res) => {
     console.log("Searching for ISBN:", isbn);
 
     const sources = [
-        // { name: "Google Books", fn: getFromGoogleBooks },
-        // { name: "Minh Khai", fn: getFromMinhKhai },
-        // { name: "Phương Nam", fn: getFromPhuongNam },
-        // { name: "Nhân Văn", fn: getBookFromNhanVan },
-        // { name: "Nhà Sách Cần Thơ", fn: getFromCanTho },
+        { name: "Google Books", fn: getFromGoogleBooks },
+        { name: "Minh Khai", fn: getFromMinhKhai },
+        { name: "Phương Nam", fn: getFromPhuongNam },
+        { name: "Nhân Văn", fn: getBookFromNhanVan },
+        { name: "Nhà Sách Cần Thơ", fn: getFromCanTho },
         { name: "Fahasa", fn: getFromFahasa },
-        // { name: "Vinabook", fn: getFromVinabook }
+        { name: "Vinabook", fn: getFromVinabook }
     ];
 
     let book = null;
