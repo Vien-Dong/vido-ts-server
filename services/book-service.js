@@ -1,169 +1,365 @@
-const { default: axios } = require("axios");
-const cheerio = require('cheerio');
+const axios = require("axios");
+const cheerio = require("cheerio");
+const puppeteer = require("puppeteer-extra");
+const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+puppeteer.use(StealthPlugin());
 
-const getBookInfo = async (isbn) => {
-    try {
-        const icheckPromise = await axios.get(`${process.env.ICHECK_API_URL}/products/search?nameCode=${isbn}&limit=48&offset=0`, {
-            headers: {
-                "Authorization": `Bearer ${process.env.ICHECK_TOKEN}`
-            }
-        });
-        const googleBooksPromise = await axios.get(`${process.env.GOOGLE_BOOK_URL}/volumes?q=isbn:${isbn}&key=${process.env.GOOGLE_API_KEY}`);
-
-        const phuongnamPromise = await axios.get(process.env.PHUONG_NAM_URL, {
-            params: {
-                match: "all",
-                subcats: "Y",
-                pcode_from_q: "Y",
-                pshort: "N",
-                pfull: "N",
-                pname: "Y",
-                pkeywords: "Y",
-                search_performed: "Y",
-                q: isbn,
-                dispatch: "products.search"
-            }
-        });
-
-        const minhkhaiPromise = await axios.get(process.env.MINH_KHAI_URL, {
-            params: {
-                q: "view",
-                isbn
-            }
-        });
-
-        const responses = await Promise.allSettled([phuongnamPromise, minhkhaiPromise, googleBooksPromise]);
-
-        const successfulResponses = responses
-            .filter(response => response.status === "fulfilled" && response.value?.data)
-            .map(response => response.value.data);
-
-        const result = successfulResponses.map((data, index) => {
-            if (data && typeof data === 'string') {
-                const $ = cheerio.load(data);
-                const bookInfo = {};
-
-                // Ánh xạ thuộc tính
-                const propertyMap = {
-                    "Kích thước": "dimension",
-                    "Năm Xuất Bản": "publishYear",
-                    "Số trang": "pageCount",
-                    "Tác giả": "author",
-                    "Nhà Xuất Bản": "publisher",
-                    "Đơn Vị Liên Kết Xuất Bản": "studio",
-                    "Dịch giả": "translator",
-                    "Loại sản phẩm": "type"
-                };
-
-                if (index === 0) { // Phản hồi từ Phương Nam
-                    bookInfo.title = $('#tygh_main_container > div.tygh-content.clearfix > div > div > div > div > div.ut2-pb.ty-product-block.ty-product-detail.ut2-big-image > div.ut2-pb__wrapper.clearfix > div.ut2-pb__title > h1 > bdi').text().trim() || "";
-
-                    const features = $('.ty-product-feature');
-
-                    if (features.length > 0) {
-                        features.each((_, feature) => {
-                            const label = $(feature).find('.ty-product-feature__label span').text().trim();
-                            let value = $(feature).find('.ty-product-feature__value').text().trim();
-
-                            // Kiểm tra danh sách nhiều mục
-                            const multipleList = $(feature).find('.ty-product-feature__multiple-item');
-                            if (multipleList.length > 0) {
-                                value = multipleList.map((_, item) => $(item).contents().not($(item).find('input')).text().trim()).get().join(', ');
-                            }
-
-                            // Gán giá trị theo ánh xạ
-                            if (propertyMap[label]) {
-                                bookInfo[propertyMap[label]] = value;
-                            }
-                        });
-
-                        return {
-                            totalItem: 1,
-                            items: [bookInfo],
-                            source: "phuongnam"
-                        };
-                    }
-
-                    return null;
-                } else if (index === 1) { // Phản hồi từ Minh Khai
-                    const selector = $('body > div:nth-child(5) > div:nth-child(3) > table > tbody > tr:nth-child(1) > td:nth-child(2)');
-
-                    if (selector.length > 0) {
-                        // Trích xuất các thông tin
-                        bookInfo.title = $(selector).find('b').first().text().trim(); // Tiêu đề
-
-                        // Tác giả
-                        const authorMatch = $(selector).find('span').html().match(/Tác giả:\s*(.*?)\.\s*(?:Dịch giả|Bản dịch tiếng Việt|Người dịch|Chấp bút):/);
-                        bookInfo.author = authorMatch ? authorMatch[1].replace(/<\/?a[^>]*>/g, '').trim() : null;
-
-                        // Bản dịch tiếng Việt
-                        const translatorMatch = $(selector).find('span').html().match(/(?:Dịch giả|Bản dịch tiếng Việt|Người dịch|Chấp bút):\s*<a[^>]*>(.*?)<\/a>/);
-                        bookInfo.translator = translatorMatch ? translatorMatch[1].trim() : null;
-
-                        // Thể loại
-                        const categoryMatch = $(selector).find('a[href*="CategoryID"]').text();
-                        bookInfo.category = categoryMatch ? categoryMatch.trim() : '';
-
-                        // ISBN
-                        bookInfo.isbn = $(selector).find('b:contains("ISBN:")').text().replace('ISBN: ', '').trim();
-
-                        const nodeText = $(selector).find('b:contains("Xuất bản:")').parent().contents().filter(function () {
-                            return this.nodeType === 3;
-                        }).text().trim();
-
-                        if (nodeText) {
-                            const parts = nodeText.split('\n').map(part => part.trim()).filter(part => part !== '');
-
-                            // Năm xuất bản
-                            bookInfo.publishYear = Number(parts[1].split('/')[1]);
-
-                            // Trọng lượng
-                            bookInfo.weight = parts[2];
-
-                            // Số trang
-                            bookInfo.pageCount = Number(parts[3].split(' ')[0]); // Lấy số trang từ chuỗi
-                        }
-
-                        // Nhà xuất bản
-                        bookInfo.publisher = $(selector).find('b:contains("NXB:")').next().text().trim();
-
-                        return {
-                            totalItem: 1,
-                            items: [bookInfo],
-                            source: "minhkhai"
-                        };
-                    }
-                    return null;
-                }
-
-                return null;
-            }
-        }).find(x => x !== null && x !== undefined);
-
-        const googleBooksData = successfulResponses.find(data => data.totalItems > 0);
-
-        if (googleBooksData) {
-            return {
-                totalItem: googleBooksData.totalItems,
-                items: googleBooksData.items,
-                source: "google"
-            }
-        }
-
-        const icheckData = successfulResponses.find(data => data.data?.count > 0);
-        if (icheckData) {
-            return {
-                totalItem: icheckData.data.count,
-                items: icheckData.data.rows && icheckData.data.rows.length > 0 ? icheckData.data.rows.filter(x => x?.sourceId !== null) : [],
-                source: "icheck"
-            };
-        }
-
-        return result || null;
-    }
-    catch (error) {
-        console.log(error);
-    }
+function normalizeBook({
+  source = "",
+  title = "",
+  publisher = "",
+  isbn = "",
+  authors = [],
+  price = "",
+  thumbnail = "",
+  description = "",
+  link = ""
+}) {
+  return {
+    source,
+    title,
+    publisher,
+    isbn,
+    authors,
+    price,
+    thumbnail,
+    description,
+    link
+  };
 }
 
-module.exports = { getBookInfo };
+
+// 1️⃣ Google Books
+async function getFromGoogleBooks(isbn) {
+  try {
+    const url = `https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}`;
+    const { data } = await axios.get(url);
+    if (!data.items?.length) return null;
+
+    const b = data.items[0].volumeInfo;
+
+    return normalizeBook({
+      source: "Google Books",
+      title: b.title || "",
+      publisher: b.publisher || "",
+      isbn: isbn,
+      authors: b.authors || [],
+      description: b.description || "",
+      thumbnail: b.imageLinks?.thumbnail || ""
+    });
+  } catch {
+    return null;
+  }
+}
+
+// 2️⃣ Phương Nam
+async function getFromPhuongNam(isbn) {
+  try {
+    const searchUrl = `https://nhasachphuongnam.com/search?type=product&q=${isbn}`;
+    const { data: searchHtml } = await axios.get(searchUrl, {
+      headers: { "User-Agent": "Mozilla/5.0" }
+    });
+    const $ = cheerio.load(searchHtml);
+
+    const firstLink = $(".product-thumbnail a.image_thumb").first().attr("href");
+    if (!firstLink) return null;
+
+    const productLink =
+      firstLink.startsWith("http") ? firstLink : `https://nhasachphuongnam.com${firstLink}`;
+
+    const { data: detailHtml } = await axios.get(productLink, {
+      headers: { "User-Agent": "Mozilla/5.0" }
+    });
+    const $d = cheerio.load(detailHtml);
+
+    const foundIsbn = $d("p.product_sku .status_name").text().trim();
+    if (foundIsbn !== isbn) return null;
+
+    return normalizeBook({
+      source: "Phương Nam",
+      title: $d("h1.title-product").text().trim(),
+      publisher: "",
+      isbn: foundIsbn,
+      price: $d(".price-box .product-price").text().trim(),
+      thumbnail: $d(".slider-for img").attr("src") || "",
+      link: productLink
+    });
+
+  } catch {
+    return null;
+  }
+}
+
+// 3️⃣ Nhân Văn
+async function getBookFromNhanVan(isbn) {
+  try {
+    const searchUrl = `https://nhanvan.vn/search?q=${isbn}`;
+    const { data: html } = await axios.get(searchUrl);
+    const $ = cheerio.load(html);
+
+    const products = $(".pro-loop");
+    if (!products.length) return null;
+
+    for (let i = 0; i < products.length; i++) {
+      const item = products.eq(i);
+      const detailLink = item.find(".pro-name a").attr("href");
+      if (!detailLink) continue;
+
+      const productLink = detailLink.startsWith("http")
+        ? detailLink
+        : `https://nhanvan.vn${detailLink}`;
+
+      const { data: detailHtml } = await axios.get(productLink);
+      const $d = cheerio.load(detailHtml);
+
+      const sku = $d("div#productDetail p.sku").text().replace("SKU:", "").trim();
+
+      if (sku === isbn) {
+        return normalizeBook({
+          source: "Nhân Văn",
+          title: $d("div#productDetail h1").text().trim(),
+          publisher: "",
+          isbn: sku,
+          link: productLink
+        });
+      }
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+// 4️⃣ Minh Khai
+async function getFromMinhKhai(isbn) {
+  try {
+    const url = `https://minhkhai.com.vn/store2/index.aspx?q=view&isbn=${isbn}`;
+    const { data } = await axios.get(url);
+    const $ = cheerio.load(data);
+
+    const isbnText = $("td b:contains('ISBN')").text().replace("ISBN:", "").trim();
+    if (isbnText !== isbn) return null;
+
+    return normalizeBook({
+      source: "Minh Khai",
+      title: $("td b").first().text().trim(),
+      publisher: $("td b:contains('NXB')").next("a").text().trim(),
+      isbn: isbn,
+      authors: $("td span:contains('Tác giả')")
+        .text()
+        .replace("Tác giả:", "")
+        .split("-")
+        .map(a => a.trim())
+        .filter(a => a),
+      publishedDate: $("td b:contains('Xuất bản')").parent().text().replace("Xuất bản:", "").trim(),
+      thumbnail: $("td img").first().attr("src")
+        ? "https://minhkhai.com.vn" + $("td img").first().attr("src")
+        : "",
+      link: url
+    });
+
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Lấy sách từ Nhà Sách Cần Thơ bằng Google Custom Search API
+ * @param {string} isbn
+ */
+async function getFromCanTho(isbn) {
+  try {
+    const GOOGLE_API_KEY = "YOUR_KEY";
+    const SEARCH_ENGINE_ID = "YOUR_CX";
+
+    const query = encodeURIComponent(`${isbn} site:nhasachcantho.vn`);
+    const url = `https://www.googleapis.com/customsearch/v1?key=${GOOGLE_API_KEY}&cx=${SEARCH_ENGINE_ID}&q=${query}`;
+
+    const { data: searchData } = await axios.get(url);
+    if (!searchData.items?.length) return null;
+
+    const productLink = searchData.items.find(item =>
+      item.link.includes("nhasachcantho.vn")
+    )?.link;
+    if (!productLink) return null;
+
+    const { data: html } = await axios.get(productLink);
+    const $ = cheerio.load(html);
+    const desc = $(".product-description").text();
+
+    return normalizeBook({
+      source: "Nhà Sách Cần Thơ",
+      title: $("h1.product-title").text().trim(),
+      publisher: $("h3.product-subtitle").text().trim(),
+      isbn: extractISBN(desc),
+      price: $(".price .current").text().trim(),
+      thumbnail: $(".product-gallery img").attr("src") || "",
+      description: desc.trim(),
+      link: productLink
+    });
+
+  } catch {
+    return null;
+  }
+}
+
+// ⚡ Tự động lấy ISBN 13 số từ description
+function extractISBN(text) {
+  if (!text) return null;
+
+  // Bắt chuỗi 13 số liên tục, dù trước/sau dính chữ
+  const match = text.match(/(\d{13})/);
+
+  return match ? match[1] : null;
+}
+
+// -----------------------------------------------------------------------------
+// 6️⃣ Fahasa
+// -----------------------------------------------------------------------------
+async function getFromFahasa(isbn) {
+  const searchUrl = `https://www.fahasa.com/searchengine?q=${isbn}`;
+
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-blink-features=AutomationControlled"
+    ],
+  });
+
+  const page = await browser.newPage();
+
+  await page.setUserAgent(
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+  );
+
+  try {
+    await page.goto(searchUrl, { waitUntil: "domcontentloaded", timeout: 60000 });
+
+    // đợi trang render lazy load
+    await new Promise(resolve => setTimeout(resolve, 3000));
+
+    const result = await page.evaluate(() => {
+      const first = document.querySelector("ul.products-grid.fhs-top > li");
+      if (!first) return null;
+
+      const linkEl = first.querySelector("a[href]");
+      const titleEl = first.querySelector("h2.product-name-no-ellipsis a");
+      const priceEl = first.querySelector("span.price.m-price-font");
+      const imgEl = first.querySelector("img");
+
+      return {
+        link: linkEl?.href || null,
+        title: titleEl?.innerText?.trim() || null,
+        price: priceEl?.innerText?.trim() || null,
+        thumbnail: imgEl?.src || null,
+      };
+    });
+
+    if (!result || !result.link) return null;
+
+    return {
+      source: "Fahasa",
+      isbn,
+      ...result
+    };
+
+  } catch (err) {
+    console.error("Fahasa error:", err);
+    return null;
+  } finally {
+    await browser.close();
+  }
+}
+
+// -----------------------------------------------------------------------------
+// 8️⃣ Vinabook
+// -----------------------------------------------------------------------------
+async function getFromVinabook(isbn) {
+  try {
+    const searchUrl = `https://www.vinabook.com/search?q=${isbn}`;
+    const { data: html } = await axios.get(searchUrl, {
+      headers: { "User-Agent": "Mozilla/5.0" }
+    });
+
+    const $ = cheerio.load(html);
+
+    // --- SEARCH PAGE ---
+    const item = $(".product-item").first();
+    if (!item.length) return null;
+
+    const title = item.find("h3.pro-name a").text().trim();
+    const link = "https://www.vinabook.com" + item.find("h3.pro-name a").attr("href");
+    const thumbnail = item.find(".product-img img").attr("src");
+    const price = item.find(".current-price").text().trim();
+
+    // --- GET DETAIL PAGE ---
+    const { data: detailHTML } = await axios.get(link, {
+      headers: { "User-Agent": "Mozilla/5.0" }
+    });
+
+    const $$ = cheerio.load(detailHTML);
+
+    // TITLE
+    const detailTitle = $$(".product-title h1").text().trim() || title;
+
+    // PUBLISHER (dòng dưới SKU)
+    const publisher = $$(".product-type").text().trim() || "";
+
+    // PRICE (lấy lại nếu cần)
+    const detailPrice = $$("#price-preview .pro-price").text().trim() || price;
+
+    // THUMBNAIL
+    const detailThumb =
+      $$(".product-image-feature").attr("src")?.trim() || thumbnail;
+
+    // DESCRIPTION (GIỚI THIỆU SÁCH)
+    const descriptionHTML = $$("#nav-home").html() || "";
+    const descriptionText = $$.text(descriptionHTML).replace(/\s+/g, " ").trim();
+
+    // INFO TABLE
+    let authors = [];
+    let publishYear = "";
+    let pageCount = "";
+    let isbnDetail = "";
+    let translator = "";
+    let supplier = "";
+
+    $$("#nav-home table tr").each((_, tr) => {
+      const key = $$(tr).find("th").text().trim();
+      const value = $$(tr).find("td").text().trim();
+
+      if (key.includes("Tác giả")) authors.push(value);
+      if (key.includes("Năm XB")) publishYear = value;
+      if (key.includes("Số trang")) pageCount = value;
+      if (key.includes("Mã hàng")) isbnDetail = value;
+      if (key.includes("Người Dịch")) translator = value;
+      if (key.includes("Tên Nhà Cung Cấp")) supplier = value;
+    });
+
+    return normalizeBook({
+      source: "Vinabook",
+      title: detailTitle,
+      publisher,
+      isbn: isbnDetail || isbn,
+      authors,
+      published_date: publishYear,
+      pages: pageCount,
+      translator,
+      supplier,
+      price: detailPrice,
+      thumbnail: detailThumb,
+      description: descriptionText,
+      link
+    });
+
+  } catch (err) {
+    console.error("Vinabook error:", err);
+    return null;
+  }
+}
+
+
+module.exports = { getFromGoogleBooks, getFromMinhKhai, getFromPhuongNam, getBookFromNhanVan, getFromCanTho, getFromFahasa, getFromVinabook };
