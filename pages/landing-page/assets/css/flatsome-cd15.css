@@ -10873,3 +10873,42 @@ li.wc-layered-nav-rating .star-rating {
 .stars a.star-5:after {
     content: ""
 }
+
+#register-toast {
+	max-width: 320px;
+	/* 👈 đẹp nhất desktop */
+	min-width: 260px;
+	/* 👈 tránh bị bé quá */
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	right: auto;
+	display: flex;
+	gap: 10px;
+	background: #ffffff;
+	color: #fff;
+	padding: 14px 18px;
+	border-radius: 8px;
+	box-shadow: 0 8px 20px rgba(0, 0, 0, .25);
+	z-index: 9999;
+
+	opacity: 0;
+	transform: translateY(20px);
+	transition: all .4s ease;
+}
+
+#register-toast.show {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+.toast-name {
+	font-weight: 600;
+	color: black;
+}
+
+.fixedText {
+	font-size: 12px;
+	opacity: .9;
+	color: black;
+}

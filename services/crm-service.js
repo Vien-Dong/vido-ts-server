@@ -7,38 +7,27 @@ let cachedToken = null;
 let tokenExpiresAt = 0;
 
 const getAccessToken = async () => {
-
-    // 1️⃣ Kiểm tra cache trên server trước
-    if (cachedToken && Date.now() < Number(tokenExpiresAt)) {
-        return {
-            access_token: cachedToken,
-            expire_time: tokenExpiresAt / 1000
-        };
+    if (cachedToken && Date.now() < tokenExpiresAt) {
+        return cachedToken; // ✅ chỉ trả token
     }
 
-    try {
-        const param = {
-            username: "admin",
-            access_key_md5: "37488f318b75565be18d3b5accb8d439"
-        };
-        const response = await axios.get("https://crm.viendong.edu.vn/api/OpenAPI/auth", {
-            params: param,
-        });
-
-        if (response?.data) {
-            console.log(response?.data);
-            cachedToken = response?.data?.access_token;
-            tokenExpiresAt = Number(response?.data?.expire_time ?? 0) * 1000;
+    const response = await axios.get(
+        "https://crm.viendong.edu.vn/api/OpenAPI/auth",
+        {
+            params: {
+                username: "admin",
+                access_key_md5: "37488f318b75565be18d3b5accb8d439"
+            }
         }
+    );
 
-        return response.data;
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
+    cachedToken = response.data.access_token;
+    tokenExpiresAt = Number(response.data.expire_time) * 1000;
 
-const    postParticipant = async (data) => {
+    return cachedToken; // ✅
+};
+
+const postParticipant = async (data) => {
     // Hàm đệ quy để lấy access token
     const response = await getAccessToken();
 
@@ -101,4 +90,59 @@ const putParticipant = async (data, record_id) => {
     }
 }
 
-module.exports = { getAccessToken, postParticipant, putParticipant };
+const getLatestNames = async () => {
+  const token = await getAccessToken();
+
+  const listRes = await axios.get(
+    "https://crm.viendong.edu.vn/api/OpenAPI/list",
+    {
+      headers: { "Access-Token": token },
+      params: {
+        module: "CPTarget",
+        sort_column: "createdtime",
+        sort_order: "DESC",
+        max_rows: 100 // lấy dư để lọc
+      }
+    }
+  );
+
+  const entryList = listRes.data?.entry_list || [];
+  if (!entryList.length) return [];
+
+  const ids = entryList.map(i => i.id);
+
+  const detailResults = await Promise.allSettled(
+    ids.map(id =>
+      axios.get(
+        "https://crm.viendong.edu.vn/api/OpenAPI/retrieve",
+        {
+          headers: { "Access-Token": token },
+          params: {
+            module: "CPTarget",
+            record: id
+          }
+        }
+      )
+    )
+  );
+
+  const names = detailResults
+    .map(r => {
+      const d = r.value?.data?.data;
+      if (!d) return null;
+
+      // 🔥 LỌC online_admission
+      if (d.cptarget_source !== "online_admission") return null;
+
+      // ghép firstname + lastname, trống thì kệ
+      return `${d.lastname || ""} ${d.firstname || ""}`.trim() || null;
+    })
+    .filter(Boolean)
+    .slice(0, 10); // chỉ lấy 10 cái cuối cùng
+
+  return names;
+};
+
+
+
+module.exports = { getAccessToken, postParticipant, putParticipant, getLatestNames };

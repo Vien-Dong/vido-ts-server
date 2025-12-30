@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { default: axios } = require("axios");
-const { getAccessToken, postParticipant, putParticipant } = require("../../services/crm-service");
+const { getAccessToken, postParticipant, putParticipant, getLatestNames } = require("../../services/crm-service");
 
 router.post('/create-cptarget', async (req, res) => {
     const data = req.body;
@@ -49,6 +49,19 @@ router.get('/get-token', async (req, res) => {
     catch (error) {
         console.log(error);
     }
+});
+
+router.get("/latest-names", async (req, res) => {
+  try {
+    const names = await getLatestNames();
+    res.json({
+      success: true,
+      names
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ success: false });
+  }
 });
 
 module.exports = router;
