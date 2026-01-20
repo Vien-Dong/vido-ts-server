@@ -1,49 +1,137 @@
 const Diploma = require("../models/diploma");
 const XLSX = require("xlsx");
 
-const createDiploma = async (subject, studentID, number, name, dateOfBirth, gender, rating, GDN, gradutateDate ,numberInBook) => {
+const createDiploma = async (
+    subject, studentID, number, name,
+    dateOfBirth, gender, rating, GDN,
+    gradutateDate, numberInBook
+) => {
     try {
-        const diploma = await Diploma.findOne({ "numberInBook": numberInBook });
-        if (!diploma) {
-            const newDiploma = new Diploma({ subject, studentID,number, name, dateOfBirth, gender, rating, GDN, gradutateDate,  numberInBook});
-            await newDiploma.save();
-            return 1;
+        numberInBook = numberInBook?.trim();
+        number = number?.trim();
+
+        const existed = await Diploma.findOne({ numberInBook });
+
+        if (existed) {
+            return {
+                status: "SKIPPED",
+                reason: "DUPLICATE_NUMBER_IN_BOOK"
+            };
+        }
+
+        const newDiploma = new Diploma({
+            subject,
+            studentID,
+            number,
+            name,
+            dateOfBirth,
+            gender,
+            rating,
+            GDN,
+            gradutateDate,
+            numberInBook
+        });
+
+        await newDiploma.save();
+
+        return {
+            status: "INSERTED"
         };
-        return 0;
     } catch (err) {
-        console.log("Create Diploma: ", err);
-        return 0;
+        return {
+            status: "ERROR",
+            reason: err.message
+        };
     }
-}
+};
+
 
 const importDiploma = async () => {
     try {
-        let count = 0; 
-        const headers = ["Ngành","MSSV","Số hiệu", "Họ và Tên", "Ngày sinh", 
-            "Giới tính", "Xếp loại", "Số QĐ Tốt nghiệp", "Năm TN","Vào sổ cấp văn bằng, chứng chỉ số"];
-        const workBook = XLSX.readFile("files/DS_28-10.xlsx");
-        const data = XLSX.utils.sheet_to_json(workBook.Sheets["Sheet1"]);
+        let inserted = 0;
+        let skipped = 0;
+        let errors = [];
 
-        const processRows = async () => {
-            for (const row of data) {
-                const rowData = {};
-                //console.log(row);
-                headers.forEach(header => {
-                    rowData[header] = row[header];
+        const headers = [
+            "Ngành",
+            "MSSV",
+            "Số hiệu",
+            "Họ và Tên",
+            "Ngày sinh",
+            "Giới tính",
+            "Xếp loại",
+            "Số QĐ Tốt nghiệp",
+            "Năm TN",
+            "Vào sổ cấp văn bằng, chứng chỉ số"
+        ];
+
+        const workBook = XLSX.readFile("files/DS-VB_19012026.xlsx");
+
+        const data = XLSX.utils.sheet_to_json(
+            workBook.Sheets["Sheet1"],
+            { defval: "" }
+        ).map(row => {
+            const cleanRow = {};
+            Object.keys(row).forEach(k => {
+                cleanRow[k.trim()] = row[k];
+            });
+            return cleanRow;
+        });
+
+        for (let i = 0; i < data.length; i++) {
+            const row = data[i];
+
+            const result = await createDiploma(
+                row[headers[0]],
+                row[headers[1]],
+                row[headers[2]],
+                row[headers[3]],
+                row[headers[4]],
+                row[headers[5]],
+                row[headers[6]],
+                row[headers[7]],
+                row[headers[8]],
+                row[headers[9]]
+            );
+
+            if (result.status === "INSERTED") {
+                inserted++;
+            } else if (result.status === "SKIPPED") {
+                skipped++;
+                console.log(
+                    `⚠️ Bỏ dòng ${i + 2} – trùng số hiệu:`,
+                    row[headers[9]]
+                );
+            } else {
+                errors.push({
+                    row: i + 2,
+                    reason: result.reason
                 });
-                const result = await createDiploma(rowData[headers[0]], rowData[headers[1]], rowData[headers[2]], rowData[headers[3]], 
-                    rowData[headers[4]], rowData[headers[5]], rowData[headers[6]], rowData[headers[7]], rowData[headers[8]], rowData[headers[9]]);
-                count += result;
-                console.log("row data:", rowData[headers[4]]);
+
+                console.log(
+                    `❌ LỖI dòng ${i + 2}:`,
+                    result.reason,
+                    "| number:",
+                    row[headers[2]]
+                );
             }
+        }
+
+        console.log("✅ Inserted:", inserted);
+        console.log("⚠️ Skipped:", skipped);
+        console.log("❌ Errors:", errors.length);
+
+        return {
+            inserted,
+            skipped,
+            errors
         };
-        await processRows();
-        return count;
     } catch (err) {
-        console.log("Import Diploma: ", err);
-        return 0;
+        console.log("Import Diploma:", err);
+        return null;
     }
-}
+};
+
 
 const updateDiploma = async (number, updateData) => {
     try {
@@ -69,9 +157,9 @@ const updateDiploma = async (number, updateData) => {
 
 const updateDiplomaFromExcel = async () => {
     try {
-        let count = 0; 
-        const headers = ["Ngành","MSSV","Số hiệu", "Họ và Tên", "Ngày sinh", 
-            "Giới tính", "Xếp loại", "Số QĐ Tốt nghiệp", "Năm TN","Vào sổ cấp văn bằng, chứng chỉ số"];
+        let count = 0;
+        const headers = ["Ngành", "MSSV", "Số hiệu", "Họ và Tên", "Ngày sinh",
+            "Giới tính", "Xếp loại", "Số QĐ Tốt nghiệp", "Năm TN", "Vào sổ cấp văn bằng, chứng chỉ số"];
         const workBook = XLSX.readFile("files/DS_28-10.xlsx");
         const data = XLSX.utils.sheet_to_json(workBook.Sheets["Sheet2"]);
 
@@ -117,4 +205,4 @@ const getDiplomas = async (number) => {
     }
 }
 
-module.exports = { createDiploma, importDiploma,updateDiploma, getDiplomas, updateDiplomaFromExcel };
+module.exports = { createDiploma, importDiploma, updateDiploma, getDiplomas, updateDiplomaFromExcel };
