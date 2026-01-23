@@ -512,3 +512,27 @@ body {
     width: 100%;
   }
 }
+
+.uia.v4 video {
+  width: 160px;   /* chỉnh theo ý */
+  height: auto;
+  display: block;
+}
+
+.uia.v3 video {
+  width: 160px;   /* chỉnh theo ý */
+  height: auto;
+  display: block;
+}
+
+.uia.v2 video {
+  width: 160px;   /* chỉnh theo ý */
+  height: auto;
+  display: block;
+}
+
+.uia.v1 video {
+  width: 160px;   /* chỉnh theo ý */
+  height: auto;
+  display: block;
+}
