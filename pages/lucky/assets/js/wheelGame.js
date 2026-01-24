@@ -26,35 +26,24 @@ $(document).ready(function () {
   });
 
   function spinWheel(record_id) {
-    let random;
-    let chance = Math.random(); // Xác suất từ 0 đến 1
+    let targetAngle;
 
-    console.log("Chance: ", chance);
-    if (chance < 0.85) {
-      // 85% xác suất vào [0, 22.5] hoặc [337.5, 360]
-      let targetAngle;
-      if (Math.random() < 0.5) {
-        targetAngle = Math.floor(Math.random() * 23.5); // Random từ 0 đến 22.5
-      } else {
-        targetAngle = Math.floor(Math.random() * 45) + 337.5; // Random từ 337.5 đến 360
-      }
-
-      let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
-      random = baseRotation + targetAngle;
+    // ✅ CHỈ rơi vào MAY MẮN LẦN SAU
+    if (Math.random() < 0.5) {
+      // Vùng 0 → 22.5
+      targetAngle = Math.random() * 22.5;
     } else {
-      // 15% còn lại nhưng không bao giờ quay vào [23.5, 66.5, 112.5, 147.5]
-      let targetAngle;
-      do {
-        targetAngle = Math.floor(Math.random() * 360); // Random một góc bất kỳ
-      } while ((targetAngle >= 23.5 && targetAngle <= 246.5)); // Nếu rơi vào vùng cấm thì random lại
-
-      let baseRotation = Math.floor(Math.random() * 6 + 4) * 360; // Quay 4-10 vòng
-      random = baseRotation + targetAngle;
+      // Vùng 337.5 → 360
+      targetAngle = 337.5 + Math.random() * (360 - 337.5);
     }
 
+    // quay 6–10 vòng cho nhìn thật
+    let baseRotation = (Math.floor(Math.random() * 5) + 6) * 360;
+    let random = baseRotation + targetAngle;
+
     $(".wheel__inner").css({
-      "transition": "cubic-bezier(0.19, 1, 0.22, 1) 5s",
-      "transform": `rotate(${random}deg)`
+      transition: "cubic-bezier(0.19, 1, 0.22, 1) 5s",
+      transform: `rotate(${random}deg)`
     });
 
     setTimeout(() => {
@@ -62,6 +51,7 @@ $(document).ready(function () {
       getPosition(position, record_id);
     }, 5000);
   }
+
 
   function getPosition(position, record_id) {
     const rewards = [
