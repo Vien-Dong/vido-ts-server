@@ -536,3 +536,37 @@ body {
   height: auto;
   display: block;
 }
+
+@media screen and (max-width: 767px) {
+
+  /* khóa size cho ổn định */
+  .uia {
+    width: 130px !important;
+    height: 130px !important;
+    z-index: 3;
+  }
+
+  .uia video {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain;
+  }
+
+  /* v3 – dưới bên trái */
+  .uia.v3 {
+    top: auto !important;
+    left: 20% !important;
+    bottom: 6% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+  }
+
+  /* v4 – dưới bên phải */
+  .uia.v4 {
+    top: auto !important;
+    right: 20% !important;
+    bottom: 6% !important;
+    left: auto !important;
+    transform: translateX(50%) !important;
+  }
+}
