@@ -43,7 +43,7 @@ const postParticipant = async (data) => {
                 headers: {
                     "Access-Token": accessToken
                 },
-                timeout: 30000 // ⛔ giảm timeout để tránh 504
+                timeout: 500000 // ⛔ giảm timeout để tránh 504
             }
         );
 
