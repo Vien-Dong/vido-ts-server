@@ -8,7 +8,7 @@ let tokenExpiresAt = 0;
 
 const getAccessToken = async () => {
     if (cachedToken && Date.now() < tokenExpiresAt) {
-        return cachedToken; // ✅ chỉ trả token
+        return cachedToken;
     }
 
     const response = await axios.get(
@@ -17,15 +17,19 @@ const getAccessToken = async () => {
             params: {
                 username: "admin",
                 access_key_md5: "37488f318b75565be18d3b5accb8d439"
-            }
+            },
+            timeout: 500000
         }
     );
 
     cachedToken = response.data.access_token;
-    tokenExpiresAt = Number(response.data.expire_time) * 1000;
 
-    return cachedToken; // ✅
+    // ✅ token sống 50 phút (an toàn)
+    tokenExpiresAt = Date.now() + 50 * 60 * 1000;
+
+    return cachedToken;
 };
+
 
 const postParticipant = async (data) => {
     const accessToken = await getAccessToken(); // ✅ token là STRING
