@@ -69,10 +69,10 @@ $(document).ready(function () {
       { min: 23.5, max: 66.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // IP
       { min: 67.5, max: 111.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // BALO
       { min: 112.5, max: 147.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // BB3 || VOUCHER
-      { min: 148.5, max: 201.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CUỐN TẬP" }, // TẬP
-      { min: 202.5, max: 246.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC ÁO" }, // ÁO
-      { min: 245.5, max: 291.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT TÚI MÙ" }, // TÚI MÙ
-      { min: 292.5, max: 336.5, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC MÓC KHÓA" }, // MÓC KHÓA
+      { min: 148.5, max: 201.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // TẬP
+      { min: 202.5, max: 246.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // ÁO
+      { min: 245.5, max: 291.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // TÚI MÙ
+      { min: 292.5, max: 336.5, text: "TIẾC QUÁ NHƯNG PHẦN QUÀ ĐÃ HẾT RỒI. 😢" }, // MÓC KHÓA
       { min: 337.5, max: 360, text: "CHÚC MỪNG BẠN TRÚNG ĐƯỢC MỘT CHIẾC VÉ MAY MẮN LẦN SAU" },
     ];
 
@@ -271,21 +271,30 @@ $(document).ready(function () {
         assigned_user_id: "3",
       };
 
-      // 🔕 TẠM THỜI KHÔNG CALL API
-      setTimeout(() => {
-        isFilled = true;
-
-        $(".information-form button[type='submit'] .loader").fadeOut();
-        $(".information-form button[type='submit']").prop("disabled", false);
-        $(".information").fadeOut();
-
-        if (!clicked) {
-          spinWheel("TEST_RECORD_ID");
-        }
-
-        clicked = true;
-        loading = false;
-      }, 600);
+      axios
+        .post("/api/crm/create-cptarget", postData)
+        .then((result) => {
+          if (result.data && result.data.success) {
+            isFilled = true;
+            $(".information-form button[type='submit'] .loader").fadeOut();
+            $(".information-form button[type='submit']").prop(
+              "disabled",
+              false
+            );
+            $(".information").fadeOut();
+            if (!clicked) {
+              setTimeout(() => spinWheel(result.data.payload?.record_id), 500);
+            }
+            clicked = true;
+          }
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          $(".information-form button[type='submit'] .loader").fadeOut();
+          $(".information-form button[type='submit']").prop("disabled", false);
+          alert("Có lỗi xảy ra, vui lòng thử lại sau.");
+        })
+        .finally(() => (loading = false));
 
     }
   );
