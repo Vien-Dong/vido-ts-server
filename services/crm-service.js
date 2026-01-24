@@ -28,33 +28,34 @@ const getAccessToken = async () => {
 };
 
 const postParticipant = async (data) => {
-    const accessToken = await getAccessToken();
+    const accessToken = await getAccessToken(); // ✅ token là STRING
 
     if (!accessToken) {
-        console.log("🚨 Lỗi: Không thể lấy Access Token");
+        console.log("🚨 Không lấy được Access Token");
         return null;
     }
-
-    const headers = {
-        "Access-Token": accessToken
-    };
 
     try {
         const response = await axios.post(
             "https://crm.viendong.edu.vn/api/OpenAPI/create?module=CPTarget",
             { data },
             {
-                headers,
-                timeout: 100000
+                headers: {
+                    "Access-Token": accessToken
+                },
+                timeout: 30000 // ⛔ giảm timeout để tránh 504
             }
         );
 
         return response.data;
     } catch (error) {
-        console.log(error.response?.data || error.message);
+        console.log(
+            "❌ Lỗi create CPTarget:",
+            error.response?.data || error.message
+        );
+        return null;
     }
 };
-
 
 const putParticipant = async (data, record_id) => {
     // Hàm đệ quy để lấy access token
