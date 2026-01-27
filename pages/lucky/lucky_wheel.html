@@ -49,21 +49,25 @@
     </video>
   </div>
   <div class="uia v3">
-    <video autoplay loop muted playsinline loading="lazy" class="snake">
+    <!-- iOS -->
+    <img src="./assets/images/horse2.gif" class="snake ios" alt="" />
+
+    <!-- Android / PC -->
+    <video class="snake other" autoplay loop muted playsinline preload="auto">
       <source src="./assets/images/horse2.webm" type="video/webm">
     </video>
   </div>
+
   <div class="uia v4">
     <!-- iOS -->
-    <video class="snake ios" autoplay loop muted playsinline preload="auto" webkit-playsinline>
-      <source src="./assets/images/horse3.mov" type="video/mp4">
-    </video>
+    <img src="./assets/images/horse3.gif" class="snake ios" alt="" />
 
     <!-- Android / PC -->
     <video class="snake other" autoplay loop muted playsinline preload="auto">
       <source src="./assets/images/horse3.webm" type="video/webm">
     </video>
   </div>
+
 
 
   <script>
