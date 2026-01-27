@@ -1,4 +1,7 @@
 $(document).ready(function () {
+  const params = new URLSearchParams(window.location.search);
+  const lane = params.get("lane") || "Sheet1";
+
   var clicked = false;
   var isFilled = false;
   var loading = false;
@@ -241,50 +244,49 @@ $(document).ready(function () {
       var firstName = names[names.length - 1];
       var lastName = names.slice(0, -1).join(" ");
 
-      var postData = {
-        lastname: lastName,
-        firstname: firstName,
-        designation: firstName,
-        salutationtype: "",
-        birthday: inputBirthdayValue,
-        mobile: inputPhoneValue,
-        email: "",
-        high_school: inputHighschoolValue,
-        id_card: "",
-        register_for_admission: "",
-        cptarget_training_system: "",
-        cptarget_source: "lucky_wheel",
-        training_industry_1: selectedIndustry,
-        class: inputClasslValue,
-        address: "",
-        consulting_staff: "",
-        assigned_user_id: "3",
-      };
+      // var postData = {
+      //   lastname: lastName,
+      //   firstname: firstName,
+      //   designation: firstName,
+      //   salutationtype: "",
+      //   birthday: inputBirthdayValue,
+      //   mobile: inputPhoneValue,
+      //   email: "",
+      //   high_school: inputHighschoolValue,
+      //   id_card: "",
+      //   register_for_admission: "",
+      //   cptarget_training_system: "",
+      //   cptarget_source: "lucky_wheel",
+      //   training_industry_1: selectedIndustry,
+      //   class: inputClasslValue,
+      //   address: "",
+      //   consulting_staff: "",
+      //   assigned_user_id: "3",
+      // };
 
-      axios
-        .post("/api/crm/create-cptarget", postData)
-        .then((result) => {
-          if (result.data && result.data.success) {
-            isFilled = true;
-            $(".information-form button[type='submit'] .loader").fadeOut();
-            $(".information-form button[type='submit']").prop(
-              "disabled",
-              false
-            );
-            $(".information").fadeOut();
-            if (!clicked) {
-              setTimeout(() => spinWheel(result.data.payload?.record_id), 500);
-            }
-            clicked = true;
+      fetch("https://script.google.com/macros/s/AKfycbxlQQaMbpDuRp86o347gd_SA8BfN6NwL6mi_Q6HKIQybr7F2bEsOYs3zHCh_EtJIJAqrg/exec", {
+        method: "POST",
+        body: new URLSearchParams({
+          fullname: inputNameValue,
+          phone: inputPhoneValue,
+          birthday: inputBirthdayValue,
+          class: inputClasslValue,
+          highschool: inputHighschoolValue,
+          industry: selectedIndustry,
+          result: "submitted",
+          lane: lane
+        })
+      })
+        .then(() => {
+          $('.information').fadeOut();
+          if (!clicked) {
+            setTimeout(() => spinWheel("SHEET"), 500);
           }
+          clicked = true;
         })
-        .catch((error) => {
-          console.error("Error:", error);
-          $(".information-form button[type='submit'] .loader").fadeOut();
-          $(".information-form button[type='submit']").prop("disabled", false);
-          alert("Có lỗi xảy ra, vui lòng thử lại sau.");
-        })
-        .finally(() => (loading = false));
+        .catch(() => {
+          alert("Không ghi được dữ liệu, thử lại sau");
+        });
 
     }
   );
