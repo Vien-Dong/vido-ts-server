@@ -570,3 +570,15 @@ body {
     transform: translateX(50%) !important;
   }
 }
+
+.snake {
+  width: 100%;
+  height: auto;
+  background: transparent;
+  pointer-events: none;
+}
+
+.ios,
+.other {
+  display: none;
+}

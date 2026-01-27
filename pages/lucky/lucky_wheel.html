@@ -54,14 +54,33 @@
     </video>
   </div>
   <div class="uia v4">
-    <video autoplay loop muted playsinline preload="auto" class="snake">
-      <!-- iOS Safari (HEVC alpha) -->
+    <!-- iOS -->
+    <video class="snake ios" autoplay loop muted playsinline preload="auto" webkit-playsinline>
       <source src="./assets/images/horse3.mov" type="video/mp4">
+    </video>
 
-      <!-- Chrome / Android / PC -->
+    <!-- Android / PC -->
+    <video class="snake other" autoplay loop muted playsinline preload="auto">
       <source src="./assets/images/horse3.webm" type="video/webm">
     </video>
   </div>
+
+
+  <script>
+    (function () {
+      const isIOS =
+        /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+      document.querySelectorAll(".ios").forEach(v => {
+        v.style.display = isIOS ? "block" : "none";
+      });
+
+      document.querySelectorAll(".other").forEach(v => {
+        v.style.display = isIOS ? "none" : "block";
+      });
+    })();
+  </script>
 
 
   <div class="wheel">
