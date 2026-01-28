@@ -39,29 +39,45 @@
   </div>
 
   <div class="uia v1">
-    <video autoplay loop muted playsinline loading="lazy" class="snake">
-      <source src="./assets/images/horse1.webm" type="video/webm">
+    <video class="snake" autoplay loop muted playsinline data-ios="./assets/images/horse1.mov"
+      data-default="./assets/images/horse1.webm">
     </video>
   </div>
+
   <div class="uia v2">
-    <video autoplay loop muted playsinline loading="lazy" class="snake">
-      <source src="./assets/images/horse4.webm" type="video/webm">
+    <video class="snake" autoplay loop muted playsinline data-ios="./assets/images/horse4.mov"
+      data-default="./assets/images/horse4.webm">
     </video>
   </div>
+
   <div class="uia v3">
-    <video class="snake" autoplay loop muted playsinline>
-      <source src="./assets/images/horse2.webm" type="video/webm">
-      <img src="./assets/images/horse2.gif" alt="">
+    <video class="snake" autoplay loop muted playsinline data-ios="./assets/images/horse2.mov"
+      data-default="./assets/images/horse2.webm">
     </video>
   </div>
 
   <div class="uia v4">
-    <video class="snake" autoplay loop muted playsinline>
-      <source src="./assets/images/horse3.webm" type="video/webm">
-      <img src="./assets/images/horse3.gif" alt="">
+    <video class="snake" autoplay loop muted playsinline data-ios="./assets/images/horse3.mov"
+      data-default="./assets/images/horse3.webm">
     </video>
-
   </div>
+
+  <script>
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+      || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+    document.querySelectorAll("video.snake").forEach(video => {
+      const src = isIOS
+        ? video.dataset.ios
+        : video.dataset.default;
+
+      if (!src) return;
+
+      video.src = src;
+      video.load();
+    });
+  </script>
+
 
   <div class="wheel">
     <div class="dots"></div>
