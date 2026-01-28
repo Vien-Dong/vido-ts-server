@@ -103,84 +103,22 @@ $(document).ready(function () {
     return code;
   }
 
-  // $(document).on('click', ".information-form button[type='submit']", function (event) {
-  //   event.preventDefault();
-  //   var dataName = "fullname";
-  //   var inputNameValue = $('div[data-name="' + dataName + '"]').find('input').val();
-  //   var dataPhone = "phone";
-  //   var inputPhoneValue = $('div[data-name="' + dataPhone + '"]').find('input').val();
-  //   var dataBirthday = "birthday";
-  //   var inputBirthdayValue = $('div[data-name="' + dataBirthday + '"]').find('input').val();
-  //   var dataHighschool = "highschool";
-  //   var inputHighschoolValue = $('div[data-name="' + dataHighschool + '"]').find('input').val();
-
-  //   if (!inputNameValue || !inputPhoneValue || !inputBirthdayValue || !inputHighschoolValue) {
-  //     $("#notify").text("Vui lòng điền đầy đủ thông tin!").addClass("show");
-  //     setTimeout(function () { $("#notify").removeClass("show") }, 3000);
-  //     return;
-  //   }
-
-  //   else if (inputNameValue.length < 3) {
-  //     $("#notify").text("Vui lòng nhập đúng họ tên của bạn").addClass("show");
-  //     setTimeout(function () { $("#notify").removeClass("show") }, 3000);
-  //     return;
-  //   }
-
-  //   else if (inputPhoneValue.length < 10 || inputPhoneValue.length > 11) {
-  //     $("#notify").text("Số điện thoại không hợp lệ!").addClass("show");
-  //     setTimeout(function () { $("#notify").removeClass("show") }, 3000);
-  //     return;
-  //   }
-
-  //   loading = true;
-  //   $(".information-form button[type='submit'] .loader").fadeIn();
-  //   $(".information-form button[type='submit']").prop('disabled', true);
-
-  //   var names = inputNameValue.split(' ');
-  //   var firstName = names[names.length - 1];
-  //   var lastName = names.slice(0, -1).join(' ');
-
-  //   var postData = {
-  //     lastname: lastName,
-  //     firstname: firstName,
-  //     designation: firstName,
-  //     salutationtype: "",
-  //     birthday: inputBirthdayValue,
-  //     mobile: inputPhoneValue,
-  //     email: "",
-  //     high_school: inputHighschoolValue,
-  //     id_card: "",
-  //     register_for_admission: "",
-  //     cptarget_training_system: "",
-  //     cptarget_source: "lucky_wheel",
-  //     training_industry_1: "",
-  //     class: "",
-  //     address: "",
-  //     consulting_staff: "",
-  //     assigned_user_id: "3",
-  //   };
-
-  //   axios.post('/api/crm/create-cptarget', postData)
-  //     .then((result) => {
-  //       if (result.data && result.data.success) {
-  //         isFilled = true;
-  //         $(".information-form button[type='submit'] .loader").fadeOut();
-  //         $(".information-form button[type='submit']").prop('disabled', false);
-  //         $('.information').fadeOut();
-  //         if (!clicked) {
-  //           setTimeout(() => spinWheel(result.data.payload?.record_id), 500);
-  //         }
-  //         clicked = true;
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('Error:', error);
-  //       $(".information-form button[type='submit'] .loader").fadeOut();
-  //       $(".information-form button[type='submit']").prop('disabled', false);
-  //       alert('Có lỗi xảy ra, vui lòng thử lại sau.');
-  //     })
-  //     .finally(() => loading = false);
-  // });
+  function submitToGoogleSheetAsync(payload, retry = 0) {
+    fetch("https://script.google.com/macros/s/AKfycbxlQQaMbpDuRp86o347gd_SA8BfN6NwL6mi_Q6HKIQybr7F2bEsOYs3zHCh_EtJIJAqrg/exec", {
+      method: "POST",
+      body: new URLSearchParams(payload),
+    })
+      .then(res => res.text())
+      .then(() => {
+        console.log("✅ Saved to Google Sheet");
+      })
+      .catch(err => {
+        console.warn("❌ Save failed", err);
+        if (retry < 2) {
+          setTimeout(() => submitToGoogleSheetAsync(payload, retry + 1), 1000);
+        }
+      });
+  }
 
   $(document).on(
     "click",
@@ -244,49 +182,29 @@ $(document).ready(function () {
       var firstName = names[names.length - 1];
       var lastName = names.slice(0, -1).join(" ");
 
-      // var postData = {
-      //   lastname: lastName,
-      //   firstname: firstName,
-      //   designation: firstName,
-      //   salutationtype: "",
-      //   birthday: inputBirthdayValue,
-      //   mobile: inputPhoneValue,
-      //   email: "",
-      //   high_school: inputHighschoolValue,
-      //   id_card: "",
-      //   register_for_admission: "",
-      //   cptarget_training_system: "",
-      //   cptarget_source: "lucky_wheel",
-      //   training_industry_1: selectedIndustry,
-      //   class: inputClasslValue,
-      //   address: "",
-      //   consulting_staff: "",
-      //   assigned_user_id: "3",
-      // };
+      // 1️⃣ Đóng form NGAY
+      $('.information').fadeOut();
 
-      fetch("https://script.google.com/macros/s/AKfycbxlQQaMbpDuRp86o347gd_SA8BfN6NwL6mi_Q6HKIQybr7F2bEsOYs3zHCh_EtJIJAqrg/exec", {
-        method: "POST",
-        body: new URLSearchParams({
-          fullname: inputNameValue,
-          phone: inputPhoneValue,
-          birthday: inputBirthdayValue,
-          class: inputClasslValue,
-          highschool: inputHighschoolValue,
-          industry: selectedIndustry,
-          result: "submitted",
-          lane: lane
-        })
-      })
-        .then(() => {
-          $('.information').fadeOut();
-          if (!clicked) {
-            setTimeout(() => spinWheel("SHEET"), 500);
-          }
-          clicked = true;
-        })
-        .catch(() => {
-          alert("Không ghi được dữ liệu, thử lại sau");
-        });
+      // 2️⃣ Random + quay NGAY (UX mượt)
+      if (!clicked) {
+        setTimeout(() => spinWheel("SHEET"), 300);
+      }
+      clicked = true;
+
+      // 3️⃣ Chuẩn bị payload
+      const payload = {
+        fullname: inputNameValue,
+        phone: inputPhoneValue,
+        birthday: inputBirthdayValue,
+        class: inputClasslValue,
+        highschool: inputHighschoolValue,
+        industry: selectedIndustry,
+        result: "submitted",
+        lane: lane
+      };
+
+      // 4️⃣ GHI GOOGLE SHEET NGẦM (KHÔNG CHỜ)
+      submitToGoogleSheetAsync(payload);
 
     }
   );

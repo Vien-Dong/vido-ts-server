@@ -49,43 +49,19 @@
     </video>
   </div>
   <div class="uia v3">
-    <!-- iOS -->
-    <img src="./assets/images/horse2.gif" class="snake ios" alt="" />
-
-    <!-- Android / PC -->
-    <video class="snake other" autoplay loop muted playsinline preload="auto">
+    <video class="snake" autoplay loop muted playsinline>
       <source src="./assets/images/horse2.webm" type="video/webm">
+      <img src="./assets/images/horse2.gif" alt="">
     </video>
   </div>
 
   <div class="uia v4">
-    <!-- iOS -->
-    <img src="./assets/images/horse3.gif" class="snake ios" alt="" />
-
-    <!-- Android / PC -->
-    <video class="snake other" autoplay loop muted playsinline preload="auto">
+    <video class="snake" autoplay loop muted playsinline>
       <source src="./assets/images/horse3.webm" type="video/webm">
+      <img src="./assets/images/horse3.gif" alt="">
     </video>
+
   </div>
-
-
-
-  <script>
-    (function () {
-      const isIOS =
-        /iPad|iPhone|iPod/.test(navigator.userAgent) ||
-        (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-
-      document.querySelectorAll(".ios").forEach(v => {
-        v.style.display = isIOS ? "block" : "none";
-      });
-
-      document.querySelectorAll(".other").forEach(v => {
-        v.style.display = isIOS ? "none" : "block";
-      });
-    })();
-  </script>
-
 
   <div class="wheel">
     <div class="dots"></div>
