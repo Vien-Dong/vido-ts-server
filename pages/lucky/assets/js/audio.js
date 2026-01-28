@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    var audioElement = new Audio("./assets/voices/uiaa.mp3");
+    var audioElement = new Audio("./assets/voices/2026.mp3");
     audioElement.loop = true;
     isPlaying = true;
 
